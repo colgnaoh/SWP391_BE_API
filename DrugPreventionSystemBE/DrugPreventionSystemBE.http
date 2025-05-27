@@ -1,0 +1,6 @@
+@DrugPreventionSystemBE_HostAddress = http://localhost:5048
+
+GET {{DrugPreventionSystemBE_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
