@@ -1,3 +1,4 @@
+
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.Core;
 using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
 
@@ -19,5 +20,4 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Enity
         public string VerificationToken { get; set; }
         public DateTime? VerificationTokenExpires { get; set; }
     }
-
 }
