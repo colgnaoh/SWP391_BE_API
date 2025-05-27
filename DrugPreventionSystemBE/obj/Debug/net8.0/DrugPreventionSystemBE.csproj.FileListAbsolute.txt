@@ -30,3 +30,9 @@ D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Debug\
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Debug\net8.0\DrugPreventionSystemBE.pdb
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Debug\net8.0\DrugPreventionSystemBE.genruntimeconfig.cache
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Debug\net8.0\ref\DrugPreventionSystemBE.dll
+D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\bin\Debug\net8.0\System.Data.SqlClient.dll
+D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\bin\Debug\net8.0\runtimes\win-arm64\native\sni.dll
+D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\bin\Debug\net8.0\runtimes\win-x64\native\sni.dll
+D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\bin\Debug\net8.0\runtimes\win-x86\native\sni.dll
+D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\bin\Debug\net8.0\runtimes\unix\lib\net8.0\System.Data.SqlClient.dll
+D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Data.SqlClient.dll
