@@ -1,6 +1,7 @@
 ﻿namespace DrugPreventionSystemBE.DrugPreventionSystem.Data
 {
-    public class ApplicationDbContext
+    public class DrugPreventionDbContext
     {
+
     }
 }
