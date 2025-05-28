@@ -1,19 +1,20 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Core
 {
     public class BaseEnity
     {
-        //protected BaseEntity()
-        //{
-        //    Id = Guid.NewGuid().ToString("N");
-        //    CreatedTime = LastUpdatedTime = CoreHelper.SystemTimeNow;
-        //}
+        
 
         [Key]
-        public int Id { get; set; }
+        public long Id { get; set; }
         public bool IsDeleted { get; set; }
+        [Column(TypeName = "datetime2")]
         public DateTime CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
+
+        [Column(TypeName = "datetime2")]
+        public DateTime UpdatedAt { get; set; }
+
     }
 }
