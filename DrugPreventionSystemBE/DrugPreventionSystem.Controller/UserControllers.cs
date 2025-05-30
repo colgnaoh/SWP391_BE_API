@@ -9,19 +9,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
 using System.Data.SqlClient;
+using DrugPreventionSystemBE.DrugPreventionSystem.Helpers;
 
 
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
 {
     [ApiController]
-    [Route("/api/user")]
+    [Route("/api/auth")]
     public class UserControllers : ControllerBase
     {
         public readonly IConfiguration _configuration;
         private readonly IEmailService _emailService;
         private readonly DrugPreventionDbContext _context;
         private readonly IdServices _idServices;
-
 
         public UserControllers(
             DrugPreventionDbContext context,
@@ -55,7 +55,11 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
                 return BadRequest("Email đã tồn tại.");
 
             var token = Guid.NewGuid().ToString();
-            var nextId = await _idServices.GenerateNextUserIdAsync();
+            var nextId = _idServices.GenerateNextUserId();
+
+            var age = DateTime.UtcNow.Year - request.Dob.Year;
+            var ageGroup = AgeGroupHelper.GetAgeGroup(age);
+
 
             var user = new User
             {
@@ -68,6 +72,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
                 Address = request.Address,
                 Gender = request.Gender,
                 Dob = request.Dob, // 
+                AgeGroup = ageGroup,
                 VerificationToken = token,
                 VerificationTokenExpires = DateTime.UtcNow.AddHours(24), //
                 IsVerified = false
@@ -87,26 +92,40 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
         [HttpGet("confirm-email")]
         public async Task<IActionResult> ConfirmEmail([FromQuery] string token)
         {
-            var user = _context.Users.FirstOrDefault(u => u.VerificationToken == token);
-            if (user == null)
+            if (string.IsNullOrEmpty(token))
+            {
                 return BadRequest("Token không hợp lệ.");
+            }
+
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.VerificationToken == token);
+
+            if (user == null)
+            {
+                return BadRequest("Token không hợp lệ.");
+            }
+
+            if (user.VerificationTokenExpires < DateTime.UtcNow)
+            {
+                return BadRequest("Token đã hết hạn.");
+            }
 
             user.IsVerified = true;
             user.VerificationToken = null;
-            await _context.SaveChangesAsync();
+            user.VerificationTokenExpires = null;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                return StatusCode(500, "Lỗi khi lưu dữ liệu: " + ex.Message);
+            }
 
             return Ok("Xác thực email thành công.");
         }
 
-        private string GetAgeGroup(DateTime dob)
-        {
-            int age = DateTime.Now.Year - dob.Year;
-            if (dob > DateTime.Now.AddYears(-age)) age--;
-
-            if (age < 18) return "Student";
-            else if (age < 25) return "CollegeStudent";
-            else if (age < 60) return "Parent";
-            else return "Senior";
-        }
+        
     }
 }

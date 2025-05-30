@@ -8,7 +8,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Core
         
 
         [Key]
-        public long Id { get; set; }
+        public Guid Id { get; set; }
         public bool IsDeleted { get; set; }
         [Column(TypeName = "datetime2")]
         public DateTime CreatedAt { get; set; }

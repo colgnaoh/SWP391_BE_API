@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
+
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 {
     public class IdServices
@@ -13,17 +14,12 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             _context = context;
         }
 
-        public async Task<long> GenerateNextUserIdAsync()
+        public Guid GenerateNextUserId()
         {
-            if (!await _context.Users.AnyAsync())
-                return 1;
-
-            var maxId = await _context.Users
-                .Select(u => (long)u.Id)  // ép kiểu rõ ràng ở đây
-                .MaxAsync();
-
-            return maxId + 1;
+            return Guid.NewGuid();
         }
+
+    
 
     }
 }
