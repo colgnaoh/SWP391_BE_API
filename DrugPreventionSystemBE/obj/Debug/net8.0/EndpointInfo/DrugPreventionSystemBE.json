@@ -5,7 +5,7 @@
     "version": "1.0"
   },
   "paths": {
-    "/api/user/register": {
+    "/api/auth/register": {
       "post": {
         "tags": [
           "UserControllers"
@@ -36,7 +36,7 @@
         }
       }
     },
-    "/api/user/confirm-email": {
+    "/api/auth/confirm-email": {
       "get": {
         "tags": [
           "UserControllers"

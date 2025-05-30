@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 
 using System.Data.SqlClient;
 using DrugPreventionSystemBE.DrugPreventionSystem.Helpers;
+using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
 
 
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
@@ -59,7 +60,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
 
             var age = DateTime.UtcNow.Year - request.Dob.Year;
             var ageGroup = AgeGroupHelper.GetAgeGroup(age);
-
+            var role = Role.Customer; // Mặc định là Cus, có thể thay đổi nếu cần
 
             var user = new User
             {
@@ -71,6 +72,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
                 PhoneNumber = request.PhoneNumber,
                 Address = request.Address,
                 Gender = request.Gender,
+                Role = role, // Mặc định là Cus
                 Dob = request.Dob, // 
                 AgeGroup = ageGroup,
                 VerificationToken = token,

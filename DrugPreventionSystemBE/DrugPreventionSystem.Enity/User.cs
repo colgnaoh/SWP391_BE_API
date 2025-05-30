@@ -16,7 +16,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Enity
         public DateTime Dob { get; set; }
         public Role Role { get; set; }
         public AgeGroup AgeGroup { get; set; }
-        public bool? IsVerified { get; set; } = false;
+        public bool IsVerified { get; set; } = false;
         public string? VerificationToken { get; set; }
         public DateTime? VerificationTokenExpires { get; set; }
         public User()

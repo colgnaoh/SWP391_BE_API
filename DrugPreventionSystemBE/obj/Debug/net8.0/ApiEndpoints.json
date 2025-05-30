@@ -2,7 +2,7 @@
   {
     "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.UserControllers",
     "Method": "ConfirmEmail",
-    "RelativePath": "api/user/confirm-email",
+    "RelativePath": "api/auth/confirm-email",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -18,7 +18,7 @@
   {
     "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.UserControllers",
     "Method": "Register",
-    "RelativePath": "api/user/register",
+    "RelativePath": "api/auth/register",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
