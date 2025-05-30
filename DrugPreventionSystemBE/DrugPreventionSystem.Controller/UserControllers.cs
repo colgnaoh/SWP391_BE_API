@@ -1,16 +1,15 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.Data;
 using DrugPreventionSystemBE.DrugPreventionSystem.Enity;
+using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
+using DrugPreventionSystemBE.DrugPreventionSystem.Helpers;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service;
-using Microsoft.EntityFrameworkCore;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service;
-
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-
 using System.Data.SqlClient;
-using DrugPreventionSystemBE.DrugPreventionSystem.Helpers;
-using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
 
 
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
@@ -130,6 +129,39 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
             return Ok("Xác thực email thành công.");
         }
 
-        
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] ModelView.LoginRequest request)
+        {
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == request.Email);
+
+            if (user == null || user.Password != request.Password)
+            {
+                return Unauthorized("Email hoặc mật khẩu không đúng.");
+            }
+
+            if (!user.IsVerified)
+            {
+                return Unauthorized("Email chưa được xác thực. Vui lòng kiểm tra email của bạn.");
+            }
+
+            // Optionally: Generate JWT or session token here
+
+            return Ok(new
+            {
+                message = "Đăng nhập thành công.",
+                user = new
+                {
+                    user.Id,
+                    user.FirstName,
+                    user.LastName,
+                    user.Email,
+                    user.Gender,
+                    user.Dob,
+                    user.PhoneNumber
+                }
+            });
+        }
+
     }
 }
