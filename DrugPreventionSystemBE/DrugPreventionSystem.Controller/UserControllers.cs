@@ -61,6 +61,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
             var age = DateTime.UtcNow.Year - request.Dob.Year;
             var ageGroup = AgeGroupHelper.GetAgeGroup(age);
             var role = Role.Customer; // Mặc định là Cus, có thể thay đổi nếu cần
+            var createDate = DateTime.UtcNow;
 
             var user = new User
             {
@@ -78,6 +79,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
                 VerificationToken = token,
                 VerificationTokenExpires = DateTime.UtcNow.AddHours(24), //
                 IsVerified = false
+                
             };
 
             _context.Users.Add(user);

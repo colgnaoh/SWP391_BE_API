@@ -19,6 +19,9 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Enity
         public bool IsVerified { get; set; } = false;
         public string? VerificationToken { get; set; }
         public DateTime? VerificationTokenExpires { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow; 
+        public bool IsDeleted { get; set; } = false;
         public User()
         {
             IsVerified = false; // mặc định là chưa xác thực
