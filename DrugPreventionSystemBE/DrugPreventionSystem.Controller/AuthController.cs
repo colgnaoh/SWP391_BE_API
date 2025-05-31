@@ -36,5 +36,18 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
             // Gọi phương thức ResendVerificationTokenAsync từ service
             return await _authenticationService.ResendVerificationTokenAsync(request.Email);
         }
+
+        [HttpPost("request-password-reset")]
+        public async Task<IActionResult> RequestPasswordReset([FromBody] ForgotPasswordRequest request)
+        {
+            // Gọi phương thức RequestPasswordResetAsync từ service
+            return await _authenticationService.RequestPasswordResetAsync(request.Email);
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
+        {
+            return await _authenticationService.ResetPasswordAsync(request);
+        }
     }
 }

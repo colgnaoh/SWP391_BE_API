@@ -10,5 +10,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
         Task<IActionResult> ConfirmEmailAsync(string token);
         Task<IActionResult> LoginUserAsync(LoginRequest request);
         Task<IActionResult> ResendVerificationTokenAsync(string email);
+        Task<IActionResult> RequestPasswordResetAsync(string email);
+        Task<IActionResult> ResetPasswordAsync(ResetPasswordRequest request);
     }
 }

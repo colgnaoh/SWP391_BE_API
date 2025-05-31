@@ -73,6 +73,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 IsVerified = false,
                 CreatedAt = createDate,
                 UpdatedAt = updatedAt
+
             };
 
             _context.Users.Add(user);
@@ -199,6 +200,90 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             await _emailService.SendEmailAsync(email, "Yêu cầu xác thực email mới", emailBody);
 
             return new OkObjectResult("Email xác thực mới đã được gửi. Vui lòng kiểm tra hộp thư của bạn.");
+        }
+
+        public async Task<IActionResult> RequestPasswordResetAsync(string email)
+        {
+            if (string.IsNullOrEmpty(email))
+            {
+                return new BadRequestObjectResult("Email không được để trống.");
+            }
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+
+            // QUAN TRỌNG: TRẢ VỀ THÔNG BÁO CHUNG ĐỂ TRÁNH TIẾT LỘ THÔNG TIN NẾU EMAIL KHÔNG TỒN TẠI
+            // Điều này ngăn chặn kẻ tấn công biết được email nào có tài khoản trên hệ thống.
+            if (user == null)
+            {
+                return new OkObjectResult("Nếu tài khoản tồn tại, một liên kết đặt lại mật khẩu đã được gửi đến email của bạn.");
+            }
+
+            // Tạo token đặt lại mật khẩu mới
+            var resetToken = Guid.NewGuid().ToString();
+            user.PasswordResetToken = resetToken;
+            user.ResetTokenExpires = DateTime.UtcNow.AddHours(2); // Token có hiệu lực trong 2 giờ
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                return new ObjectResult("Lỗi khi lưu dữ liệu đặt lại mật khẩu: " + ex.Message) { StatusCode = 500 };
+            }
+
+            // Gửi email chứa liên kết đặt lại mật khẩu
+            var resetUrl = $"{_configuration["Frontend:BaseUrl"]}/reset-password?token={resetToken}&email={user.Email}";
+            var emailBody = $"<p>Bạn đã yêu cầu đặt lại mật khẩu. Vui lòng nhấp vào liên kết sau để đặt lại mật khẩu của bạn: <a href='{resetUrl}'>Đặt lại mật khẩu</a></p>" +
+                            $"<p>Liên kết này sẽ hết hạn sau 1 giờ.</p>";
+
+            await _emailService.SendEmailAsync(user.Email, "Đặt lại mật khẩu của bạn", emailBody);
+
+            return new OkObjectResult("Nếu tài khoản tồn tại, một liên kết đặt lại mật khẩu đã được gửi đến email của bạn.");
+        }
+
+        public async Task<IActionResult> ResetPasswordAsync(ResetPasswordRequest request)
+        {
+            if (string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Token) || string.IsNullOrEmpty(request.NewPassword))
+            {
+                return new BadRequestObjectResult("Email, Token và Mật khẩu mới không được để trống.");
+            }
+
+            // Tìm người dùng bằng email và token đặt lại mật khẩu
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == request.Email && u.PasswordResetToken == request.Token);
+
+            if (user == null)
+            {
+                return new BadRequestObjectResult("Token hoặc Email không hợp lệ.");
+            }
+
+            // Kiểm tra xem token đã hết hạn chưa
+            if (user.ResetTokenExpires < DateTime.UtcNow)
+            {
+                return new BadRequestObjectResult("Token đặt lại mật khẩu đã hết hạn.");
+            }
+
+            // CẢNH BÁO QUAN TRỌNG: Trong một ứng dụng thực tế, bạn PHẢI băm mật khẩu mới trước khi lưu vào cơ sở dữ liệu.
+            // Ví dụ: user.Password = _passwordHasher.HashPassword(request.NewPassword);
+            user.Password = request.NewPassword; // Đây chỉ là ví dụ, KHÔNG AN TOÀN cho sản phẩm thực tế
+
+            // Xóa token đặt lại mật khẩu sau khi sử dụng để ngăn chặn việc sử dụng lại
+            user.PasswordResetToken = null;
+            user.ResetTokenExpires = null;
+            user.UpdatedAt = DateTime.UtcNow; // Cập nhật thời gian cuối cùng được cập nhật
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                // Ghi nhật ký ngoại lệ
+                return new ObjectResult("Lỗi khi cập nhật mật khẩu: " + ex.Message) { StatusCode = 500 };
+            }
+
+            return new OkObjectResult("Mật khẩu của bạn đã được đặt lại thành công.");
         }
 
     }
