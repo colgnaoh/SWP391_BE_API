@@ -29,5 +29,12 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
         {
             return await _authenticationService.LoginUserAsync(request);
         }
+
+        [HttpPost("resend-token")]
+        public async Task<IActionResult> ResendToken([FromBody] ResendTokenRequest request)
+        {
+            // Gọi phương thức ResendVerificationTokenAsync từ service
+            return await _authenticationService.ResendVerificationTokenAsync(request.Email);
+        }
     }
 }

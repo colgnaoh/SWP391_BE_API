@@ -48,48 +48,16 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.UserControllers",
-    "Method": "Login",
-    "RelativePath": "api/user",
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.AuthController",
+    "Method": "ResendToken",
+    "RelativePath": "api/auth/resend-token",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "request",
-        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.LoginRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.UserControllers",
-    "Method": "ConfirmEmail",
-    "RelativePath": "api/user/confirm-email",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "token",
-        "Type": "System.String",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.UserControllers",
-    "Method": "Register",
-    "RelativePath": "api/user/register",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.UserRegisterRequest",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResendTokenRequest",
         "IsRequired": true
       }
     ],

@@ -155,5 +155,51 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             });
         }
 
+        public async Task<IActionResult> ResendVerificationTokenAsync(string email)
+        {
+            if (string.IsNullOrEmpty(email))
+            {
+                return new BadRequestObjectResult("Email không được để trống.");
+            }
+
+            // Find user by email
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+
+            if (user == null)
+            {
+                // Return a generic message to prevent user enumeration (don't reveal if email exists or not)
+                return new BadRequestObjectResult("Nếu tài khoản tồn tại, một email xác thực mới đã được gửi.");
+            }
+
+            // Check if user is already verified
+            if (user.IsVerified)
+            {
+                return new BadRequestObjectResult("Email này đã được xác thực trước đó.");
+            }
+
+            // Generate new verification token and update user
+            var newToken = Guid.NewGuid().ToString();
+            user.VerificationToken = newToken;
+            user.VerificationTokenExpires = DateTime.UtcNow.AddHours(24); // Token valid for 24 hours
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                // Log the exception
+                return new ObjectResult("Lỗi khi cập nhật dữ liệu: " + ex.Message) { StatusCode = 500 };
+            }
+
+            // Send new confirmation email
+            var confirmationUrl = $"{_configuration["Frontend:BaseUrl"]}/confirm-email?token={newToken}";
+            var emailBody = $"<p>Bạn đã yêu cầu gửi lại email xác thực. Vui lòng xác nhận email của bạn bằng cách nhấn vào liên kết sau: <a href='{confirmationUrl}'>Xác nhận email</a></p>";
+
+            await _emailService.SendEmailAsync(email, "Yêu cầu xác thực email mới", emailBody);
+
+            return new OkObjectResult("Email xác thực mới đã được gửi. Vui lòng kiểm tra hộp thư của bạn.");
+        }
+
     }
 }
