@@ -27,6 +27,7 @@ namespace DrugPreventionSystemBE
 
             var app = builder.Build();
 
+
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -38,7 +39,7 @@ namespace DrugPreventionSystemBE
 
             app.UseAuthorization();
 
-
+            app.UseAuthentication();
             app.MapControllers();
 
             app.Run();
