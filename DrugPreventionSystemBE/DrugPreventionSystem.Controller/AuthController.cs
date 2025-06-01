@@ -2,6 +2,7 @@
 using DrugPreventionSystemBE.DrugPreventionSystem.Service;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
 {
 
@@ -49,5 +50,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
         {
             return await _authenticationService.ResetPasswordAsync(request);
         }
+
+            
     }
 }
