@@ -160,18 +160,19 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var jwtToken = tokenHandler.WriteToken(token);
 
-            return new OkObjectResult(new
+            return new OkObjectResult(new UserResponse
             {
-                message = "Đăng nhập thành công.",
-                user = new
+                Success = true,
+                Data = new UserResponseData
                 {
-                    user.Id,
-                    user.FirstName,
-                    user.LastName,
-                    user.Email,
-                    user.Gender,
-                    user.Dob,
-                    user.PhoneNumber
+                    Token = jwtToken,
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    Gender = user.Gender,
+                    Dob = user.Dob,
+                    PhoneNumber = user.PhoneNumber
                 }
             });
         }
