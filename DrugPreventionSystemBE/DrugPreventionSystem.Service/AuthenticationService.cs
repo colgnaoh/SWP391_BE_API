@@ -3,6 +3,7 @@ using DrugPreventionSystemBE.DrugPreventionSystem.Enity;
 using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
 using DrugPreventionSystemBE.DrugPreventionSystem.Helpers;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.AuthModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -160,7 +161,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var jwtToken = tokenHandler.WriteToken(token);
 
-            return new OkObjectResult(new UserResponse
+            return new OkObjectResult(new UserResponseLogin
             {
                 Success = true,
                 Data = new UserResponseData

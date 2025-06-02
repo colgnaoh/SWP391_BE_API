@@ -9,7 +9,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.LoginRequest",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.AuthModel.LoginRequest",
         "IsRequired": true
       }
     ],
@@ -41,7 +41,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.UserRegisterRequest",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.AuthModel.UserRegisterRequest",
         "IsRequired": true
       }
     ],
@@ -57,7 +57,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ForgotPasswordRequest",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.AuthModel.ForgotPasswordRequest",
         "IsRequired": true
       }
     ],
@@ -73,7 +73,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResendTokenRequest",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.AuthModel.ResendTokenRequest",
         "IsRequired": true
       }
     ],
@@ -89,10 +89,20 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResetPasswordRequest",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.AuthModel.ResetPasswordRequest",
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.Controllers.TestController",
+    "Method": "Get",
+    "RelativePath": "api/Test",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   }
 ]

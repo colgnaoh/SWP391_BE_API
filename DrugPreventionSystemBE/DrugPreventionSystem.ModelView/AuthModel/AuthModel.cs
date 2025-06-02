@@ -1,4 +1,4 @@
-﻿namespace DrugPreventionSystemBE.ModelView
+﻿namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView.AuthModel
 {
     public class AuthModel
     {

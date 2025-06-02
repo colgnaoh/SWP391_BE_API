@@ -1,4 +1,4 @@
-﻿namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView
+﻿namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView.AuthModel
 {
     public class ResendTokenRequest
     {

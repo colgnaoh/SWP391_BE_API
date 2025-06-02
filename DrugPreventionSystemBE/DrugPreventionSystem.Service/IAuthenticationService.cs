@@ -1,5 +1,5 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.Enity;
-using DrugPreventionSystemBE.DrugPreventionSystem.ModelView;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.AuthModel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Service

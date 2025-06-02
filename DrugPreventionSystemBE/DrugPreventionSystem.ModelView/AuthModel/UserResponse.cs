@@ -1,7 +1,7 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
 using System.Text.Json.Serialization;
 
-namespace DrugPreventionSystemBE.ModelView
+namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView.AuthModel
 {
     public class UserResponse
     {

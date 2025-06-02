@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView
+namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView.AuthModel
 {
     public class UserRegisterRequest
     {

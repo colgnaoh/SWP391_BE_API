@@ -1,4 +1,4 @@
-﻿using DrugPreventionSystemBE.DrugPreventionSystem.ModelView;
+﻿using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.AuthModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,7 +26,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
             return await _authenticationService.ConfirmEmailAsync(token);
         }
         [HttpPost]
-        public async Task<IActionResult> Login([FromBody] ModelView.LoginRequest request)
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             return await _authenticationService.LoginUserAsync(request);
         }
