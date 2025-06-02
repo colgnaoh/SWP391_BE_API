@@ -29,7 +29,20 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 IsBodyHtml = true,
             };
 
-            mailMessage.To.Add(to);
+
+            if (!string.IsNullOrWhiteSpace(to))
+            {
+                mailMessage.To.Add(to);
+            }
+            else
+            {
+                // Tùy chọn: Ghi log cảnh báo hoặc ném ngoại lệ nếu to là null hoặc rỗng
+                // Ví dụ:
+                // throw new ArgumentException("Địa chỉ email người nhận không được để trống.", nameof(to));
+                Console.WriteLine("Cảnh báo: Địa chỉ email người nhận rỗng hoặc null, không thể gửi email.");
+                return; // Dừng việc gửi email nếu không có địa chỉ nhận hợp lệ
+            }
+
             await smtpClient.SendMailAsync(mailMessage);
         }
     }
