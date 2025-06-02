@@ -1,5 +1,7 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.AuthModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -10,8 +12,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
     [Route("/api/auth")]
     public class AuthController : ControllerBase
     {
-        private readonly IAuthenticationService _authenticationService;
-        public AuthController(IAuthenticationService authenticationService)
+        private readonly Service.IAuthenticationService _authenticationService;
+        public AuthController(Service.IAuthenticationService authenticationService)
         {
             _authenticationService = authenticationService;
         }
@@ -51,6 +53,15 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
             return await _authenticationService.ResetPasswordAsync(request);
         }
 
-            
+        [HttpGet("facebook-login")]
+        public IActionResult FacebookLogin(string? returnUrl = "/")
+        {
+            var properties = new AuthenticationProperties { RedirectUri = returnUrl };
+            return Challenge(properties, FacebookDefaults.AuthenticationScheme);
+        }
+        //https://your-backend-domain/auth/facebook-login?returnUrl=https://your-frontend-domain
+
+
+
     }
 }

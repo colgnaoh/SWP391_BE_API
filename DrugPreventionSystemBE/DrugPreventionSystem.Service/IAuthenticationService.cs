@@ -12,5 +12,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
         Task<IActionResult> ResendVerificationTokenAsync(string email);
         Task<IActionResult> RequestPasswordResetAsync(string email);
         Task<IActionResult> ResetPasswordAsync(ResetPasswordRequest request);
+        Task<IActionResult> LoginWithFacebookAsync(ExternalLoginInfoModel externalInfo);
+
     }
 }

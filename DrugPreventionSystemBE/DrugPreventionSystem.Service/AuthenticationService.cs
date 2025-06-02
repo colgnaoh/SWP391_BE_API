@@ -308,5 +308,79 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             return new OkObjectResult("Mật khẩu của bạn đã được đặt lại thành công.");
         }
 
+        public async Task<IActionResult> LoginWithFacebookAsync(ExternalLoginInfoModel externalInfo)
+        {
+            // Kiểm tra email từ Facebook
+            if (string.IsNullOrEmpty(externalInfo.Email))
+            {
+                return new BadRequestObjectResult("Không thể lấy email từ tài khoản Facebook.");
+            }
+
+            // Tìm người dùng dựa trên email
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == externalInfo.Email);
+
+            if (user == null)
+            {
+                // Nếu chưa có tài khoản, tạo mới user từ thông tin Facebook
+                var nextId = _idServices.GenerateNextUserId();
+
+                var nameParts = (externalInfo.FullName ?? "").Split(" ", StringSplitOptions.RemoveEmptyEntries);
+                var firstName = nameParts.Length > 1 ? nameParts[0] : externalInfo.FullName;
+                var lastName = nameParts.Length > 1 ? string.Join(" ", nameParts.Skip(1)) : "";
+
+                user = new User
+                {
+                    Id = nextId,
+                    FirstName = firstName,
+                    LastName = lastName,
+                    Email = externalInfo.Email,
+                    Password = null, // Không cần mật khẩu nếu đăng nhập bằng Facebook
+                    IsVerified = true,
+                    Role = Role.Customer,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                };
+
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync();
+            }
+
+            // Sinh JWT token
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Secret"]);
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[]
+                {
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.Email, user.Email),
+            new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
+        }),
+                Expires = DateTime.UtcNow.AddHours(2),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var jwtToken = tokenHandler.WriteToken(token);
+
+            return new OkObjectResult(new UserResponseLogin
+            {
+                Success = true,
+                Data = new UserResponseData
+                {
+                    Token = jwtToken,
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    Gender = user.Gender,
+                    Dob = user.Dob,
+                    PhoneNumber = user.PhoneNumber
+                }
+            });
+        }
+
+
     }
 }
