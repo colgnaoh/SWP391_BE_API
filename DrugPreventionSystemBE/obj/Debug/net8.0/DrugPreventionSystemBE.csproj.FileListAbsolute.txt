@@ -344,3 +344,5 @@ C:\Users\locho\Documents\SWP391_BE_API\SWP391_BE_API\DrugPreventionSystemBE\bin\
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.Facebook.dll
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\Users\locho\Documents\SWP391_BE_API\SWP391_BE_API\DrugPreventionSystemBE\bin\Debug\net8.0\BCrypt.Net-Next.dll
+C:\Users\locho\Documents\SWP391_BE_API\SWP391_BE_API\DrugPreventionSystemBE\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.Facebook.dll
