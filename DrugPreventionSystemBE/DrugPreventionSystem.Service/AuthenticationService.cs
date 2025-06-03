@@ -10,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using BCrypt.Net;
 
 
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
@@ -66,7 +67,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 Email = request.Email,
-                Password = request.Password,
+                Password = BCrypt.Net.BCrypt.HashPassword(request.Password),
                 PhoneNumber = request.PhoneNumber,
                 Address = request.Address,
                 Gender = request.Gender,
@@ -133,7 +134,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             var user = await _context.Users
                 .FirstOrDefaultAsync(u => u.Email == request.Email);
 
-            if (user == null || user.Password != request.Password)
+            if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
             {
                 return new UnauthorizedObjectResult("Email hoặc mật khẩu không đúng.");
             }

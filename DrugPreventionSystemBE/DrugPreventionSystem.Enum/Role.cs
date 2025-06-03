@@ -5,7 +5,6 @@
         Admin,
         Manager,
         Customer,
-        Guest,
         Staff
     }
 }
