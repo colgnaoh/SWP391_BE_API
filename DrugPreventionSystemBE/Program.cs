@@ -27,6 +27,15 @@ namespace DrugPreventionSystemBE
             builder.Services.AddScoped<IEmailService, EmailService>();
             builder.Services.AddScoped<IdServices>();
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", policy =>
+                {
+                    policy.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader();
+                });
+            });
 
             builder.Services.AddAuthentication(options =>
             {
@@ -42,6 +51,10 @@ namespace DrugPreventionSystemBE
 
 
             var app = builder.Build();
+
+            
+
+            app.UseCors("AllowAll");
 
 
             // Configure the HTTP request pipeline.

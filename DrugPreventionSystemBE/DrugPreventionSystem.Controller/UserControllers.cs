@@ -20,7 +20,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
 
         // GET: api/Users
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
             return await _context.Users.ToListAsync();
@@ -28,7 +28,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
 
         // GET: api/Users/{id}
         [HttpGet("{id}")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<ActionResult<User>> GetUser(Guid id)
         {
             var user = await _context.Users.FindAsync(id);
@@ -43,7 +43,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
 
         // PUT: api/Users/{id}
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateUser(Guid id, User updatedUser)
         {
             if (id != updatedUser.Id)
@@ -92,7 +92,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
 
         // DELETE: api/Users/{id}
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteUser(Guid id)
         {
             var user = await _context.Users.FindAsync(id);
