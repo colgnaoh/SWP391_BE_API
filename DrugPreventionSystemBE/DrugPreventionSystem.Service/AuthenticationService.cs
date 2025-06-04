@@ -11,6 +11,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using BCrypt.Net;
+using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
 
 
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Service

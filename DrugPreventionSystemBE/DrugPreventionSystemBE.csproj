@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DrugPreventionSystem.ModelView\NewFolder\" />
+    <Folder Include="DrugPreventionSystem.ModelView\CourseReqModel\" />
     <Folder Include="DrugPreventionSystem.Repositories\" />
     <Folder Include="ResponeFormat\" />
   </ItemGroup>

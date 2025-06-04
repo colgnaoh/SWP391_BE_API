@@ -1,5 +1,4 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.AuthModel;
-using DrugPreventionSystemBE.DrugPreventionSystem.Service;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Mvc;
@@ -12,8 +11,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
     [Route("/api/auth")]
     public class AuthController : ControllerBase
     {
-        private readonly Service.IAuthenticationService _authenticationService;
-        public AuthController(Service.IAuthenticationService authenticationService)
+        private readonly Service.Interface.IAuthenticationService _authenticationService;
+        public AuthController(Service.Interface.IAuthenticationService authenticationService)
         {
             _authenticationService = authenticationService;
         }

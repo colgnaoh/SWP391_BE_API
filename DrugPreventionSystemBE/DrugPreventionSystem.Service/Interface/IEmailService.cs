@@ -1,4 +1,4 @@
-﻿namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
+﻿namespace DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface
 {
     public interface IEmailService
     {

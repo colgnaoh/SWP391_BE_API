@@ -2,7 +2,7 @@
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.AuthModel;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
+namespace DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface
 {
     public interface IAuthenticationService
     {
