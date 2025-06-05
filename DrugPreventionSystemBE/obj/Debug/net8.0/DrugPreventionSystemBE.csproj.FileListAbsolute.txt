@@ -351,3 +351,4 @@ D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\bin\Debug\
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\bin\Debug\net8.0\DotNetEnv.dll
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\bin\Debug\net8.0\Newtonsoft.Json.dll
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\bin\Debug\net8.0\Sprache.dll
+D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

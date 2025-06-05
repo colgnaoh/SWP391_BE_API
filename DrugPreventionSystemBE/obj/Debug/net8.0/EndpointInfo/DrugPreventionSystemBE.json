@@ -215,6 +215,29 @@
         }
       }
     },
+    "/User/view/{pageNumber}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "pageNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Users": {
       "get": {
         "tags": [
@@ -503,6 +526,10 @@
           "resetTokenExpires": {
             "type": "string",
             "format": "date-time",
+            "nullable": true
+          },
+          "profilePicUrl": {
+            "type": "string",
             "nullable": true
           }
         },

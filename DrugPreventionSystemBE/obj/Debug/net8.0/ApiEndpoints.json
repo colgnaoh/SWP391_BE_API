@@ -203,5 +203,21 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "UserController",
+    "Method": "ViewPage",
+    "RelativePath": "User/view/{pageNumber}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pageNumber",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   }
 ]

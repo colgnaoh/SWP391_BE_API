@@ -82,6 +82,9 @@ namespace DrugPreventionSystemBE.Migrations
                     b.Property<DateTime?>("VerificationTokenExpires")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("profilePicUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Users");

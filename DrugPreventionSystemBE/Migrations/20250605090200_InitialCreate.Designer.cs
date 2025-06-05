@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DrugPreventionSystemBE.Migrations
 {
     [DbContext(typeof(DrugPreventionDbContext))]
-    [Migration("20250530065252_InitialCreate")]
+    [Migration("20250605090200_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -64,8 +64,14 @@ namespace DrugPreventionSystemBE.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PasswordResetToken")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ResetTokenExpires")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Role")
                         .HasColumnType("int");
@@ -78,6 +84,9 @@ namespace DrugPreventionSystemBE.Migrations
 
                     b.Property<DateTime?>("VerificationTokenExpires")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("profilePicUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

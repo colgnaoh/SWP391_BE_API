@@ -24,6 +24,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Enity
         public bool IsDeleted { get; set; } = false;
         public string? PasswordResetToken { get; set; }
         public DateTime? ResetTokenExpires { get; set; }
+        public string? profilePicUrl { get; set; }
         public User()
         {
             IsVerified = false; // mặc định là chưa xác thực
