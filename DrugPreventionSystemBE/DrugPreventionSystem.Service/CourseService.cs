@@ -1,5 +1,6 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.Data;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
@@ -15,17 +16,21 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 
         public async Task<IActionResult> GetCoursesByPageAsync()
         {
-            return await _context.Courses
-            .OrderBy(u => u.Id) // sắp xếp để phân trang ổn định
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .ToListAsync();
+            //return await _context.Courses
+            //.OrderBy(u => u.Id) // sắp xếp để phân trang ổn định
+            //.Skip((pageNumber - 1) * pageSize)
+            //.Take(pageSize)
+            //.ToListAsync();
+            return new OkObjectResult(""); 
         }
         public Task<IActionResult> GetCourseByIdAsync(int courseId)
         {
             throw new NotImplementedException();
         }
-    }
-    {
+
+        public Task<IActionResult> GetCoursesByPageAsync(int pageNumber, int pageSize)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -6,6 +6,10 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.EntityFrameworkCore;
+using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
+using DotNetEnv;
+using dotenv.net;
 
 
 
@@ -27,6 +31,8 @@ namespace DrugPreventionSystemBE
             builder.Services.AddSwaggerGen();
             builder.Services.AddScoped<IEmailService, EmailService>();
             builder.Services.AddScoped<IdServices>();
+
+            Env.Load(); // Load environment variables from .env file
 
             builder.Services.AddCors(options =>
             {
