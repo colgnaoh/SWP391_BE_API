@@ -1,13 +1,14 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("[controller]")]
-public class UserController : ControllerBase
+public class CourseController : ControllerBase
 {
     private readonly ICourseService _courseService;
 
-    public UserController(ICourseService courseService)
+    public CourseController(ICourseService courseService)
     {
         _courseService = courseService;
     }
@@ -22,5 +23,10 @@ public class UserController : ControllerBase
 
         var users = await _courseService.GetCoursesByPageAsync(safePageNumber, pageSize);
         return Ok(users);
+    }
+
+    public async Task<IActionResult> CreateCourseAsync(int courseId)
+    {
+        return await _courseService.GetCourseByIdAsync(courseId);
     }
 }
