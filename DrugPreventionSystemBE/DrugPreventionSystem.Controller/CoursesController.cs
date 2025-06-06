@@ -25,6 +25,7 @@ public class CourseController : ControllerBase
         return Ok(users);
     }
 
+    [HttpPost]
     public async Task<IActionResult> CreateCourseAsync(int courseId)
     {
         return await _courseService.GetCourseByIdAsync(courseId);

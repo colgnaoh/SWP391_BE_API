@@ -79,42 +79,28 @@ namespace DrugPreventionSystemBE
 
             var app = builder.Build();
 
-            app.UseRouting();
-            app.UseEndpoints(endpoints =>
-            {
-                // Route cho đường dẫn gốc
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Server API is running...");
-                });
+            
 
-                // Các route controller thông thường
-                endpoints.MapControllers();
-            });
 
             app.UseCors("AllowSpecificOrigin");
 
-
+            app.UseHttpsRedirection();
+            app.UseAuthentication();
             // Configure the HTTP request pipeline.
             app.UseSwagger();
             app.UseSwaggerUI(c => // <--- Cấu hình này đã thay đổi và thêm nhiều dòng
             {
-                // Endpoint cho môi trường LOCAL/Development
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "DrugPreventionSystem API v1 (Local/Current)");
-
-                // Endpoint cho môi trường DEPLOYED/Production trên Azure
                 c.SwaggerEndpoint("https://drugpreventionsystem-bzfxb7cndxdtdjbr.eastasia-01.azurewebsites.net/swagger/v1/swagger.json", "DrugPreventionSystem API v1 (Deployed to Azure)");
-
-                // Nếu bạn muốn Swagger UI làm trang mặc định khi truy cập '/'
-                // c.RoutePrefix = string.Empty;
             });
 
-            app.UseHttpsRedirection();
-            app.UseAuthentication();
+            app.MapControllers();
+            app.MapGet("/", async context =>
+            {
+                await context.Response.WriteAsync("Server API is running...");
+            });
 
             app.UseAuthorization();
-
-            app.MapControllers();
 
             app.Run();
         }

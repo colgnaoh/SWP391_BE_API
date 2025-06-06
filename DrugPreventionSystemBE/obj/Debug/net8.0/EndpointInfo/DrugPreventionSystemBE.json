@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "DrugPreventionSystemBE",
-    "version": "1.0"
+    "title": "DrugPreventionSystem API",
+    "version": "v1"
   },
   "paths": {
     "/api/auth/register": {
@@ -203,22 +203,10 @@
         }
       }
     },
-    "/api/Test": {
+    "/Course/view/{pageNumber}": {
       "get": {
         "tags": [
-          "Test"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/User/view/{pageNumber}": {
-      "get": {
-        "tags": [
-          "User"
+          "Course"
         ],
         "parameters": [
           {
@@ -230,6 +218,40 @@
               "format": "int32"
             }
           }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/Course": {
+      "post": {
+        "tags": [
+          "Course"
+        ],
+        "parameters": [
+          {
+            "name": "courseId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Test": {
+      "get": {
+        "tags": [
+          "Test"
         ],
         "responses": {
           "200": {
@@ -581,6 +603,14 @@
           }
         },
         "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "description": "Nhập 'Bearer ' VÀ sau đó là token của bạn vào ô bên dưới.\r\n\r\nVí dụ: 'Bearer 12345abcdef'",
+        "scheme": "Bearer",
+        "bearerFormat": "JWT"
       }
     }
   }

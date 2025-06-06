@@ -122,7 +122,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.UsersController",
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.UsersController",
     "Method": "GetUsers",
     "RelativePath": "api/Users",
     "HttpMethod": "GET",
@@ -142,7 +142,7 @@
     ]
   },
   {
-    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.UsersController",
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.UsersController",
     "Method": "GetUser",
     "RelativePath": "api/Users/{id}",
     "HttpMethod": "GET",
@@ -168,7 +168,7 @@
     ]
   },
   {
-    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.UsersController",
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.UsersController",
     "Method": "UpdateUser",
     "RelativePath": "api/Users/{id}",
     "HttpMethod": "PUT",
@@ -189,7 +189,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.UsersController",
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.UsersController",
     "Method": "DeleteUser",
     "RelativePath": "api/Users/{id}",
     "HttpMethod": "DELETE",
@@ -205,9 +205,25 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "UserController",
+    "ContainingType": "CourseController",
+    "Method": "CreateCourseAsync",
+    "RelativePath": "Course",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "courseId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CourseController",
     "Method": "ViewPage",
-    "RelativePath": "User/view/{pageNumber}",
+    "RelativePath": "Course/view/{pageNumber}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,

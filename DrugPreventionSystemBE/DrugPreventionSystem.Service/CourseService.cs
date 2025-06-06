@@ -110,19 +110,19 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 // Tạo entity Course
                 var course = new Course
                 {
-                    Id = Guid.NewGuid(),
-                    Name = request.Name,
-                    UserId = userIdGuid, // Lấy từ token
-                    CategoryId = request.CategoryId,
-                    Content = request.Content,
-                    Status = request.Status,
-                    TargetAudience = request.,
-                    Price = request.Price,
-                    Discount = request.Discount,
-                    CreatedAt = DateTime.UtcNow,
-                    UpdatedAt = DateTime.UtcNow,
-                    IsDeleted = false,
-                    CourseImgUrl = request.CourseImgUrl
+                    //Id = Guid.NewGuid(),
+                    //Name = request.Name,
+                    //UserId = userIdGuid, // Lấy từ token
+                    //CategoryId = request.CategoryId,
+                    //Content = request.Content,
+                    //Status = request.Status,
+                    //TargetAudience = request.,
+                    //Price = request.Price,
+                    //Discount = request.Discount,
+                    //CreatedAt = DateTime.UtcNow,
+                    //UpdatedAt = DateTime.UtcNow,
+                    //IsDeleted = false,
+                    //CourseImgUrl = request.CourseImgUrl
                 };
 
                 // Lưu vào database
