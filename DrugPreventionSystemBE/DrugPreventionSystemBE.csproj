@@ -7,6 +7,13 @@
   <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="ResponeFormat\**" />
+    <Content Remove="ResponeFormat\**" />
+    <EmbeddedResource Remove="ResponeFormat\**" />
+    <None Remove="ResponeFormat\**" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
@@ -27,7 +34,6 @@
 
   <ItemGroup>
     <Folder Include="DrugPreventionSystem.Repositories\" />
-    <Folder Include="ResponeFormat\" />
   </ItemGroup>
 
 </Project>

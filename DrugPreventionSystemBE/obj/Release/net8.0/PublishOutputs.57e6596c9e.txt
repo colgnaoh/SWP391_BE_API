@@ -6,6 +6,11 @@ D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Releas
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Release\net8.0\PubTmp\Out\DrugPreventionSystemBE.pdb
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Release\net8.0\PubTmp\Out\Azure.Core.dll
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Release\net8.0\PubTmp\Out\Azure.Identity.dll
+D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Release\net8.0\PubTmp\Out\BCrypt.Net-Next.dll
+D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Release\net8.0\PubTmp\Out\CloudinaryDotNet.dll
+D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Release\net8.0\PubTmp\Out\dotenv.net.dll
+D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Release\net8.0\PubTmp\Out\DotNetEnv.dll
+D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Release\net8.0\PubTmp\Out\Microsoft.AspNetCore.Authentication.Facebook.dll
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Release\net8.0\PubTmp\Out\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Release\net8.0\PubTmp\Out\Microsoft.Bcl.AsyncInterfaces.dll
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Release\net8.0\PubTmp\Out\Microsoft.Data.SqlClient.dll
@@ -33,6 +38,8 @@ D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Releas
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Release\net8.0\PubTmp\Out\Microsoft.OpenApi.dll
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Release\net8.0\PubTmp\Out\Microsoft.SqlServer.Server.dll
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Release\net8.0\PubTmp\Out\Microsoft.Win32.SystemEvents.dll
+D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Release\net8.0\PubTmp\Out\Newtonsoft.Json.dll
+D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Release\net8.0\PubTmp\Out\Sprache.dll
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Release\net8.0\PubTmp\Out\Swashbuckle.AspNetCore.Swagger.dll
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Release\net8.0\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerGen.dll
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Release\net8.0\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerUI.dll

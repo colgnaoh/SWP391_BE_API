@@ -171,3 +171,10 @@ D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Releas
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Release\net8.0\DrugPreventionSystemBE.pdb
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Release\net8.0\DrugPreventionSystemBE.genruntimeconfig.cache
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Release\net8.0\ref\DrugPreventionSystemBE.dll
+D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\bin\Release\net8.0\BCrypt.Net-Next.dll
+D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\bin\Release\net8.0\CloudinaryDotNet.dll
+D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\bin\Release\net8.0\dotenv.net.dll
+D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\bin\Release\net8.0\DotNetEnv.dll
+D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\bin\Release\net8.0\Microsoft.AspNetCore.Authentication.Facebook.dll
+D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\bin\Release\net8.0\Newtonsoft.Json.dll
+D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\bin\Release\net8.0\Sprache.dll

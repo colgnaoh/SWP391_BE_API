@@ -1,16 +1,17 @@
-
+﻿
+using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
+using dotenv.net;
+using DotNetEnv;
 using DrugPreventionSystemBE.DrugPreventionSystem.Data;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Facebook;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using CloudinaryDotNet;
-using CloudinaryDotNet.Actions;
-using DotNetEnv;
-using dotenv.net;
-
+using Microsoft.OpenApi.Models;
 
 
 namespace DrugPreventionSystemBE
@@ -28,20 +29,39 @@ namespace DrugPreventionSystemBE
             builder.Services.AddScoped<DrugPreventionSystem.Service.Interface.IAuthenticationService, DrugPreventionSystemBE.DrugPreventionSystem.Service.AuthenticationService>(); builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "DrugPreventionSystem API", Version = "v1" });
+
+                // Chỉ định định nghĩa bảo mật (để có nút Authorize tổng thể)
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "Nhập 'Bearer ' VÀ sau đó là token của bạn vào ô bên dưới.\r\n\r\nVí dụ: 'Bearer 12345abcdef'",
+                });
+
+               // sử dụng thuộc tính[Authorize] trên các Controller / Action Methods mà bạn muốn bảo vệ.
+            });
+
             builder.Services.AddScoped<IEmailService, EmailService>();
             builder.Services.AddScoped<IdServices>();
-
+           
             Env.Load(); // Load environment variables from .env file
+
+
 
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("AllowAll", policy =>
-                {
-                    policy.AllowAnyOrigin()
-                          .AllowAnyMethod()
-                          .AllowAnyHeader();
-                });
+                options.AddPolicy("AllowSpecificOrigin",
+                    builder => builder.WithOrigins("http://localhost:3000", "https://yourfrontenddomain.com") // THAY THẾ "https://yourfrontenddomain.com" bằng domain thực tế của frontend bạn
+                                      .AllowAnyMethod() // Cho phép tất cả các phương thức HTTP (GET, POST, PUT, DELETE, v.v.)
+                                      .AllowAnyHeader()   // Cho phép tất cả các header của request
+                                      .AllowCredentials()); // Quan trọng nếu frontend gửi kèm Cookies hoặc Authorization headers (ví dụ: Bearer token)
             });
 
             builder.Services.AddAuthentication(options =>
@@ -59,17 +79,35 @@ namespace DrugPreventionSystemBE
 
             var app = builder.Build();
 
-            
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
+            {
+                // Route cho đường dẫn gốc
+                endpoints.MapGet("/", async context =>
+                {
+                    await context.Response.WriteAsync("Server API is running...");
+                });
 
-            app.UseCors("AllowAll");
+                // Các route controller thông thường
+                endpoints.MapControllers();
+            });
+
+            app.UseCors("AllowSpecificOrigin");
 
 
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
+            app.UseSwagger();
+            app.UseSwaggerUI(c => // <--- Cấu hình này đã thay đổi và thêm nhiều dòng
             {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+                // Endpoint cho môi trường LOCAL/Development
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "DrugPreventionSystem API v1 (Local/Current)");
+
+                // Endpoint cho môi trường DEPLOYED/Production trên Azure
+                c.SwaggerEndpoint("https://drugpreventionsystem-bzfxb7cndxdtdjbr.eastasia-01.azurewebsites.net/swagger/v1/swagger.json", "DrugPreventionSystem API v1 (Deployed to Azure)");
+
+                // Nếu bạn muốn Swagger UI làm trang mặc định khi truy cập '/'
+                // c.RoutePrefix = string.Empty;
+            });
 
             app.UseHttpsRedirection();
             app.UseAuthentication();
