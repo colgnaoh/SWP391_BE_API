@@ -14,8 +14,9 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Data
 
             // Khai báo bảng Users
             public DbSet<User> Users { get; set; }
+            public DbSet<CommunityProgram> Programs { get; set; }
+            public DbSet<Course> Courses { get; set; }
 
-        
     }
 
 
