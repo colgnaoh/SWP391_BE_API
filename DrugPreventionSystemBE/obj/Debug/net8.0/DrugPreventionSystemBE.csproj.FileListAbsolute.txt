@@ -352,3 +352,9 @@ D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\bin\Debug\
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\bin\Debug\net8.0\Newtonsoft.Json.dll
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\bin\Debug\net8.0\Sprache.dll
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\Users\locho\Documents\SWP391_BE_API\SWP391_BE_API\DrugPreventionSystemBE\bin\Debug\net8.0\CloudinaryDotNet.dll
+C:\Users\locho\Documents\SWP391_BE_API\SWP391_BE_API\DrugPreventionSystemBE\bin\Debug\net8.0\dotenv.net.dll
+C:\Users\locho\Documents\SWP391_BE_API\SWP391_BE_API\DrugPreventionSystemBE\bin\Debug\net8.0\DotNetEnv.dll
+C:\Users\locho\Documents\SWP391_BE_API\SWP391_BE_API\DrugPreventionSystemBE\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\locho\Documents\SWP391_BE_API\SWP391_BE_API\DrugPreventionSystemBE\bin\Debug\net8.0\Sprache.dll
+C:\Users\locho\Documents\SWP391_BE_API\SWP391_BE_API\DrugPreventionSystemBE\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

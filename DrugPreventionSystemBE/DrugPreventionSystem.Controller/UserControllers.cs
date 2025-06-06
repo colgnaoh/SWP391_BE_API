@@ -1,90 +1,52 @@
-﻿using DrugPreventionSystemBE.DrugPreventionSystem.Data;
-using DrugPreventionSystemBE.DrugPreventionSystem.Enity;
-using Microsoft.AspNetCore.Authorization;
+﻿using DrugPreventionSystemBE.DrugPreventionSystem.Enity;
+using DrugPreventionSystemBE.DrugPreventionSystem.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
+namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
-        private readonly DrugPreventionDbContext _context;
+        private readonly IUserService _userService;
 
-        public UsersController(DrugPreventionDbContext context)
+        public UsersController(IUserService userService)
         {
-            _context = context;
+            _userService = userService;
         }
 
         // GET: api/Users
         [HttpGet]
-        //[Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-            return await _context.Users.ToListAsync();
+            var users = await _userService.GetAllUsersAsync();
+            return Ok(users);
         }
 
         // GET: api/Users/{id}
         [HttpGet("{id}")]
-        //[Authorize(Roles = "Admin")]
         public async Task<ActionResult<User>> GetUser(Guid id)
         {
-            var user = await _context.Users.FindAsync(id);
-
+            var user = await _userService.GetUserByIdAsync(id);
             if (user == null)
             {
                 return NotFound();
             }
 
-            return user;
+            return Ok(user);
         }
 
         // PUT: api/Users/{id}
         [HttpPut("{id}")]
-        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateUser(Guid id, User updatedUser)
         {
-            if (id != updatedUser.Id)
-            {
-                return BadRequest();
-            }
-
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
+            var success = await _userService.UpdateUserAsync(id, updatedUser);
+            if (!success)
             {
                 return NotFound();
-            }
-
-            user.FirstName = updatedUser.FirstName;
-            user.LastName = updatedUser.LastName;
-            user.Email = updatedUser.Email;
-            user.PhoneNumber = updatedUser.PhoneNumber;
-            user.Address = updatedUser.Address;
-            user.Gender = updatedUser.Gender;
-            user.Dob = updatedUser.Dob;
-            user.Role = updatedUser.Role;
-            user.AgeGroup = updatedUser.AgeGroup;
-            user.IsVerified = updatedUser.IsVerified;
-            user.UpdatedAt = DateTime.UtcNow;
-
-            _context.Entry(user).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
             }
 
             return NoContent();
@@ -92,24 +54,15 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
 
         // DELETE: api/Users/{id}
         [HttpDelete("{id}")]
-        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteUser(Guid id)
         {
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
+            var success = await _userService.DeleteUserAsync(id);
+            if (!success)
             {
                 return NotFound();
             }
 
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
-
             return NoContent();
-        }
-
-        private bool UserExists(Guid id)
-        {
-            return _context.Users.Any(e => e.Id == id);
         }
     }
 }
