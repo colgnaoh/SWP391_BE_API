@@ -2,9 +2,10 @@
 {
     public enum Role
     {
-        Admin,
-        Manager,
         Customer,
-        Staff
+        Manager,
+        Staff,
+        Consultant,
+        Admin
     }
 }

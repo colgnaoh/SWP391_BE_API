@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
+using System.ComponentModel.DataAnnotations;
 
 namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView.AuthModel
 {
@@ -17,8 +18,10 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView.AuthModel
         public string Password { get; set; }
 
         [Required]
-        public string PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }     
 
+        [Required]
+        public Role Role { get; set; }
         public string Address { get; set; }
 
         public string Gender { get; set; }

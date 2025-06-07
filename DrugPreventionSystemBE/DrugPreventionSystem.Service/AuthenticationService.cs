@@ -1,33 +1,35 @@
-﻿using DrugPreventionSystemBE.DrugPreventionSystem.Data;
+﻿using System;
+using DrugPreventionSystemBE.DrugPreventionSystem.Data;
 using DrugPreventionSystemBE.DrugPreventionSystem.Enity;
 using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
 using DrugPreventionSystemBE.DrugPreventionSystem.Helpers;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.AuthModel;
+using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using BCrypt.Net;
-using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
 
 
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 {
     public class AuthenticationService : IAuthenticationService
     {
-        public readonly IConfiguration _configuration;
+        private readonly IConfiguration _configuration;
         private readonly IEmailService _emailService;
         private readonly DrugPreventionDbContext _context;
         private readonly IdServices _idServices;
+        //private readonly ValidationHelper _validatorHelper;
 
         public AuthenticationService(
             DrugPreventionDbContext context,
             IEmailService emailService,
             IConfiguration configuration,
-            IdServices idServices)
+            IdServices idServices
+        )
         {
             _context = context;
             _emailService = emailService;
@@ -50,15 +52,32 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             {
                 return new BadRequestObjectResult("Ngày sinh không được lớn hơn ngày hiện tại.");
             }
+            if (!ValidationHelper.IsValidEmail(request.Email))
+            {
+                return new BadRequestObjectResult("Email không đúng định dạng.");
+            }
+            if (!ValidationHelper.IsValidPhoneNumber(request.PhoneNumber))
+            {
+                return new BadRequestObjectResult("Số điện thoại không đúng định dạng.");
+            }
             if (_context.Users.Any(u => u.Email == request.Email))
+            {
                 return new BadRequestObjectResult("Email đã tồn tại.");
+            }
 
+            //if (!System.Enum.TryParse(request.Role, true, out Role parsedRole))
+            //{
+            //    return new BadRequestObjectResult("Vai trò không hợp lệ.");
+            //}
+
+
+            // Gán role
+            var role = request.Role; // string role lưu dưới dạng nvarch trong DB
             var token = Guid.NewGuid().ToString();
             var nextId = _idServices.GenerateNextUserId();
 
             var age = DateTime.UtcNow.Year - request.Dob.Year;
             var ageGroup = AgeGroupHelper.GetAgeGroup(age);
-            var role = Role.Customer; // Mặc định là Cus, có thể thay đổi nếu cần
             var createDate = DateTime.UtcNow;
             var updatedAt = DateTime.UtcNow;
 
@@ -72,7 +91,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 PhoneNumber = request.PhoneNumber,
                 Address = request.Address,
                 Gender = request.Gender,
-                Role = role, // Mặc định là Cus
+                //Role = parsedRole, // Mặc định là Cus
+                Role = Enum.Role.Customer, // Mặc định là Customer
                 Dob = request.Dob, // 
                 AgeGroup = ageGroup,
                 VerificationToken = token,
@@ -381,7 +401,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 }
             });
         }
-
 
     }
 }

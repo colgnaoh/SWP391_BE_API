@@ -11,8 +11,12 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
-
+using Swashbuckle.AspNetCore.SwaggerGen; 
+using System.Linq; 
+using System.Text.Json.Serialization;
 
 namespace DrugPreventionSystemBE
 {
@@ -24,17 +28,28 @@ namespace DrugPreventionSystemBE
 
             // Add services to the container.
             builder.Services.AddDbContext<DrugPreventionDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+                    sqlServerOptionsAction: sqlOptions =>
+                    {
+                        sqlOptions.EnableRetryOnFailure(
+                            maxRetryCount: 5,
+                            maxRetryDelay: TimeSpan.FromSeconds(30),
+                            errorNumbersToAdd: null);
+                    }));
+            builder.Services.AddScoped<DrugPreventionSystem.Service.Interface.IAuthenticationService, DrugPreventionSystemBE.DrugPreventionSystem.Service.AuthenticationService>();
+            builder.Services.AddControllers() 
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                });
 
-            builder.Services.AddScoped<DrugPreventionSystem.Service.Interface.IAuthenticationService, DrugPreventionSystemBE.DrugPreventionSystem.Service.AuthenticationService>(); builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
 
             builder.Services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "DrugPreventionSystem API", Version = "v1" });
 
-                // Chỉ định định nghĩa bảo mật (để có nút Authorize tổng thể)
+                // Định nghĩa bảo mật
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
@@ -45,24 +60,27 @@ namespace DrugPreventionSystemBE
                     Description = "Nhập 'Bearer ' VÀ sau đó là token của bạn vào ô bên dưới.\r\n\r\nVí dụ: 'Bearer 12345abcdef'",
                 });
 
-               // sử dụng thuộc tính[Authorize] trên các Controller / Action Methods mà bạn muốn bảo vệ.
+                // Áp dụng bảo mật cho tất cả endpoint
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme { Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" } },
+                        new string[] {}
+                    }
+                });
+                c.SchemaFilter<EnumSchemaFilter>();
             });
 
             builder.Services.AddScoped<IEmailService, EmailService>();
             builder.Services.AddScoped<IdServices>();
-           
-            Env.Load(); // Load environment variables from .env file
 
+            Env.Load();
 
-
-            builder.Services.AddCors(options =>
+            // Kiểm tra cấu hình Facebook
+            if (string.IsNullOrEmpty(builder.Configuration["Authentication:Facebook:AppId"]) || string.IsNullOrEmpty(builder.Configuration["Authentication:Facebook:AppSecret"]))
             {
-                options.AddPolicy("AllowSpecificOrigin",
-                    builder => builder.WithOrigins("http://localhost:3000", "https://yourfrontenddomain.com") // THAY THẾ "https://yourfrontenddomain.com" bằng domain thực tế của frontend bạn
-                                      .AllowAnyMethod() // Cho phép tất cả các phương thức HTTP (GET, POST, PUT, DELETE, v.v.)
-                                      .AllowAnyHeader()   // Cho phép tất cả các header của request
-                                      .AllowCredentials()); // Quan trọng nếu frontend gửi kèm Cookies hoặc Authorization headers (ví dụ: Bearer token)
-            });
+                throw new InvalidOperationException("Cấu hình Facebook AppId hoặc AppSecret không được định nghĩa.");
+            }
 
             builder.Services.AddAuthentication(options =>
             {
@@ -77,32 +95,65 @@ namespace DrugPreventionSystemBE
             });
 
 
+
+
+
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin",
+                    builder => builder.WithOrigins(
+                                            "http://localhost:3000",
+                                            "https://drugpreventionnow.io.vn",
+                                            "https://drugpreventionsystem-bzfxb7cndxdtdjbr.eastasia-01.azurewebsites.net") // CHỈ URL CHÍNH THỨC CỦA BẠN
+                                        .AllowAnyMethod()
+                                        .AllowAnyHeader()
+                                        .AllowCredentials());
+            });
             var app = builder.Build();
-
-            
-
+            app.UseForwardedHeaders();
 
             app.UseCors("AllowSpecificOrigin");
-
-            app.UseHttpsRedirection();
+            app.UseRouting();
             app.UseAuthentication();
+            app.UseAuthorization();
+            app.UseHttpsRedirection();
+            
             // Configure the HTTP request pipeline.
             app.UseSwagger();
-            app.UseSwaggerUI(c => // <--- Cấu hình này đã thay đổi và thêm nhiều dòng
+            app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "DrugPreventionSystem API v1 (Local/Current)");
                 c.SwaggerEndpoint("https://drugpreventionsystem-bzfxb7cndxdtdjbr.eastasia-01.azurewebsites.net/swagger/v1/swagger.json", "DrugPreventionSystem API v1 (Deployed to Azure)");
+                c.RoutePrefix = string.Empty;
             });
 
+
+           
             app.MapControllers();
             app.MapGet("/", async context =>
             {
                 await context.Response.WriteAsync("Server API is running...");
             });
 
-            app.UseAuthorization();
+            
 
             app.Run();
+        }
+        public class EnumSchemaFilter : ISchemaFilter
+        {
+            public void Apply(OpenApiSchema schema, SchemaFilterContext context)
+            {
+                if (context.Type.IsEnum)
+                {
+                    schema.Type = "string";
+                    schema.Enum = context.Type.GetEnumNames()
+                                        .Select(name => new OpenApiString(name) as IOpenApiAny) //A
+                                        .ToList();
+                    schema.Properties = null;
+                    schema.Format = null;
+                }
+            }
         }
     }
 }
