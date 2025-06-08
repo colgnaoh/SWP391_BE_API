@@ -96,6 +96,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 Dob = request.Dob, // 
                 AgeGroup = ageGroup,
                 VerificationToken = token,
+                ProfilePicUrl = request.ProfilePicUrl, // Lưu URL ảnh đại diện nếu có
                 VerificationTokenExpires = DateTime.UtcNow.AddHours(24), //
                 IsVerified = false,
                 CreatedAt = createDate,
@@ -309,7 +310,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 
             // CẢNH BÁO QUAN TRỌNG: Trong một ứng dụng thực tế, bạn PHẢI băm mật khẩu mới trước khi lưu vào cơ sở dữ liệu.
             // Ví dụ: user.Password = _passwordHasher.HashPassword(request.NewPassword);
-            user.Password = request.NewPassword; // Đây chỉ là ví dụ, KHÔNG AN TOÀN cho sản phẩm thực tế
+            user.Password = BCrypt.Net.BCrypt.HashPassword(request.NewPassword); // Đây chỉ là ví dụ, KHÔNG AN TOÀN cho sản phẩm thực tế
 
             // Xóa token đặt lại mật khẩu sau khi sử dụng để ngăn chặn việc sử dụng lại
             user.PasswordResetToken = null;

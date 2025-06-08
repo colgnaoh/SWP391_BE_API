@@ -28,5 +28,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView.AuthModel
 
         [Required]
         public DateTime Dob { get; set; }
+        public string ProfilePicUrl { get; set; }
     }
 }
