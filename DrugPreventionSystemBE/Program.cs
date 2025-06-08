@@ -101,19 +101,19 @@ namespace DrugPreventionSystemBE
 
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("AllowSpecificOrigin",
-                    builder => builder.WithOrigins(
-                                            "http://localhost:3000",
-                                            "https://drugpreventionnow.io.vn",
-                                            "https://drugpreventionsystem-bzfxb7cndxdtdjbr.eastasia-01.azurewebsites.net") // CHỈ URL CHÍNH THỨC CỦA BẠN
-                                        .AllowAnyMethod()
-                                        .AllowAnyHeader()
-                                        .AllowCredentials());
+                options.AddPolicy("AllowSpecificOrigin", builder =>
+                {
+                    builder.WithOrigins("https://drugpreventionnow.io.vn") // rontend 
+                           .AllowAnyMethod()
+                           .AllowAnyHeader()
+                           .AllowCredentials();
+                });
             });
+
             var app = builder.Build();
             app.UseForwardedHeaders();
 
-            app.UseCors("AllowSpecificOrigin");
+            //app.UseCors("AllowSpecificOrigin");
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();

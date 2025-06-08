@@ -62,7 +62,7 @@
               "RelativeDocumentMoniker": "DrugPreventionSystemBE\\Program.cs",
               "ToolTip": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\Program.cs",
               "RelativeToolTip": "DrugPreventionSystemBE\\Program.cs",
-              "ViewState": "AgIAAGAAAAAAAAAAAAAwwH4AAAC8AAAAAAAAAA==",
+              "ViewState": "AgIAAFkAAAAAAAAAAAAwwHMAAAAxAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-07T08:05:12.434Z",
               "IsPinned": true,
@@ -103,8 +103,7 @@
               "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.Data\\DrugPreventionDbContext.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAABDAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-07T09:15:39.771Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-07T09:15:39.771Z"
             },
             {
               "$type": "Document",
