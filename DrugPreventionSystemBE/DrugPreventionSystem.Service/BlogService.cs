@@ -3,6 +3,7 @@ using DrugPreventionSystemBE.DrugPreventionSystem.Entity;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.BlogReqModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
@@ -46,9 +47,19 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             return new OkObjectResult("Tạo blog thành công.");
         }
 
-        public Task<IActionResult> GetBlogsByPageAsync(int pageNumber, int pageSize)
+        public async Task<IActionResult> GetBlogsByPageAsync(int pageNumber, int pageSize)
         {
-            throw new NotImplementedException();
+            // Đảm bảo pageNumber và pageSize hợp lệ
+            var safePageNumber = pageNumber < 1 ? 1 : pageNumber;
+            var safePageSize = pageSize < 1 ? 12 : pageSize; // Mặc định pageSize là 12 nếu không hợp lệ
+
+            var blogs = await _context.Blogs
+                .OrderBy(c => c.Id)
+                .Skip((safePageNumber - 1) * safePageSize)
+                .Take(safePageSize)
+                .ToListAsync();
+
+            return new OkObjectResult(blogs);
         }
     }
 }
