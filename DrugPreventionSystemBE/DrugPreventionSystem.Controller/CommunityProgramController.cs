@@ -32,6 +32,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
             return Ok(program);
         }
 
+        [HttpPost("{id}")]
         public async Task<ActionResult<CommunityProgram>> CreateCommunityProgramAsync(CommunityProgram program)
         {
             var created = await _programService.CreateCommunityProgramAsync(program);
