@@ -1,4 +1,5 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.Enity;
+using DrugPreventionSystemBE.DrugPreventionSystem.Entity;
 using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
@@ -21,6 +22,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Data
             public DbSet<CommunityProgram> Programs { get; set; }
             public DbSet<Course> Courses { get; set; }
             public DbSet<Category> Categories { get; set; }
+            public DbSet<Blog> Blogs { get; set; }
 
 
 

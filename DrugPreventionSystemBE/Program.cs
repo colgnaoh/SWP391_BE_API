@@ -20,6 +20,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace DrugPreventionSystemBE
 {
@@ -28,7 +29,7 @@ namespace DrugPreventionSystemBE
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
+            builder.Services.AddHttpContextAccessor();
             // Add services to the container.
             builder.Services.AddDbContext<DrugPreventionDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
@@ -77,6 +78,7 @@ namespace DrugPreventionSystemBE
 
             builder.Services.AddScoped<IEmailService, EmailService>();
             builder.Services.AddScoped<IdServices>();
+            builder.Services.AddScoped<IBlogService, BlogService>();
 
             Env.Load();
 
@@ -88,8 +90,8 @@ namespace DrugPreventionSystemBE
 
             builder.Services.AddAuthentication(options =>
             {
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = FacebookDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme; // Đặt DefaultScheme là JWT Bearer
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme; // Đặt DefaultChallengeScheme là JWT Bearer
             })
             .AddCookie()
             .AddFacebook(facebookOptions =>
@@ -118,7 +120,12 @@ namespace DrugPreventionSystemBE
             {
                 options.AddPolicy("AllowSpecificOrigin", builder =>
                 {
-                    builder.WithOrigins("https://drugpreventionnow.io.vn") // rontend 
+                    builder.WithOrigins(
+                        "https://drugpreventionnow.io.vn",
+                        "http://localhost:3000", // Thêm vào nếu bạn test từ localhost
+                        "https://drug-abuse-prevention.vercel.app", // Thêm vào nếu bạn test từ Vercel
+                        "https://drugpreventionsystem-bzfxb7cndxdtdjbr.eastasia-01.azurewebsites.net" // Thêm vào nếu bạn test từ chính miền API của bạn
+                    )
                            .AllowAnyMethod()
                            .AllowAnyHeader()
                            .AllowCredentials();
@@ -128,7 +135,7 @@ namespace DrugPreventionSystemBE
             var app = builder.Build();
             app.UseForwardedHeaders();
 
-            //app.UseCors("AllowSpecificOrigin");
+            app.UseCors("AllowSpecificOrigin");
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();

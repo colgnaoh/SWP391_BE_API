@@ -169,6 +169,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             // Optionally: Generate JWT or session token here
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Secret"]);
+            var issuer = _configuration["Jwt:Issuer"];
+            var audience = _configuration["Jwt:Audience"];
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
@@ -177,7 +179,9 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             new Claim(ClaimTypes.Role, user.Role.ToString())
         }),
                 Expires = DateTime.UtcNow.AddHours(2),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+                Issuer = issuer,     // Đặt Issuer
+                Audience = audience
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
