@@ -14,10 +14,8 @@ public class CourseController : ControllerBase
     }
 
     [HttpGet("view/{pageNumber}")]
-    public async Task<IActionResult> ViewPage(int pageNumber)
+    public async Task<IActionResult> ViewPage(int pageNumber, int pageSize)
     {
-        const int pageSize = 12;
-
         // Nếu số trang nhỏ hơn 1 thì dùng trang 1
         var safePageNumber = pageNumber < 1 ? 1 : pageNumber;
 

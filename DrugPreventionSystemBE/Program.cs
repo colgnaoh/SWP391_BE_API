@@ -4,6 +4,7 @@ using CloudinaryDotNet.Actions;
 using dotenv.net;
 using DotNetEnv;
 using DrugPreventionSystemBE.DrugPreventionSystem.Data;
+using DrugPreventionSystemBE.DrugPreventionSystem.Filter;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
 using Microsoft.AspNetCore.Authentication;
@@ -12,10 +13,12 @@ using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen; 
-using System.Linq; 
+using System.Linq;
+using System.Text;
 using System.Text.Json.Serialization;
 
 namespace DrugPreventionSystemBE
@@ -61,13 +64,14 @@ namespace DrugPreventionSystemBE
                 });
 
                 // Áp dụng bảo mật cho tất cả endpoint
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme { Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" } },
-                        new string[] {}
-                    }
-                });
+                //c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                //{
+                //    {
+                //        new OpenApiSecurityScheme { Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" } },
+                //        new string[] {}
+                //    }
+                //});
+                c.OperationFilter<SecurityRequirementsOperationFilter>();
                 c.SchemaFilter<EnumSchemaFilter>();
             });
 
@@ -92,9 +96,20 @@ namespace DrugPreventionSystemBE
             {
                 facebookOptions.AppId = builder.Configuration["Authentication:Facebook:AppId"];
                 facebookOptions.AppSecret = builder.Configuration["Authentication:Facebook:AppSecret"];
-            });
-
-
+            })
+            .AddJwtBearer(options =>
+             {
+                 options.TokenValidationParameters = new TokenValidationParameters
+                 {
+                     ValidateIssuer = true,
+                     ValidateAudience = true,
+                     ValidateLifetime = true,
+                     ValidateIssuerSigningKey = true,
+                     ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                     ValidAudience = builder.Configuration["Jwt:Audience"],
+                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"]))
+                 };
+             });
 
 
 
