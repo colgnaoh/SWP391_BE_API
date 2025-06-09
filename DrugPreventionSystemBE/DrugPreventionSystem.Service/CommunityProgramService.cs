@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
 {
-    public class PreventionProgramService : ICommunityProgramService
+    public class CommunityProgramService : ICommunityProgramService
     {
         private readonly DrugPreventionDbContext _context;
 
-        public PreventionProgramService(DrugPreventionDbContext context)
+        public CommunityProgramService(DrugPreventionDbContext context)
         {
             _context = context;
         }
@@ -23,7 +23,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
             return await _context.Programs.FindAsync(id);
         }
 
-        public async Task<CommunityProgram> CreateProgramAsync(CommunityProgram program)
+        public async Task<CommunityProgram> CreateCommunityProgramAsync(CommunityProgram program)
         {
             program.Id = Guid.NewGuid();
             _context.Programs.Add(program);
@@ -31,7 +31,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
             return program;
         }
 
-        public async Task<bool> UpdateProgramAsync(Guid id, CommunityProgram updatedProgram)
+        public async Task<bool> UpdateCommunityProgramAsync(Guid id, CommunityProgram updatedProgram)
         {
             var program = await _context.Programs.FindAsync(id);
             if (program == null) return false;
@@ -58,22 +58,37 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
             return true;
         }
 
-        Task<IEnumerable<Program>> ICommunityProgramService.GetAllProgramsAsync()
+        Task<IEnumerable<CommunityProgram>> ICommunityProgramService.GetAllProgramsAsync()
         {
             throw new NotImplementedException();
         }
 
-        Task<Program?> ICommunityProgramService.GetProgramByIdAsync(Guid id)
+        Task<CommunityProgram?> ICommunityProgramService.GetProgramByIdAsync(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Program> CreateProgramAsync(Program program)
+        public Task<CommunityProgram> CreateProgramAsync(Program program)
         {
             throw new NotImplementedException();
         }
 
         public Task<bool> UpdateProgramAsync(Guid id, Program updatedProgram)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<CommunityProgram> CreateCommunityProgramAsync(Program program)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> UpdateCommunityProgramAsync(Guid id, Program updatedProgram)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<CommunityProgram> ICommunityProgramService.CreateCommunityProgramAsync(CommunityProgram program)
         {
             throw new NotImplementedException();
         }
