@@ -1,6 +1,7 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.AuthModel;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Facebook;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -52,13 +53,19 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
             return await _authenticationService.ResetPasswordAsync(request);
         }
 
-        [HttpGet("facebook-login")]
-        public IActionResult FacebookLogin(string? returnUrl = "/")
+        [Authorize]
+        [HttpPost("update-profile")]
+        public async Task<IActionResult> UpdateProfile([FromBody] UserProfileUpdateRequest request)
         {
-            var properties = new AuthenticationProperties { RedirectUri = returnUrl };
-            return Challenge(properties, FacebookDefaults.AuthenticationScheme);
+            return await _authenticationService.UpdateUserProfileAsync(request);
         }
-        //https://your-backend-domain/auth/facebook-login?returnUrl=https://your-frontend-domain
+        //[HttpGet("facebook-login")]
+        //public IActionResult FacebookLogin(string? returnUrl = "/")
+        //{
+        //    var properties = new AuthenticationProperties { RedirectUri = returnUrl };
+        //    return Challenge(properties, FacebookDefaults.AuthenticationScheme);
+        //}
+        ////https://your-backend-domain/auth/facebook-login?returnUrl=https://your-frontend-domain
 
 
 
