@@ -24,8 +24,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
             }
             return await _blogService.CreateBlogAsync(request);
         }
-        [HttpGet("page/{pageNumber}/{pageSize}")]
-        public async Task<IActionResult> GetBlogsByPageAsync(int pageNumber, int pageSize)
+        [HttpGet]
+        public async Task<IActionResult> GetBlogsByPageAsync([FromQuery] int pageNumber, [FromQuery] int pageSize)
         {
             return await _blogService.GetBlogsByPageAsync(pageNumber, pageSize);
         }

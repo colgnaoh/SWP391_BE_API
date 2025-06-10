@@ -1,6 +1,7 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.Data;
 using DrugPreventionSystemBE.DrugPreventionSystem.Entity;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.BlogReqModel;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -59,7 +60,19 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 .Take(safePageSize)
                 .ToListAsync();
 
-            return new OkObjectResult(blogs);
+            return new OkObjectResult(new GetBlogsByPageResponse
+            {
+                Success = true,
+                Data = blogs.Select(b => new BlogResponseModel
+                {
+                    Id = b.Id,
+                    UserId = b.UserId,
+                    Content = b.Content,
+                    BlogImgUrl = b.BlogImgUrl,
+                    CreatedAt = b.CreatedAt,
+                    UpdatedAt = b.UpdatedAt
+                }).ToList()
+            });
         }
     }
 }
