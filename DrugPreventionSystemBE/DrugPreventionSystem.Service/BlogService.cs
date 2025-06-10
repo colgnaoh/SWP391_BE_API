@@ -48,13 +48,20 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             return new OkObjectResult("Tạo blog thành công.");
         }
 
-        public async Task<IActionResult> GetBlogsByPageAsync(int pageNumber, int pageSize)
+        public async Task<IActionResult> GetBlogsByPageAsync(int pageNumber, int pageSize, string? filterByContent)
         {
             // Đảm bảo pageNumber và pageSize hợp lệ
             var safePageNumber = pageNumber < 1 ? 1 : pageNumber;
             var safePageSize = pageSize < 1 ? 12 : pageSize; // Mặc định pageSize là 12 nếu không hợp lệ
 
-            var blogs = await _context.Blogs
+            var query = _context.Blogs.AsQueryable();
+
+            if (!string.IsNullOrEmpty(filterByContent))
+            {
+                query = query.Where(b => b.Content != null && EF.Functions.Like(b.Content, $"%{filterByContent}%"));
+            }
+
+            var blogs = await query
                 .OrderBy(c => c.Id)
                 .Skip((safePageNumber - 1) * safePageSize)
                 .Take(safePageSize)
