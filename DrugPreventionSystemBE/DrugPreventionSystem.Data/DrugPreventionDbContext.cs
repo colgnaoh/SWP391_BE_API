@@ -39,6 +39,9 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Data
             modelBuilder.Entity<User>()
                .Property(u => u.AgeGroup)
                .HasConversion(new EnumToStringConverter<AgeGroup>());
+
+            // Global filter: exclude soft-deleted users
+            modelBuilder.Entity<User>().HasQueryFilter(u => !u.IsDeleted);
         }
 
 

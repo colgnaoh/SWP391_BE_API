@@ -61,16 +61,15 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
         }
 
         // DELETE: api/Users/{id}
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(Guid id)
+        [HttpPost("delete/{id}")]
+        public async Task<IActionResult> SoftDeleteUser(Guid id)
         {
             var success = await _userService.DeleteUserAsync(id);
             if (!success)
-            {
                 return NotFound();
-            }
 
-            return NoContent();
+            return Ok(new { message = "User soft-deleted successfully." });
         }
+
     }
 }
