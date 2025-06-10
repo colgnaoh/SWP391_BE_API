@@ -79,6 +79,7 @@ namespace DrugPreventionSystemBE
             builder.Services.AddScoped<IEmailService, EmailService>();
             builder.Services.AddScoped<IdServices>();
             builder.Services.AddScoped<IBlogService, BlogService>();
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
 
             Env.Load();
 

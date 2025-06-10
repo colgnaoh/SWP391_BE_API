@@ -13,11 +13,14 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
     {
         private readonly DrugPreventionDbContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IdServices _idServices;
 
-        public BlogService(DrugPreventionDbContext context, IHttpContextAccessor httpContextAccessor)
+
+        public BlogService(DrugPreventionDbContext context, IHttpContextAccessor httpContextAccessor, IdServices idServices)
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
+            _idServices = idServices;
         }
 
         public async Task<IActionResult> CreateBlogAsync(CreateBlogRequest request)
@@ -33,8 +36,10 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             {
                 return new BadRequestObjectResult("Không tìm thấy ID người dùng.");
             }
+            var nextId = _idServices.GenerateNextId();
             var newBlog = new Blog
             {
+                Id = nextId, // Sử dụng ID được tạo từ IdServices
                 UserId = userId, // Gán UserId đã lấy từ token
                 Content = request.Content,
                 BlogImgUrl = request.BlogImgUrl,

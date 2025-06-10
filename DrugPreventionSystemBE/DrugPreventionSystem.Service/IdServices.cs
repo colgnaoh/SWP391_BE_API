@@ -14,7 +14,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             _context = context;
         }
 
-        public Guid GenerateNextUserId()
+        public Guid GenerateNextId()
         {
             return Guid.NewGuid();
         }

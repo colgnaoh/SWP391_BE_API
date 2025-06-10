@@ -4,6 +4,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Enity
 {
     public class Category : BaseEnity
     {
-        public String Name { get; set; }
+        public String? Name { get; set; }
     }
 }

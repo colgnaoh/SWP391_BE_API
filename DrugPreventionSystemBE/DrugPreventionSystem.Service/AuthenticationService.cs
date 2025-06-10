@@ -78,7 +78,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             // Gán role
             var role = request.Role; // string role lưu dưới dạng nvarch trong DB
             var token = Guid.NewGuid().ToString();
-            var nextId = _idServices.GenerateNextUserId();
+            var nextId = _idServices.GenerateNextId();
 
             var age = DateTime.UtcNow.Year - request.Dob.Year;
             var ageGroup = AgeGroupHelper.GetAgeGroup(age);
@@ -353,7 +353,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             if (user == null)
             {
                 // Nếu chưa có tài khoản, tạo mới user từ thông tin Facebook
-                var nextId = _idServices.GenerateNextUserId();
+                var nextId = _idServices.GenerateNextId();
 
                 var nameParts = (externalInfo.FullName ?? "").Split(" ", StringSplitOptions.RemoveEmptyEntries);
                 var firstName = nameParts.Length > 1 ? nameParts[0] : externalInfo.FullName;
