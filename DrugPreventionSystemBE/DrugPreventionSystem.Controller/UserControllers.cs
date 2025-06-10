@@ -1,4 +1,5 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.Enity;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.UserSearchModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -37,6 +38,13 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
             }
 
             return Ok(user);
+        }
+
+        [HttpPost("search")]
+        public async Task<ActionResult<IEnumerable<User>>> SearchUsers([FromBody] UserSearchModel search)
+        {
+            var users = await _userService.SearchUsersAsync(search);
+            return Ok(users);
         }
 
         // PUT: api/Users/{id}

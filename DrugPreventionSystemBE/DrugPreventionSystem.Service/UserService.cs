@@ -1,5 +1,6 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.Data;
 using DrugPreventionSystemBE.DrugPreventionSystem.Enity;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.UserSearchModel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -77,6 +78,11 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
         public bool UserExists(Guid id)
         {
             return _context.Users.Any(u => u.Id == id);
+        }
+
+        public Task<IEnumerable<User>> SearchUsersAsync(UserSearchModel search)
+        {
+            throw new NotImplementedException();
         }
     }
 }
