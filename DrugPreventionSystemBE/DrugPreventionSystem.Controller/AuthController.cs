@@ -54,7 +54,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
         }
 
         [Authorize]
-        [HttpPost("update-profile")]
+        [HttpPut("update-profile")]
         public async Task<IActionResult> UpdateProfile([FromBody] UserProfileUpdateRequest request)
         {
             return await _authenticationService.UpdateUserProfileAsync(request);

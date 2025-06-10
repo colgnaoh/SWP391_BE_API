@@ -21,6 +21,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using DrugPreventionSystemBE.DrugPreventionSystem.Services;
 
 namespace DrugPreventionSystemBE
 {
@@ -80,6 +81,7 @@ namespace DrugPreventionSystemBE
             builder.Services.AddScoped<IdServices>();
             builder.Services.AddScoped<IBlogService, BlogService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
+            builder.Services.AddScoped<IUserService, UserService>();
 
             Env.Load();
 
