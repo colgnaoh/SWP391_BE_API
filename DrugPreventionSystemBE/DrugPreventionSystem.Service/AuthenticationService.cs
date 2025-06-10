@@ -203,7 +203,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     Email = user.Email,
                     Gender = user.Gender,
                     Dob = user.Dob,
-                    PhoneNumber = user.PhoneNumber
+                    PhoneNumber = user.PhoneNumber,
+                    ProfilePicUrl = user.ProfilePicUrl 
                 }
             });
         }
