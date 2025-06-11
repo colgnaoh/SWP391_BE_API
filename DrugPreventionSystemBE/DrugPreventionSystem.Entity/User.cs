@@ -1,5 +1,6 @@
 
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.Core;
+using DrugPreventionSystemBE.DrugPreventionSystem.Entity;
 using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
 
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Enity
@@ -29,5 +30,17 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Enity
         {
             IsVerified = false; // mặc định là chưa xác thực
         }
+
+        public ICollection<Blog> Blogs { get; set; } = new List<Blog>();
+        public ICollection<Cart> Carts { get; set; } = new List<Cart>();
+        public ICollection<Course> CreatedCourses { get; set; } = new List<Course>();
+        public ICollection<Lesson> CreatedLessons { get; set; } = new List<Lesson>();
+        public ICollection<Payment> Payments { get; set; } = new List<Payment>();
+        public ICollection<Review> Reviews { get; set; } = new List<Review>();
+        public ICollection<Session> CreatedSessions { get; set; } = new List<Session>();
+        public ICollection<SurveyResult> SurveyResults { get; set; } = new List<SurveyResult>();
+        public ICollection<Consultants> ConsultantProfiles { get; set; } = new List<Consultants>();
+        public ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
+
     }
 }

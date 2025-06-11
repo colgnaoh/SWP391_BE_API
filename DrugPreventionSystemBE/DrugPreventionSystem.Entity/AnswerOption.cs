@@ -1,18 +1,18 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DrugPreventionSystemBE.DrugPreventionSystem.Core;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-public class AnswerOption
+public class AnswerOption : BaseEnity
 {
-    [Key]
-    public Guid Id { get; set; }
+    public Guid? QuestionId { get; set; }
+    public Question? Question { get; set; }
 
-    public Guid QuestionId { get; set; }
-    public Question Question { get; set; }
+    public string? OptionContent { get; set; }
 
-    [Column(TypeName = "nvarchar(max)")]
-    public string OptionContent { get; set; }
+    public int? Score { get; set; }
 
-    public int Score { get; set; }
+    public int? PositionOrder { get; set; }
 
-    public int PositionOrder { get; set; }
+    public ICollection<UserAnswerLog> UserAnswerLogs { get; set; } = new List<UserAnswerLog>();
+
 }

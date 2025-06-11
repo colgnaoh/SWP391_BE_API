@@ -9,19 +9,19 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Entity
 {
     public class Payment : BaseEnity
     {
-        public String PaymentNo { get; set; }
-        public paymentStatus Status { get; set; }
+        public string? PaymentNo { get; set; }
+        public paymentStatus? Status { get; set; }
         //foreign key to user
-        public Guid UserId { get; set; }
-        public User User { get; set; }
+        public Guid? UserId { get; set; }
+        public User? User { get; set; }
 
         [Column(TypeName = "decimal(10,2)")]
-        public decimal Amount { get; set; }
-        public paymentMethod PaymentMethod { get; set; }
+        public decimal? Amount { get; set; }
+        public paymentMethod? PaymentMethod { get; set; }
         [Column(TypeName = "decimal(10,2)")]
-        public decimal OrganizationShare { get; set; }
+        public decimal? OrganizationShare { get; set; }
         [Column(TypeName = "decimal(10,2)")]
-        public decimal ConsultantShare { get; set; }
+        public decimal? ConsultantShare { get; set; }
         public ICollection<Transaction> Transactions { get; set; }
     }
 }

@@ -78,7 +78,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 Data = blogs.Select(b => new BlogResponseModel
                 {
                     Id = b.Id,
-                    UserId = b.UserId,
+                    UserId = (Guid)b.UserId,
                     Content = b.Content,
                     BlogImgUrl = b.BlogImgUrl,
                     CreatedAt = b.CreatedAt,

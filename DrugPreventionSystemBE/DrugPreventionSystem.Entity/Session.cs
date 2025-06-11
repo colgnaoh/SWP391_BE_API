@@ -5,12 +5,13 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Enity
     public class Session : BaseEnity
     {
         public Guid CourseId { get; set; }
-        public String Name { get; set; }
-        public Guid UserId { get; set; }
-        public String Slug { get; set; }
-        public String Content { get; set; }
-        public int PositionOrder { get; set; }
-        public Course Course { get; set; }
+        public string? Name { get; set; }
+        public Guid? UserId { get; set; }
+        public User? User { get; set; } // Assuming a User model exists
+        public string? Slug { get; set; }
+        public string? Content { get; set; }
+        public string? PositionOrder { get; set; }
         public ICollection<Lesson> Lessons { get; set; }
+        public Course? Course { get; set; }
     }
 }
