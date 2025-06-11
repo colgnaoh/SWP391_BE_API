@@ -53,10 +53,13 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
             var program = await _context.Programs.FindAsync(id);
             if (program == null) return false;
 
-            _context.Programs.Remove(program);
+            program.IsDeleted = true; //Soft delete
+            _context.Programs.Update(program);
+
             await _context.SaveChangesAsync();
             return true;
         }
+
 
         Task<IEnumerable<CommunityProgram>> ICommunityProgramService.GetAllProgramsAsync()
         {
