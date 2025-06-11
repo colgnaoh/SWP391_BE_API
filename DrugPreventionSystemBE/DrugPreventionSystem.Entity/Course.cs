@@ -1,4 +1,5 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.Core;
+using DrugPreventionSystemBE.DrugPreventionSystem.Entity;
 using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
 
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Enity
@@ -15,5 +16,9 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Enity
         public decimal Price { get; set; }
         public decimal Discount { get; set; }
         public string slug { get; set; }
+
+        public ICollection<Session> Sessions { get; set; }
+        public ICollection<Review> Reviews { get; set; }
+        public ICollection<Cart> Carts { get; set; }
     }
 }

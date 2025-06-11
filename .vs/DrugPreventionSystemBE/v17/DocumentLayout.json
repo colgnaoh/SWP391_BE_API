@@ -3,28 +3,28 @@
   "WorkspaceRootPath": "C:\\Users\\locho\\Documents\\SWP391_BE_API\\SWP391_BE_API\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|c:\\users\\locho\\documents\\swp391_be_api\\swp391_be_api\\drugpreventionsystembe\\drugpreventionsystem.enum\\questiontype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\drugpreventionsystem.enum\\questiontype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|c:\\users\\locho\\documents\\swp391_be_api\\swp391_be_api\\drugpreventionsystembe\\drugpreventionsystem.enum\\servicetype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\drugpreventionsystem.enum\\servicetype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|c:\\users\\locho\\documents\\swp391_be_api\\swp391_be_api\\drugpreventionsystembe\\drugpreventionsystem.entity\\useranswerlog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\drugpreventionsystem.entity\\useranswerlog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|c:\\users\\locho\\documents\\swp391_be_api\\swp391_be_api\\drugpreventionsystembe\\drugpreventionsystem.enum\\transactionstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\drugpreventionsystem.enum\\transactionstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|c:\\users\\locho\\documents\\swp391_be_api\\swp391_be_api\\drugpreventionsystembe\\drugpreventionsystem.entity\\answeroption.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\drugpreventionsystem.entity\\answeroption.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|c:\\users\\locho\\documents\\swp391_be_api\\swp391_be_api\\drugpreventionsystembe\\drugpreventionsystem.entity\\orderdetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\drugpreventionsystem.entity\\orderdetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|c:\\users\\locho\\documents\\swp391_be_api\\swp391_be_api\\drugpreventionsystembe\\drugpreventionsystem.entity\\question.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\drugpreventionsystem.entity\\question.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|c:\\users\\locho\\documents\\swp391_be_api\\swp391_be_api\\drugpreventionsystembe\\drugpreventionsystem.entity\\payment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\drugpreventionsystem.entity\\payment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|c:\\users\\locho\\documents\\swp391_be_api\\swp391_be_api\\drugpreventionsystembe\\drugpreventionsystem.entity\\surveyresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\drugpreventionsystem.entity\\surveyresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|c:\\users\\locho\\documents\\swp391_be_api\\swp391_be_api\\drugpreventionsystembe\\drugpreventionsystem.entity\\transaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\drugpreventionsystem.entity\\transaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|c:\\users\\locho\\documents\\swp391_be_api\\swp391_be_api\\drugpreventionsystembe\\drugpreventionsystem.entity\\survey.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\drugpreventionsystem.entity\\survey.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|c:\\users\\locho\\documents\\swp391_be_api\\swp391_be_api\\drugpreventionsystembe\\drugpreventionsystem.data\\drugpreventiondbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\drugpreventionsystem.data\\drugpreventiondbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,73 +34,8 @@
       "DocumentGroups": [
         {
           "DockedHeight": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 6,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "QuestionType.cs",
-              "DocumentMoniker": "C:\\Users\\locho\\Documents\\SWP391_BE_API\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Enum\\QuestionType.cs",
-              "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.Enum\\QuestionType.cs",
-              "ToolTip": "C:\\Users\\locho\\Documents\\SWP391_BE_API\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Enum\\QuestionType.cs",
-              "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.Enum\\QuestionType.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-11T09:23:06.877Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "UserAnswerLog.cs",
-              "DocumentMoniker": "C:\\Users\\locho\\Documents\\SWP391_BE_API\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\UserAnswerLog.cs",
-              "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\UserAnswerLog.cs",
-              "ToolTip": "C:\\Users\\locho\\Documents\\SWP391_BE_API\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\UserAnswerLog.cs",
-              "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\UserAnswerLog.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABkAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-11T09:19:55.919Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "AnswerOption.cs",
-              "DocumentMoniker": "C:\\Users\\locho\\Documents\\SWP391_BE_API\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\AnswerOption.cs",
-              "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\AnswerOption.cs",
-              "ToolTip": "C:\\Users\\locho\\Documents\\SWP391_BE_API\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\AnswerOption.cs",
-              "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\AnswerOption.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-11T09:18:42.579Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Question.cs",
-              "DocumentMoniker": "C:\\Users\\locho\\Documents\\SWP391_BE_API\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\Question.cs",
-              "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\Question.cs",
-              "ToolTip": "C:\\Users\\locho\\Documents\\SWP391_BE_API\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\Question.cs",
-              "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\Question.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAoAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-11T09:17:49.475Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Survey.cs",
-              "DocumentMoniker": "C:\\Users\\locho\\Documents\\SWP391_BE_API\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\Survey.cs",
-              "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\Survey.cs",
-              "ToolTip": "C:\\Users\\locho\\Documents\\SWP391_BE_API\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\Survey.cs",
-              "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\Survey.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-11T09:05:56.828Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
@@ -111,15 +46,80 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "SurveyResult.cs",
-              "DocumentMoniker": "C:\\Users\\locho\\Documents\\SWP391_BE_API\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\SurveyResult.cs",
-              "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\SurveyResult.cs",
-              "ToolTip": "C:\\Users\\locho\\Documents\\SWP391_BE_API\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\SurveyResult.cs",
-              "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\SurveyResult.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAxAAAAAAAAAA==",
+              "DocumentIndex": 5,
+              "Title": "DrugPreventionDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\locho\\Documents\\SWP391_BE_API\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Data\\DrugPreventionDbContext.cs",
+              "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.Data\\DrugPreventionDbContext.cs",
+              "ToolTip": "C:\\Users\\locho\\Documents\\SWP391_BE_API\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Data\\DrugPreventionDbContext.cs",
+              "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.Data\\DrugPreventionDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFoAAAAPAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-11T09:04:29.093Z",
+              "WhenOpened": "2025-06-11T10:07:33.179Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Transaction.cs",
+              "DocumentMoniker": "C:\\Users\\locho\\Documents\\SWP391_BE_API\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\Transaction.cs",
+              "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\Transaction.cs",
+              "ToolTip": "C:\\Users\\locho\\Documents\\SWP391_BE_API\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\Transaction.cs",
+              "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\Transaction.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-11T10:06:04.14Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Payment.cs",
+              "DocumentMoniker": "C:\\Users\\locho\\Documents\\SWP391_BE_API\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\Payment.cs",
+              "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\Payment.cs",
+              "ToolTip": "C:\\Users\\locho\\Documents\\SWP391_BE_API\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\Payment.cs",
+              "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\Payment.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAA9wBcAAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-11T09:58:09.833Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "OrderDetail.cs",
+              "DocumentMoniker": "C:\\Users\\locho\\Documents\\SWP391_BE_API\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\OrderDetail.cs",
+              "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\OrderDetail.cs",
+              "ToolTip": "C:\\Users\\locho\\Documents\\SWP391_BE_API\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\OrderDetail.cs",
+              "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\OrderDetail.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-11T09:57:17.978Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ServiceType.cs",
+              "DocumentMoniker": "C:\\Users\\locho\\Documents\\SWP391_BE_API\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Enum\\ServiceType.cs",
+              "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.Enum\\ServiceType.cs",
+              "ToolTip": "C:\\Users\\locho\\Documents\\SWP391_BE_API\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Enum\\ServiceType.cs",
+              "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.Enum\\ServiceType.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-11T09:56:48.871Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "TransactionStatus.cs",
+              "DocumentMoniker": "C:\\Users\\locho\\Documents\\SWP391_BE_API\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Enum\\TransactionStatus.cs",
+              "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.Enum\\TransactionStatus.cs",
+              "ToolTip": "C:\\Users\\locho\\Documents\\SWP391_BE_API\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Enum\\TransactionStatus.cs",
+              "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.Enum\\TransactionStatus.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-11T09:56:03.486Z",
               "EditorCaption": ""
             }
           ]
