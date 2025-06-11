@@ -48,7 +48,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
+        [HttpPost("delete/{id}")]
         public async Task<IActionResult> DeleteProgram(Guid id)
         {
             var result = await _programService.DeleteProgramAsync(id);
