@@ -53,12 +53,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
             return await _authenticationService.ResetPasswordAsync(request);
         }
 
-        [Authorize]
-        [HttpPut("update-profile")]
-        public async Task<IActionResult> UpdateProfile([FromBody] UserProfileUpdateRequest request)
-        {
-            return await _authenticationService.UpdateUserProfileAsync(request);
-        }
+        
         //[HttpGet("facebook-login")]
         //public IActionResult FacebookLogin(string? returnUrl = "/")
         //{

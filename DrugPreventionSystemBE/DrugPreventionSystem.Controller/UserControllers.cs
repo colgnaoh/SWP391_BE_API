@@ -1,4 +1,5 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.Enity;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.AuthModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.UserSearchModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -50,16 +51,11 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
         }
 
         // PUT: api/Users/{id}
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(Guid id, User updatedUser)
+        [Authorize]
+        [HttpPut("update-profile")]
+        public async Task<IActionResult> UpdateProfile([FromBody] UserProfileUpdateRequest request)
         {
-            var success = await _userService.UpdateUserAsync(id, updatedUser);
-            if (!success)
-            {
-                return NotFound();
-            }
-
-            return NoContent();
+            return await _userService.UpdateUserProfileAsync(request);
         }
 
         // DELETE: api/Users/{id}

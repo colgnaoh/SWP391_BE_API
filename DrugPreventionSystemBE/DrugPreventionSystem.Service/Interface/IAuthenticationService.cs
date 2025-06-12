@@ -13,7 +13,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface
         Task<IActionResult> RequestPasswordResetAsync(string email);
         Task<IActionResult> ResetPasswordAsync(ResetPasswordRequest request);
         Task<IActionResult> LoginWithFacebookAsync(ExternalLoginInfoModel externalInfo);
-        Task<IActionResult> UpdateUserProfileAsync(UserProfileUpdateRequest request);
         Task<IActionResult> ChangePasswordAsync(string userId, ChangePasswordRequest request);
 
     }

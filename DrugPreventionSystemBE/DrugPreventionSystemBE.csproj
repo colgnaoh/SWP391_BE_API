@@ -37,4 +37,223 @@
     <Folder Include="DrugPreventionSystem.Repositories\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Properties\PublishProfiles - Copy %282%29\drugpreventionsystem - FTP - Copy - Copy.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy %282%29\drugpreventionsystem - FTP - Copy.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy %282%29\drugpreventionsystem - Zip Deploy - Copy - Copy.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy %282%29\drugpreventionsystem - Zip Deploy - Copy.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy %282%29\drugpreventionsystem - Zip Deploy1 - Copy - Copy.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy %282%29\drugpreventionsystem - Zip Deploy1 - Copy.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy %282%29\drugpreventionsystem - Zip Deploy10 - Copy.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy %282%29\drugpreventionsystem - Zip Deploy10.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy %282%29\drugpreventionsystem - Zip Deploy11 - Copy.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy %282%29\drugpreventionsystem - Zip Deploy12 - Copy.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy %282%29\drugpreventionsystem - Zip Deploy13 - Copy.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy %282%29\drugpreventionsystem - Zip Deploy14.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy %282%29\drugpreventionsystem - Zip Deploy2.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy %282%29\drugpreventionsystem - Zip Deploy3.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy %282%29\drugpreventionsystem - Zip Deploy4.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy %282%29\drugpreventionsystem - Zip Deploy5.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy %282%29\drugpreventionsystem - Zip Deploy6.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy %282%29\drugpreventionsystem - Zip Deploy7.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy %282%29\drugpreventionsystem - Zip Deploy8.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy %282%29\drugpreventionsystem - Zip Deploy9.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy %282%29\PublishProfiles - Copy\drugpreventionsystem - FTP - Copy.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy %282%29\PublishProfiles - Copy\drugpreventionsystem - Zip Deploy - Copy.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy %282%29\PublishProfiles - Copy\drugpreventionsystem - Zip Deploy1 - Copy.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy %282%29\PublishProfiles - Copy\drugpreventionsystem - Zip Deploy10 - Copy.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy %282%29\PublishProfiles - Copy\drugpreventionsystem - Zip Deploy10.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy %282%29\PublishProfiles - Copy\drugpreventionsystem - Zip Deploy11 - Copy.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy %282%29\PublishProfiles - Copy\drugpreventionsystem - Zip Deploy12 - Copy.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy %282%29\PublishProfiles - Copy\drugpreventionsystem - Zip Deploy13 - Copy.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy %282%29\PublishProfiles - Copy\drugpreventionsystem - Zip Deploy14.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy %282%29\PublishProfiles - Copy\drugpreventionsystem - Zip Deploy2.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy %282%29\PublishProfiles - Copy\drugpreventionsystem - Zip Deploy3.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy %282%29\PublishProfiles - Copy\drugpreventionsystem - Zip Deploy4.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy %282%29\PublishProfiles - Copy\drugpreventionsystem - Zip Deploy5.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy %282%29\PublishProfiles - Copy\drugpreventionsystem - Zip Deploy6.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy %282%29\PublishProfiles - Copy\drugpreventionsystem - Zip Deploy7.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy %282%29\PublishProfiles - Copy\drugpreventionsystem - Zip Deploy8.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy %282%29\PublishProfiles - Copy\drugpreventionsystem - Zip Deploy9.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy\drugpreventionsystem - FTP - Copy.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy\drugpreventionsystem - Zip Deploy - Copy.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy\drugpreventionsystem - Zip Deploy1 - Copy.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy\drugpreventionsystem - Zip Deploy10 - Copy.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy\drugpreventionsystem - Zip Deploy10.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy\drugpreventionsystem - Zip Deploy11 - Copy.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy\drugpreventionsystem - Zip Deploy12 - Copy.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy\drugpreventionsystem - Zip Deploy13 - Copy.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy\drugpreventionsystem - Zip Deploy14.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy\drugpreventionsystem - Zip Deploy2.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy\drugpreventionsystem - Zip Deploy3.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy\drugpreventionsystem - Zip Deploy4.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy\drugpreventionsystem - Zip Deploy5.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy\drugpreventionsystem - Zip Deploy6.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy\drugpreventionsystem - Zip Deploy7.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy\drugpreventionsystem - Zip Deploy8.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="Properties\PublishProfiles - Copy\drugpreventionsystem - Zip Deploy9.pubxml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -17,7 +17,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Enity
         public string? ImageUrl { get; set; }
         public decimal? Price { get; set; }
         public decimal? Discount { get; set; }
-        public string? slug { get; set; }
+        public string? Slug { get; set; }
 
         public ICollection<Session> Sessions { get; set; }
         public ICollection<Review> Reviews { get; set; }

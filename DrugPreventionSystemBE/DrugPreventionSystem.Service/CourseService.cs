@@ -1,6 +1,7 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.Data;
 using DrugPreventionSystemBE.DrugPreventionSystem.Enity;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CourseReqModel;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -24,19 +25,43 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             _configuration = configuration;
         }
 
-        public async Task<IActionResult> GetCoursesByPageAsync(int pageNumber, int pageSize)
+        public async Task<IActionResult> GetCoursesByPageAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string? filterByName)
         {
             // Đảm bảo pageNumber và pageSize hợp lệ
             var safePageNumber = pageNumber < 1 ? 1 : pageNumber;
             var safePageSize = pageSize < 1 ? 12 : pageSize; // Mặc định pageSize là 12 nếu không hợp lệ
 
-            var courses = await _context.Courses
+            var query = _context.Courses.AsQueryable();
+
+            if (!string.IsNullOrEmpty(filterByName))
+            {
+                query = query.Where(b => b.Name != null && EF.Functions.Like(b.Name, $"%{filterByName}%"));
+            }
+
+            var courses = await query
                 .OrderBy(c => c.Id)
                 .Skip((safePageNumber - 1) * safePageSize)
                 .Take(safePageSize)
                 .ToListAsync();
 
-            return new OkObjectResult(courses);
+            return new OkObjectResult(new GetCoursesByPageResponse
+            {
+                Success = true,
+                Data = courses.Select(b => new CourseResponseModel
+                {
+                    Id = b.Id,
+                    UserId = (Guid)b.UserId,
+                    CategoryId = b.CategoryId,
+                    Name = b.Name,
+                    Content = b.Content,
+                    Status = b.Status,
+                    TargetAudience = b.TargetAudience,
+                    ImageUrl = b.ImageUrl,
+                    Price = b.Price,
+                    Discount = b.Discount,
+                    Slug = b.Slug
+                }).ToList()
+            });
         }
         public Task<IActionResult> GetCourseByIdAsync(int courseId)
         {

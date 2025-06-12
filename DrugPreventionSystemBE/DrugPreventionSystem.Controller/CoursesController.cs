@@ -13,13 +13,13 @@ public class CourseController : ControllerBase
         _courseService = courseService;
     }
 
-    [HttpGet("view/{pageNumber}")]
-    public async Task<IActionResult> ViewPage(int pageNumber, int pageSize)
+    [HttpGet]
+    public async Task<IActionResult> GetCoursesByPageAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string? filterByName)
     {
         // Nếu số trang nhỏ hơn 1 thì dùng trang 1
         var safePageNumber = pageNumber < 1 ? 1 : pageNumber;
 
-        var users = await _courseService.GetCoursesByPageAsync(safePageNumber, pageSize);
+        var users = await _courseService.GetCoursesByPageAsync(safePageNumber, pageSize, filterByName);
         return Ok(users);
     }
 
