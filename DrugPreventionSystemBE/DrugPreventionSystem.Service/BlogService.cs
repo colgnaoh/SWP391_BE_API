@@ -86,5 +86,117 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 }).ToList()
             });
         }
+
+        public async Task<IActionResult> GetBlogByIdAsync(Guid blogId)
+        {
+            var blog = await _context.Blogs
+                .Where(b => b.Id == blogId && !b.IsDeleted)
+                .FirstOrDefaultAsync();
+
+            if (blog == null)
+            {
+                return new NotFoundObjectResult("Không tìm thấy blog.");
+            }
+
+            var blogResponse = new BlogResponseModel
+            {
+                Id = blog.Id,
+                UserId = (Guid)blog.UserId,
+                Content = blog.Content,
+                BlogImgUrl = blog.BlogImgUrl,
+                CreatedAt = blog.CreatedAt,
+                UpdatedAt = blog.UpdatedAt
+            };
+
+            return new OkObjectResult(new SingleBlogResponse
+            {
+                Success = true,
+                Data = blogResponse
+            });
+        }
+
+        public async Task<IActionResult> GetBlogsByUserAsync(Guid userId, int pageNumber = 1, int pageSize = 12)
+        {
+            var safePageNumber = pageNumber < 1 ? 1 : pageNumber;
+            var safePageSize = pageSize < 1 ? 12 : pageSize;
+
+            var query = _context.Blogs
+                .Where(b => b.UserId == userId && !b.IsDeleted);
+
+            var totalCount = await query.CountAsync();
+            var blogs = await query
+                .OrderByDescending(b => b.CreatedAt)
+                .Skip((safePageNumber - 1) * safePageSize)
+                .Take(safePageSize)
+                .ToListAsync();
+
+            return new OkObjectResult(new GetBlogsByPageResponse
+            {
+                Success = true,
+                Data = blogs.Select(b => new BlogResponseModel
+                {
+                    Id = b.Id,
+                    UserId = (Guid)b.UserId,
+                    Content = b.Content,
+                    BlogImgUrl = b.BlogImgUrl,
+                    CreatedAt = b.CreatedAt,
+                    UpdatedAt = b.UpdatedAt
+                }).ToList(),
+                TotalCount = totalCount,
+                PageNumber = safePageNumber,
+                PageSize = safePageSize,
+                TotalPages = (int)Math.Ceiling((double)totalCount / safePageSize)
+            });
+        }
+
+        public async Task<IActionResult> UpdateBlogAsync(Guid blogId, UpdateBlogRequest request)
+        {
+            var userPrincipal = _httpContextAccessor.HttpContext?.User;
+            if (userPrincipal == null)
+            {
+                return new UnauthorizedResult();
+            }
+
+            var userIdClaim = userPrincipal.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null || !Guid.TryParse(userIdClaim.Value, out Guid userId))
+            {
+                return new BadRequestObjectResult("Không tìm thấy ID người dùng.");
+            }
+
+            var blog = await _context.Blogs.FindAsync(blogId);
+            if (blog == null || blog.IsDeleted)
+            {
+                return new NotFoundObjectResult("Không tìm thấy blog.");
+            }
+
+            // Check if user owns the blog
+            if (blog.UserId != userId)
+            {
+                return new ForbidResult();
+            }
+
+            // Update fields
+            blog.Content = request.Content;
+            blog.BlogImgUrl = request.BlogImgUrl;
+            blog.UpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+            return new OkObjectResult("Cập nhật blog thành công.");
+        }
+        public async Task<IActionResult> SoftDeleteBlogAsync(Guid blogId)
+        {
+            var blog = await _context.Blogs.FindAsync(blogId);
+            if (blog == null || blog.IsDeleted)
+            {
+                return new NotFoundResult();
+            }
+
+            blog.IsDeleted = true;
+            blog.UpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+            return new OkObjectResult("Blog soft-deleted successfully.");
+        }
+
     }
 }

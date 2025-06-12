@@ -24,10 +24,45 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
             }
             return await _blogService.CreateBlogAsync(request);
         }
+
         [HttpGet]
         public async Task<IActionResult> GetBlogsByPageAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string? filterByContent)
         {
             return await _blogService.GetBlogsByPageAsync(pageNumber, pageSize, filterByContent);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetBlogById(Guid id)
+        {
+            return await _blogService.GetBlogByIdAsync(id);
+        }
+
+        [HttpGet("user/{userId}")]
+        public async Task<IActionResult> GetBlogsByUser(
+           Guid userId,
+           [FromQuery] int pageNumber = 1,
+           [FromQuery] int pageSize = 12)
+        {
+            return await _blogService.GetBlogsByUserAsync(userId, pageNumber, pageSize);
+        }
+
+        [HttpPut("{id}")]
+        [Authorize]
+        public async Task<IActionResult> UpdateBlog(Guid id, [FromBody] UpdateBlogRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return await _blogService.UpdateBlogAsync(id, request);
+        }
+
+        [HttpDelete("{id}/softDelete")]
+        [Authorize]
+        public async Task<IActionResult> SoftDeleteBlog(Guid id)
+        {
+            return await _blogService.SoftDeleteBlogAsync(id);
         }
     }
 }
