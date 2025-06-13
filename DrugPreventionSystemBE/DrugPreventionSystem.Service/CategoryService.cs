@@ -71,5 +71,20 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 throw new Exception("An error occurred while retrieving categories.", ex);
             }
         }
+
+        public async Task<IActionResult> SoftDeleteCategoryAsync(Guid CategoryId)
+        {
+            var Category = await _context.Categories.FindAsync(CategoryId);
+            if (Category == null || Category.IsDeleted)
+            {
+                return new NotFoundResult();
+            }
+
+            Category.IsDeleted = true;
+            Category.UpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+            return new OkObjectResult("Category soft-deleted successfully.");
+        }
     }
 }
