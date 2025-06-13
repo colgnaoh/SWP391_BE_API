@@ -1,5 +1,6 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CategoryReqModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
@@ -16,9 +17,16 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
         }
 
         [HttpPost("create")]
+        [Authorize]
         public async Task<IActionResult> CreateCategoryAsync([FromBody] CreateCategoryRequest request)
         {
             return await _categoryService.CreateCategoryAsync(request);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ListCategories()
+        {
+            return await _categoryService.ListCategories();
         }
     }
     

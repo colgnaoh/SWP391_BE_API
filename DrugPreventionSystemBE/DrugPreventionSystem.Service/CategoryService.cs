@@ -1,8 +1,10 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.Data;
 using DrugPreventionSystemBE.DrugPreventionSystem.Enity;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CategoryReqModel;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 {
@@ -40,7 +42,33 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             }
             catch (Exception ex)
             {
-                return new StatusCodeResult(500); // try catch bắt lỗi và trả về lỗi 500 nếu có lỗi xảy ra
+                return new StatusCodeResult(500); 
+            }
+        }
+
+        public async Task<IActionResult> ListCategories()
+        {
+            try
+            {
+                var categories = await _context.Categories
+                    .Where(c => !c.IsDeleted)
+                    .AsNoTracking() 
+                    .ToListAsync();
+                return new OkObjectResult(new ListCategoryResponse
+                {
+                    Success = true,
+                    Data = categories.Select(c => new CategoryResponseModel
+                    {
+                        Id = c.Id,
+                        Name = c.Name,
+                        CreatedAt = c.CreatedAt,
+                        UpdatedAt = c.UpdatedAt
+                    }).ToList()
+                });
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while retrieving categories.", ex);
             }
         }
     }

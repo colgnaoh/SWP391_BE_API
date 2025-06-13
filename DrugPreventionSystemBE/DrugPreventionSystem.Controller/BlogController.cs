@@ -58,7 +58,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
             return await _blogService.UpdateBlogAsync(id, request);
         }
 
-        [HttpDelete("{id}/softDelete")]
+        [HttpPost("{id}/softDelete")]
         [Authorize]
         public async Task<IActionResult> SoftDeleteBlog(Guid id)
         {

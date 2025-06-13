@@ -7,5 +7,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface
     public interface ICategoryService
     {
         Task<IActionResult> CreateCategoryAsync(CreateCategoryRequest request);
+        Task<IActionResult> ListCategories();
     }
 }
