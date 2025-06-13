@@ -5,6 +5,9 @@
   <Nullable>enable</Nullable>
   <ImplicitUsings>enable</ImplicitUsings>
   <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  <UserSecretsId>42c607a9-800d-49f0-be2b-d2950b207e10</UserSecretsId>
+  <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
 </PropertyGroup>
 
   <ItemGroup>
@@ -28,6 +31,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1-Preview.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.4" />
     <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="8.1.4" />
     <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
