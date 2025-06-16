@@ -175,10 +175,10 @@ D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Debug\
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Debug\net8.0\staticwebassets.build.json.cache
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Debug\net8.0\staticwebassets.development.json
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Debug\net8.0\DrugPrev.8E31C71A.Up2Date
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Debug\net8.0\DrugPreventionSystemBE.dll
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Debug\net8.0\refint\DrugPreventionSystemBE.dll
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Debug\net8.0\DrugPreventionSystemBE.pdb
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Debug\net8.0\DrugPreventionSystemBE.genruntimeconfig.cache
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Debug\net8.0\ref\DrugPreventionSystemBE.dll
+D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

@@ -86,10 +86,10 @@ namespace DrugPreventionSystemBE
             Env.Load();
 
             // Kiểm tra cấu hình Facebook
-            if (string.IsNullOrEmpty(builder.Configuration["Authentication:Facebook:AppId"]) || string.IsNullOrEmpty(builder.Configuration["Authentication:Facebook:AppSecret"]))
-            {
-                throw new InvalidOperationException("Cấu hình Facebook AppId hoặc AppSecret không được định nghĩa.");
-            }
+            //if (string.IsNullOrEmpty(builder.Configuration["Authentication:Facebook:AppId"]) || string.IsNullOrEmpty(builder.Configuration["Authentication:Facebook:AppSecret"]))
+            //{
+            //    throw new InvalidOperationException("Cấu hình Facebook AppId hoặc AppSecret không được định nghĩa.");
+            //}
 
             builder.Services.AddAuthentication(options =>
             {
@@ -125,9 +125,9 @@ namespace DrugPreventionSystemBE
                 {
                     builder.WithOrigins(
                         "https://drugpreventionnow.io.vn",
-                        "http://localhost:3000", // Thêm vào nếu bạn test từ localhost
-                        "https://drug-abuse-prevention.vercel.app", // Thêm vào nếu bạn test từ Vercel
-                        "https://drugpreventionsystem-bzfxb7cndxdtdjbr.eastasia-01.azurewebsites.net" // Thêm vào nếu bạn test từ chính miền API của bạn
+                        "http://localhost:3000", 
+                        "https://drug-abuse-prevention.vercel.app", 
+                        "https://drugpreventionsystem-bzfxb7cndxdtdjbr.eastasia-01.azurewebsites.net" // 
                     )
                            .AllowAnyMethod()
                            .AllowAnyHeader()
@@ -136,33 +136,32 @@ namespace DrugPreventionSystemBE
             });
 
             var app = builder.Build();
+
+            
+
             app.UseForwardedHeaders();
 
             app.UseCors("AllowSpecificOrigin");
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             
             // Configure the HTTP request pipeline.
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "DrugPreventionSystem API v1 (Local/Current)");
-                c.SwaggerEndpoint("https://drugpreventionsystem-bzfxb7cndxdtdjbr.eastasia-01.azurewebsites.net/swagger/v1/swagger.json", "DrugPreventionSystem API v1 (Deployed to Azure)");
-                c.RoutePrefix = string.Empty;
+                c.RoutePrefix = "swagger";
             });
 
 
            
             app.MapControllers();
-            app.MapGet("/", async context =>
-            {
-                await context.Response.WriteAsync("Server API is running...");
-            });
-
-            
-
+            //app.MapGet("/", async context =>
+            //{
+            //    await context.Response.WriteAsync("Server API is running...");
+            //});docker rm $(docker ps -aq)
             app.Run();
         }
         public class EnumSchemaFilter : ISchemaFilter
