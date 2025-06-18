@@ -3,20 +3,20 @@
   "WorkspaceRootPath": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|d:\\drugpreventionsystem\\drugpreventionsystembe\\drugpreventionsystembe\\drugpreventionsystem.service\\communityprogramservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\drugpreventionsystem.service\\communityprogramservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|d:\\drugpreventionsystem\\drugpreventionsystembe\\drugpreventionsystembe\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|d:\\drugpreventionsystem\\drugpreventionsystembe\\drugpreventionsystembe\\dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|d:\\drugpreventionsystem\\drugpreventionsystembe\\drugpreventionsystembe\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|d:\\drugpreventionsystem\\drugpreventionsystembe\\drugpreventionsystembe\\drugpreventionsystem.service\\communityprogramservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\drugpreventionsystem.service\\communityprogramservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|d:\\drugpreventionsystem\\drugpreventionsystembe\\drugpreventionsystembe\\dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|d:\\drugpreventionsystem\\drugpreventionsystembe\\drugpreventionsystembe\\drugpreventionsystem.service\\blogservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -66,20 +66,21 @@
       "DocumentGroups": [
         {
           "DockedHeight": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\Program.cs",
               "RelativeDocumentMoniker": "DrugPreventionSystemBE\\Program.cs",
               "ToolTip": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\Program.cs",
               "RelativeToolTip": "DrugPreventionSystemBE\\Program.cs",
-              "ViewState": "AgIAAI8AAAAAAAAAAAAQwJUAAAAMAAAAAAAAAA==",
+              "ViewState": "AgIAAKAAAAAAAAAAAAAwwLgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-16T07:10:35.238Z",
-              "IsPinned": true
+              "IsPinned": true,
+              "EditorCaption": ""
             },
             {
               "$type": "Bookmark",
@@ -95,20 +96,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "CommunityProgramService.cs",
               "DocumentMoniker": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\DrugPreventionSystem.Service\\CommunityProgramService.cs",
               "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.Service\\CommunityProgramService.cs",
               "ToolTip": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\DrugPreventionSystem.Service\\CommunityProgramService.cs",
               "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.Service\\CommunityProgramService.cs",
-              "ViewState": "AgIAABAAAAAAAAAAAAAAwBEAAAA5AAAAAAAAAA==",
+              "ViewState": "AgIAABgAAAAAAAAAAAAQwBEAAAA5AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-17T06:50:04.598Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Dockerfile",
               "DocumentMoniker": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\Dockerfile",
               "RelativeDocumentMoniker": "DrugPreventionSystemBE\\Dockerfile",
@@ -120,13 +121,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\appsettings.json",
               "RelativeDocumentMoniker": "DrugPreventionSystemBE\\appsettings.json",
               "ToolTip": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\appsettings.json",
               "RelativeToolTip": "DrugPreventionSystemBE\\appsettings.json",
-              "ViewState": "AgIAAAEAAAAAAAAAAAAuwA4AAAAlAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAACmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2025-06-13T19:54:41.969Z",
               "EditorCaption": ""
