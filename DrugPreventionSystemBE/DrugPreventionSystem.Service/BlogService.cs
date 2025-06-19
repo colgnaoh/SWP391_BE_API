@@ -84,7 +84,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     Content = b.Content,
                     BlogImgUrl = b.BlogImgUrl,
                     CreatedAt = b.CreatedAt,
-                    UpdatedAt = b.UpdatedAt
+                    UpdatedAt = b.UpdatedAt,
+                    IsDeleted = b.IsDeleted
                 }).ToList(),
                 TotalCount = totalCount,
                 PageNumber = safePageNumber,
@@ -96,7 +97,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
         public async Task<IActionResult> GetBlogByIdAsync(Guid blogId)
         {
             var blog = await _context.Blogs
-                .Where(b => b.Id == blogId)
+                .Where(b => b.Id == blogId)                 
                 .FirstOrDefaultAsync();
 
             if (blog == null)
@@ -111,7 +112,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 Content = blog.Content,
                 BlogImgUrl = blog.BlogImgUrl,
                 CreatedAt = blog.CreatedAt,
-                UpdatedAt = blog.UpdatedAt
+                UpdatedAt = blog.UpdatedAt,
+                IsDeleted = blog.IsDeleted
             };
 
             return new OkObjectResult(new SingleBlogResponse
@@ -146,7 +148,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     Content = b.Content,
                     BlogImgUrl = b.BlogImgUrl,
                     CreatedAt = b.CreatedAt,
-                    UpdatedAt = b.UpdatedAt
+                    UpdatedAt = b.UpdatedAt,
+                    IsDeleted = b.IsDeleted
                 }).ToList(),
                 TotalCount = totalCount,
                 PageNumber = safePageNumber,
