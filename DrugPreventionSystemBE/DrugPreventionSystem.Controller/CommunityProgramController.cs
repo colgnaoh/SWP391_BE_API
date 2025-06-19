@@ -8,11 +8,11 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PreventionProgramController : ControllerBase
+    public class CommuityProgramController : ControllerBase
     {
         private readonly ICommunityProgramService _programService;
 
-        public PreventionProgramController(ICommunityProgramService programService)
+        public CommuityProgramController(ICommunityProgramService programService)
         {
             _programService = programService;
         }

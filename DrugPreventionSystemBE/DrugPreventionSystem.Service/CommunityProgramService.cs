@@ -1,5 +1,7 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.Data;
 using DrugPreventionSystemBE.DrugPreventionSystem.Enity;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CommunityProgramResModel;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
@@ -13,9 +15,41 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<CommunityProgram>> GetAllProgramsAsync()
+        public async Task<IActionResult> GetCommunityProgramsByPageAsync(int pageNumber, int pageSize, string? filterByName)
         {
-            return await _context.Programs.ToListAsync();
+            // Ensure safe values
+            var safePageNumber = pageNumber < 1 ? 1 : pageNumber;
+            var safePageSize = pageSize < 1 ? 12 : pageSize;
+
+            var query = _context.Programs.AsQueryable();
+
+            // Optional filtering
+            if (!string.IsNullOrEmpty(filterByName))
+            {
+                query = query.Where(p => p.Name != null && EF.Functions.Like(p.Name, $"%{filterByName}%"));
+            }
+
+            var programs = await query
+                .Where(p => !p.IsDeleted) // Optional soft-delete filter
+                .OrderBy(p => p.Id)
+                .Skip((safePageNumber - 1) * safePageSize)
+                .Take(safePageSize)
+                .ToListAsync();
+
+            return new OkObjectResult(new GetProgramsByPageResponse
+            {
+                Success = true,
+                Data = programs.Select(p => new CommunityProgramResponseModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Description = p.Description,
+                    StartDate = p.StartDate,
+                    EndDate = p.EndDate,
+                    CreatedAt = p.CreatedAt,
+                    UpdatedAt = p.UpdatedAt
+                }).ToList()
+            });
         }
 
         public async Task<CommunityProgram?> GetProgramByIdAsync(Guid id)
