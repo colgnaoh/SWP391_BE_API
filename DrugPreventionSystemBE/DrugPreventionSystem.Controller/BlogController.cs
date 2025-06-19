@@ -1,4 +1,5 @@
-﻿using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.BlogReqModel;
+﻿using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ApiResponse;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.BlogReqModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -62,7 +63,26 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
         [Authorize]
         public async Task<IActionResult> SoftDeleteBlog(Guid id)
         {
-            return await _blogService.SoftDeleteBlogAsync(id);
+            var result = await _blogService.SoftDeleteBlogAsync(id);
+            if (result is NotFoundResult)
+            {
+                return NotFound(new ApiResponse<string>
+                {
+                    Success = false,
+                    Data = null,
+                    Message = "Không tìm thấy blog hoặc không thể xóa."
+                });
+                
+            }
+            else
+            {
+                return Ok(new ApiResponse<string>
+                {
+                    Success = true,
+                    Data = null,
+                    Message = "Xóa blog thành công."
+                });
+            }
         }
     }
 }
