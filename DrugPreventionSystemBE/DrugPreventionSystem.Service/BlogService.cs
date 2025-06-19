@@ -60,6 +60,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             var safePageSize = pageSize < 1 ? 12 : pageSize; // Mặc định pageSize là 12 nếu không hợp lệ
 
             var query = _context.Blogs.AsQueryable();
+            query = query.Where(b => !b.IsDeleted);
 
             if (!string.IsNullOrEmpty(filterByContent))
             {
