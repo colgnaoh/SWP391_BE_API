@@ -72,14 +72,14 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
                     Data = null,
                     Message = "Không tìm thấy blog hoặc không thể xóa."
                 });
-                
             }
             else
             {
-                return Ok(new ApiResponse<string>
+                var blog = await _blogService.GetBlogByIdAsync(id); // Await the task to get the actual result
+                return Ok(new ApiResponse<IActionResult>
                 {
                     Success = true,
-                    Data = null,
+                    Data = blog, // Use the awaited result here
                     Message = "Xóa blog thành công."
                 });
             }
