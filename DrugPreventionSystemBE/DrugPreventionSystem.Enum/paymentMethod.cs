@@ -2,6 +2,7 @@
 {
     public enum paymentMethod
     {
-        valid
+        Cash,
+        BankTransfer
     }
 }

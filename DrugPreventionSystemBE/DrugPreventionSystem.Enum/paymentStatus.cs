@@ -2,6 +2,7 @@
 {
     public enum paymentStatus
     {
-        valid
+        Invalid = 0, // Thanh toán không hợp lệ (chưa trả tiền, thất bại, bị hủy, hoàn tiền,...)
+        Valid = 1
     }
 }
