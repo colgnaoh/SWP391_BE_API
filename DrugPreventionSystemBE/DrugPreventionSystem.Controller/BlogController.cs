@@ -15,7 +15,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
         {
             _blogService = blogService;
         }
-        [Authorize]
+        [Authorize(Roles = "Admin,Manager")]
         [HttpPost("create")]
         public async Task<IActionResult> CreateBlogAsync([FromBody] CreateBlogRequest request)
         {
@@ -48,7 +48,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
         }
 
         [HttpPut("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> UpdateBlog(Guid id, [FromBody] UpdateBlogRequest request)
         {
             if (!ModelState.IsValid)
@@ -60,7 +60,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
         }
 
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> SoftDeleteBlog(Guid id)
         {
             var result = await _blogService.SoftDeleteBlogAsync(id);
@@ -79,7 +79,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
                 return Ok(new ApiResponse<IActionResult>
                 {
                     Success = true,
-                    Data = blog, // Use the awaited result here
+                    Data = {}, // Use the awaited result here
                     Message = "Xóa blog thành công."
                 });
             }

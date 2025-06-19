@@ -65,12 +65,14 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             {
                 query = query.Where(b => b.Content != null && EF.Functions.Like(b.Content, $"%{filterByContent}%"));
             }
+            var totalCount = await query.CountAsync();
 
             var blogs = await query
                 .OrderBy(c => c.Id)
                 .Skip((safePageNumber - 1) * safePageSize)
                 .Take(safePageSize)
                 .ToListAsync();
+            var totalPages = (int)Math.Ceiling((double)totalCount / safePageSize);
 
             return new OkObjectResult(new GetBlogsByPageResponse
             {
@@ -83,14 +85,18 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     BlogImgUrl = b.BlogImgUrl,
                     CreatedAt = b.CreatedAt,
                     UpdatedAt = b.UpdatedAt
-                }).ToList()
+                }).ToList(),
+                TotalCount = totalCount,
+                PageNumber = safePageNumber,
+                PageSize = safePageSize,
+                TotalPages = totalPages
             });
         }
 
         public async Task<IActionResult> GetBlogByIdAsync(Guid blogId)
         {
             var blog = await _context.Blogs
-                .Where(b => b.Id == blogId && !b.IsDeleted)
+                .Where(b => b.Id == blogId)
                 .FirstOrDefaultAsync();
 
             if (blog == null)
