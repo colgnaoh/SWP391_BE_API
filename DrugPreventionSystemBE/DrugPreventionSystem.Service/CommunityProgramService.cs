@@ -1,6 +1,7 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.Data;
 using DrugPreventionSystemBE.DrugPreventionSystem.Enity;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CommunityProgramResModel;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,6 +29,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
             {
                 query = query.Where(p => p.Name != null && EF.Functions.Like(p.Name, $"%{filterByName}%"));
             }
+            var totalCount = await query.CountAsync();
 
             var programs = await query
                 .Where(p => !p.IsDeleted) // Optional soft-delete filter
@@ -35,6 +37,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
                 .Skip((safePageNumber - 1) * safePageSize)
                 .Take(safePageSize)
                 .ToListAsync();
+            var totalPages = (int)Math.Ceiling((double)totalCount / safePageSize);
 
             return new OkObjectResult(new GetProgramsByPageResponse
             {
@@ -48,14 +51,43 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
                     EndDate = p.EndDate,
                     CreatedAt = p.CreatedAt,
                     UpdatedAt = p.UpdatedAt
-                }).ToList()
+                }).ToList(),
+                TotalCount = totalCount,
+                PageNumber = safePageNumber,
+                PageSize = safePageSize,
+                TotalPages = totalPages
             });
         }
 
-        public async Task<CommunityProgram?> GetProgramByIdAsync(Guid id)
+        public async Task<IActionResult> GetCommunityProgramByIdAsync(Guid programId)
         {
-            return await _context.Programs.FindAsync(id);
+            var program = await _context.Programs
+                .Where(p => p.Id == programId)
+                .FirstOrDefaultAsync();
+
+            if (program == null)
+            {
+                return new NotFoundObjectResult("Không tìm thấy chương trình.");
+            }
+
+            var programResponse = new CommunityProgramResponseModel
+            {
+                Id = program.Id,
+                Name = program.Name,
+                Description = program.Description,
+                StartDate = program.StartDate,
+                EndDate = program.EndDate,
+                CreatedAt = program.CreatedAt,
+                UpdatedAt = program.UpdatedAt
+            };
+
+            return new OkObjectResult(new SingleCommunityProgramResponse
+            {
+                Success = true,
+                Data = programResponse
+            });
         }
+
 
         public async Task<CommunityProgram> CreateCommunityProgramAsync(CommunityProgram program)
         {
