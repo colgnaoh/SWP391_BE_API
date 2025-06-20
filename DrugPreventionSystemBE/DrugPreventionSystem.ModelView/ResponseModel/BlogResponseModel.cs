@@ -9,5 +9,7 @@
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public bool IsDeleted { get; set; }
-        }
+        public string FullName { get; set; } // Tên đầy đủ của người dùng
+        public string UserAvatar { get; set; }
+    }
 }

@@ -1,8 +1,10 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.Data;
+using DrugPreventionSystemBE.DrugPreventionSystem.Enity;
 using DrugPreventionSystemBE.DrugPreventionSystem.Entity;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.BlogReqModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
+using DrugPreventionSystemBE.DrugPreventionSystem.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -14,13 +16,14 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
         private readonly DrugPreventionDbContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IdServices _idServices;
+        private readonly IUserService _userService;
 
-
-        public BlogService(DrugPreventionDbContext context, IHttpContextAccessor httpContextAccessor, IdServices idServices)
+        public BlogService(DrugPreventionDbContext context, IHttpContextAccessor httpContextAccessor, IdServices idServices, IUserService userService)
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
             _idServices = idServices;
+            _userService = userService;
         }
 
         public async Task<IActionResult> CreateBlogAsync(CreateBlogRequest request)
@@ -59,8 +62,10 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             var safePageNumber = pageNumber < 1 ? 1 : pageNumber;
             var safePageSize = pageSize < 1 ? 12 : pageSize; // Mặc định pageSize là 12 nếu không hợp lệ
 
-            var query = _context.Blogs.AsQueryable();
-            query = query.Where(b => !b.IsDeleted);
+            var query = _context.Blogs
+                                .Include(b => b.User) 
+                                .Where(b => !b.IsDeleted)
+                                .AsQueryable();
 
             if (!string.IsNullOrEmpty(filterByContent))
             {
@@ -86,7 +91,9 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     BlogImgUrl = b.BlogImgUrl,
                     CreatedAt = b.CreatedAt,
                     UpdatedAt = b.UpdatedAt,
-                    IsDeleted = b.IsDeleted
+                    IsDeleted = b.IsDeleted,
+                    FullName = $"{b.User?.LastName} {b.User?.FirstName}".Trim(),
+                    UserAvatar = b.User?.ProfilePicUrl ?? b.User?.ProfilePicUrl
                 }).ToList(),
                 TotalCount = totalCount,
                 PageNumber = safePageNumber,

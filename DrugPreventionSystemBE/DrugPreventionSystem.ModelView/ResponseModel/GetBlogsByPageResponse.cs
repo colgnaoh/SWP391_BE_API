@@ -1,4 +1,6 @@
-﻿namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel
+﻿using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.BlogReqModel;
+
+namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel
 {
     public class GetBlogsByPageResponse
     {

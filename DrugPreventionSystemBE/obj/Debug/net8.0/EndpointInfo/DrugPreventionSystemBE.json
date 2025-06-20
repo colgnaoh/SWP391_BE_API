@@ -320,6 +320,32 @@
             "Bearer": [ ]
           }
         ]
+      },
+      "delete": {
+        "tags": [
+          "Blog"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
       }
     },
     "/api/blog/user/{userId}": {
@@ -363,16 +389,51 @@
         }
       }
     },
-    "/api/blog/{id}/softDelete": {
+    "/api/cart/add": {
       "post": {
         "tags": [
-          "Blog"
+          "Cart"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddToCartRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddToCartRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddToCartRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      }
+    },
+    "/api/cart/myCart": {
+      "post": {
+        "tags": [
+          "Cart"
         ],
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
-            "required": true,
+            "name": "userId",
+            "in": "query",
             "schema": {
               "type": "string",
               "format": "uuid"
@@ -439,67 +500,10 @@
         }
       }
     },
-    "/Course": {
+    "/api/CommuityProgram": {
       "get": {
         "tags": [
-          "Course"
-        ],
-        "parameters": [
-          {
-            "name": "pageNumber",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "pageSize",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "filterByName",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Course"
-        ],
-        "parameters": [
-          {
-            "name": "courseId",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/PreventionProgram": {
-      "get": {
-        "tags": [
-          "PreventionProgram"
+          "CommuityProgram"
         ],
         "responses": {
           "200": {
@@ -534,10 +538,10 @@
         }
       }
     },
-    "/api/PreventionProgram/{id}": {
+    "/api/CommuityProgram/{id}": {
       "get": {
         "tags": [
-          "PreventionProgram"
+          "CommuityProgram"
         ],
         "parameters": [
           {
@@ -575,7 +579,7 @@
       },
       "post": {
         "tags": [
-          "PreventionProgram"
+          "CommuityProgram"
         ],
         "parameters": [
           {
@@ -631,7 +635,7 @@
       },
       "put": {
         "tags": [
-          "PreventionProgram"
+          "CommuityProgram"
         ],
         "parameters": [
           {
@@ -670,10 +674,10 @@
         }
       }
     },
-    "/api/PreventionProgram/delete/{id}": {
+    "/api/CommuityProgram/delete/{id}": {
       "post": {
         "tags": [
-          "PreventionProgram"
+          "CommuityProgram"
         ],
         "parameters": [
           {
@@ -683,6 +687,63 @@
             "schema": {
               "type": "string",
               "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/Course": {
+      "get": {
+        "tags": [
+          "Course"
+        ],
+        "parameters": [
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "filterByName",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Course"
+        ],
+        "parameters": [
+          {
+            "name": "courseId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
             }
           }
         ],
@@ -1072,6 +1133,16 @@
   },
   "components": {
     "schemas": {
+      "AddToCartRequest": {
+        "type": "object",
+        "properties": {
+          "courseId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false
+      },
       "AgeGroup": {
         "enum": [
           "Student",
@@ -1990,6 +2061,9 @@
         "type": "string"
       },
       "ServiceType": {
+        "enum": [
+          "CourseSale"
+        ],
         "type": "string"
       },
       "Session": {
@@ -2616,13 +2690,15 @@
       },
       "paymentMethod": {
         "enum": [
-          "valid"
+          "Cash",
+          "BankTransfer"
         ],
         "type": "string"
       },
       "paymentStatus": {
         "enum": [
-          "valid"
+          "Invalid",
+          "Valid"
         ],
         "type": "string"
       },
