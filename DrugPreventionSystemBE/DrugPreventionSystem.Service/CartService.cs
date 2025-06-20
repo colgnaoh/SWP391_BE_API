@@ -22,7 +22,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             _httpContextAccessor = httpContextAccessor;
         }
 
-        private Guid GetCurrentUserId()
+        public Guid GetCurrentUserId()
         {
             var userIdClaim = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (Guid.TryParse(userIdClaim, out Guid userId))
@@ -37,7 +37,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             var course = await _context.Courses.FirstOrDefaultAsync(c => c.Id == request.CourseId && !c.IsDeleted);
             if (course == null)
             {
-                return new NotFoundObjectResult("Khóa học không tồn tại.");
+                return new NotFoundObjectResult("Id khóa học không tồn tại.");
             }
 
             // Kiểm tra xem khóa học đã có trong giỏ hàng của người dùng chưa
