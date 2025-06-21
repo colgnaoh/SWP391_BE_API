@@ -1,31 +1,70 @@
-﻿using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
+﻿using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CourseReqModel;
+using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
-[ApiController]
-[Route("[controller]")]
-public class CourseController : ControllerBase
+namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
 {
-    private readonly ICourseService _courseService;
-
-    public CourseController(ICourseService courseService)
+    [ApiController]
+    [Route("api/[controller]")]
+    public class CourseController : ControllerBase
     {
-        _courseService = courseService;
-    }
+        private readonly ICourseService _courseService;
 
-    [HttpGet]
-    public async Task<IActionResult> GetCoursesByPageAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string? filterByName)
-    {
-        // Nếu số trang nhỏ hơn 1 thì dùng trang 1
-        var safePageNumber = pageNumber < 1 ? 1 : pageNumber;
+        public CourseController(ICourseService courseService)
+        {
+            _courseService = courseService;
+        }
 
-        var users = await _courseService.GetCoursesByPageAsync(safePageNumber, pageSize, filterByName);
-        return Ok(users);
-    }
+        // GET: api/Course
+        [HttpGet]
+        [AllowAnonymous] // Public access
+        public async Task<IActionResult> GetCoursesByPage(
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 12,
+            [FromQuery] string? filterByName = null)
+        {
+            return await _courseService.GetCoursesByPageAsync(pageNumber, pageSize, filterByName);
+        }
 
-    [HttpPost]
-    public async Task<IActionResult> CreateCourseAsync(int courseId)
-    {
-        return await _courseService.GetCourseByIdAsync(courseId);
+        // GET: api/Course/{id}
+        [HttpGet("{id}")]
+        [AllowAnonymous] // Public access
+        public async Task<IActionResult> GetCourseById(Guid id)
+        {
+            return await _courseService.GetCourseByIdAsync(id);
+        }
+
+        // POST: api/Course
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> CreateCourse([FromBody] CourseCreateModel request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return await _courseService.CreateCourseAsync(request);
+        }
+
+        // PUT: api/Course
+        [HttpPut]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UpdateCourse([FromBody] CourseUpdateModel request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return await _courseService.UpdateCourseAsync(request);
+        }
+
+        // DELETE: api/Course/{id}
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> SoftDeleteCourse(Guid id)
+        {
+            return await _courseService.SoftDeleteCourseAsync(id);
+        }
     }
 }

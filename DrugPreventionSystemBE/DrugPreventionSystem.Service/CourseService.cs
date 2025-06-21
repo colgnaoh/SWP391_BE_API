@@ -20,161 +20,196 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             _configuration = configuration;
         }
 
-        public async Task<IActionResult> GetCoursesByPageAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string? filterByName)
+        public async Task<IActionResult> GetCoursesByPageAsync(int pageNumber, int pageSize, string? filterByName)
         {
-            // Đảm bảo pageNumber và pageSize hợp lệ
-            var safePageNumber = pageNumber < 1 ? 1 : pageNumber;
-            var safePageSize = pageSize < 1 ? 12 : pageSize; // Mặc định pageSize là 12 nếu không hợp lệ
-
-            var query = _context.Courses.AsQueryable();
-
-
-
-            if (!string.IsNullOrEmpty(filterByName))
+            try
             {
-                query = query.Where(b => b.Name != null && EF.Functions.Like(b.Name, $"%{filterByName}%"));
-            }
-            var totalCount = await query.CountAsync();
+                var safePageNumber = pageNumber < 1 ? 1 : pageNumber;
+                var safePageSize = pageSize < 1 ? 12 : pageSize;
 
-            var courses = await query
-                .Where(c => !c.IsDeleted)
-                .OrderBy(c => c.Id)
-                .Skip((safePageNumber - 1) * safePageSize)
-                .Take(safePageSize)
-                .ToListAsync();
-            var totalPages = (int)Math.Ceiling((double)totalCount / safePageSize);
+                var query = _context.Courses.Where(c => !c.IsDeleted).AsQueryable();
 
-            return new OkObjectResult(new GetCoursesByPageResponse
-            {
-                Success = true,
-                Data = courses.Select(c => new CourseResponseModel
+                if (!string.IsNullOrEmpty(filterByName))
                 {
-                    Id = c.Id,
-                    UserId = (Guid)c.UserId,
-                    CategoryId = c.CategoryId,
-                    Name = c.Name,
-                    Content = c.Content,
-                    Status = c.Status,
-                    TargetAudience = c.TargetAudience,
-                    ImageUrl = c.ImageUrl,
-                    Price = c.Price,
-                    Discount = c.Discount,
-                    Slug = c.Slug
-                }).ToList(),
-                TotalCount = totalCount,
-                PageNumber = safePageNumber,
-                PageSize = safePageSize,
-                TotalPages = totalPages
-            });
+                    query = query.Where(b => b.Name != null && EF.Functions.Like(b.Name, $"%{filterByName}%"));
+                }
+
+                var totalCount = await query.CountAsync();
+
+                var courses = await query
+                    .OrderBy(c => c.Id)
+                    .Skip((safePageNumber - 1) * safePageSize)
+                    .Take(safePageSize)
+                    .ToListAsync();
+
+                var totalPages = (int)Math.Ceiling((double)totalCount / safePageSize);
+
+                return new OkObjectResult(new GetCoursesByPageResponse
+                {
+                    Success = true,
+                    Data = courses.Select(c => new CourseResponseModel
+                    {
+                        Id = c.Id,
+                        UserId = (Guid)c.UserId,
+                        CategoryId = c.CategoryId,
+                        Name = c.Name,
+                        Content = c.Content,
+                        Status = c.Status,
+                        TargetAudience = c.TargetAudience,
+                        ImageUrl = c.ImageUrl,
+                        Price = c.Price,
+                        Discount = c.Discount,
+                        Slug = c.Slug
+                    }).ToList(),
+                    TotalCount = totalCount,
+                    PageNumber = safePageNumber,
+                    PageSize = safePageSize,
+                    TotalPages = totalPages
+                });
+            }
+            catch (Exception ex)
+            {
+                return new ObjectResult("Lỗi khi lấy danh sách khóa học.") { StatusCode = 500 };
+            }
         }
+
         public async Task<IActionResult> GetCourseByIdAsync(Guid courseId)
         {
-            var course = await _context.Courses
-                 .Where(c => c.Id == courseId)
-                 .FirstOrDefaultAsync();
-
-            if (course == null) return new NotFoundObjectResult("Không tìm thấy khóa học."); ;
-
-            return new OkObjectResult(new CourseResponseModel
+            try
             {
-                Id = course.Id,
-                Name = course.Name,
-                Content = course.Content,
-                ImageUrl = course.ImageUrl,
-                Price = course.Price,
-                Discount = course.Discount,
-                Status = course.Status,
-                TargetAudience = course.TargetAudience
-            });
+                var course = await _context.Courses
+                    .FirstOrDefaultAsync(c => c.Id == courseId && !c.IsDeleted);
+
+                if (course == null)
+                    return new NotFoundObjectResult("Không tìm thấy khóa học.");
+
+                return new OkObjectResult(new CourseResponseModel
+                {
+                    Id = course.Id,
+                    Name = course.Name,
+                    Content = course.Content,
+                    ImageUrl = course.ImageUrl,
+                    Price = course.Price,
+                    Discount = course.Discount,
+                    Status = course.Status,
+                    TargetAudience = course.TargetAudience
+                });
+            }
+            catch (Exception)
+            {
+                return new ObjectResult("Lỗi khi truy xuất khóa học.") { StatusCode = 500 };
+            }
         }
 
         public async Task<IActionResult> CreateCourseAsync(CourseCreateModel CourseCreateRequest)
         {
-            var course = new Course
+            try
             {
-                Id = Guid.NewGuid(),
-                Name = CourseCreateRequest.Name,
-                UserId = Guid.NewGuid(),
-                CategoryId = CourseCreateRequest.CategoryId,
-                Content = CourseCreateRequest.Content,
-                Status = CourseCreateRequest.Status,
-                TargetAudience = CourseCreateRequest.TargetAudience,
-                ImageUrl = CourseCreateRequest.ImageUrl,
-                Price = CourseCreateRequest.Price,
-                Discount = CourseCreateRequest.Discount,
-                CreatedAt = DateTime.UtcNow
-            };
+                var course = new Course
+                {
+                    Id = Guid.NewGuid(),
+                    Name = CourseCreateRequest.Name,
+                    UserId = Guid.NewGuid(), // TODO: Replace with actual user ID (from token?)
+                    CategoryId = CourseCreateRequest.CategoryId,
+                    Content = CourseCreateRequest.Content,
+                    Status = CourseCreateRequest.Status,
+                    TargetAudience = CourseCreateRequest.TargetAudience,
+                    ImageUrl = CourseCreateRequest.ImageUrl,
+                    Price = CourseCreateRequest.Price,
+                    Discount = CourseCreateRequest.Discount,
+                    CreatedAt = DateTime.UtcNow
+                };
 
-            var baseSlug = string.IsNullOrWhiteSpace(CourseCreateRequest.Slug)
-                ? SlugGeneratorHelper.GenerateSlug(CourseCreateRequest.Name)
-                : SlugGeneratorHelper.GenerateSlug(CourseCreateRequest.Slug);
+                var baseSlug = string.IsNullOrWhiteSpace(CourseCreateRequest.Slug)
+                    ? SlugGeneratorHelper.GenerateSlug(CourseCreateRequest.Name)
+                    : SlugGeneratorHelper.GenerateSlug(CourseCreateRequest.Slug);
 
-            course.Slug = await GenerateUniqueSlugAsync(baseSlug);
+                course.Slug = await GenerateUniqueSlugAsync(baseSlug);
 
-            _context.Courses.Add(course);
-            await _context.SaveChangesAsync();
+                _context.Courses.Add(course);
+                await _context.SaveChangesAsync();
 
-            return new OkObjectResult(new CourseResponseModel
+                return new OkObjectResult(new CourseResponseModel
+                {
+                    Id = course.Id,
+                    Name = course.Name,
+                    Content = course.Content,
+                    ImageUrl = course.ImageUrl,
+                    Price = course.Price,
+                    Discount = course.Discount,
+                    Status = course.Status,
+                    TargetAudience = course.TargetAudience
+                });
+            }
+            catch (Exception)
             {
-                Id = course.Id,
-                Name = course.Name,
-                Content = course.Content,
-                ImageUrl = course.ImageUrl,
-                Price = course.Price,
-                Discount = course.Discount,
-                Status = course.Status,
-                TargetAudience = course.TargetAudience
-            });
+                return new ObjectResult("Lỗi khi tạo khóa học.") { StatusCode = 500 };
+            }
         }
 
         public async Task<IActionResult> UpdateCourseAsync(CourseUpdateModel model)
         {
-            var course = await _context.Courses
-                .FirstOrDefaultAsync(c => c.Id == model.Id && !c.IsDeleted);
-
-            if (course == null) return new NotFoundObjectResult("Không tìm thấy khóa học.");
-
-            course.Name = model.Name;
-            course.UserId = Guid.NewGuid();
-            course.CategoryId = model.CategoryId;
-            course.Content = model.Content;
-            course.Status = model.Status;
-            course.TargetAudience = model.TargetAudience;
-            course.ImageUrl = model.ImageUrl;
-            course.Price = model.Price;
-            course.Discount = model.Discount;
-            course.UpdatedAt = DateTime.UtcNow;
-
-            var desiredSlug = string.IsNullOrWhiteSpace(model.Slug)
-                ? SlugGeneratorHelper.GenerateSlug(model.Name)
-                : SlugGeneratorHelper.GenerateSlug(model.Slug);
-
-            if (course.Slug != desiredSlug)
+            try
             {
-                course.Slug = await GenerateUniqueSlugAsync(desiredSlug, course.Id);
-            }
+                var course = await _context.Courses
+                    .FirstOrDefaultAsync(c => c.Id == model.Id && !c.IsDeleted);
 
-            _context.Courses.Update(course);
-            await _context.SaveChangesAsync();
-            return new OkObjectResult("Cập nhật blog thành công.");
+                if (course == null)
+                    return new NotFoundObjectResult("Không tìm thấy khóa học.");
+
+                course.Name = model.Name;
+                course.UserId = Guid.NewGuid(); // TODO: Replace with actual user ID
+                course.CategoryId = model.CategoryId;
+                course.Content = model.Content;
+                course.Status = model.Status;
+                course.TargetAudience = model.TargetAudience;
+                course.ImageUrl = model.ImageUrl;
+                course.Price = model.Price;
+                course.Discount = model.Discount;
+                course.UpdatedAt = DateTime.UtcNow;
+
+                var desiredSlug = string.IsNullOrWhiteSpace(model.Slug)
+                    ? SlugGeneratorHelper.GenerateSlug(model.Name)
+                    : SlugGeneratorHelper.GenerateSlug(model.Slug);
+
+                if (course.Slug != desiredSlug)
+                {
+                    course.Slug = await GenerateUniqueSlugAsync(desiredSlug, course.Id);
+                }
+
+                _context.Courses.Update(course);
+                await _context.SaveChangesAsync();
+
+                return new OkObjectResult("Cập nhật khóa học thành công.");
+            }
+            catch (Exception)
+            {
+                return new ObjectResult("Lỗi khi cập nhật khóa học.") { StatusCode = 500 };
+            }
         }
 
         public async Task<IActionResult> SoftDeleteCourseAsync(Guid CourseId)
         {
-            var course = await _context.Blogs.FindAsync(CourseId);
-            if (course == null || course.IsDeleted)
+            try
             {
-                return new NotFoundResult();
+                var course = await _context.Courses.FindAsync(CourseId);
+                if (course == null || course.IsDeleted)
+                {
+                    return new NotFoundResult();
+                }
+
+                course.IsDeleted = true;
+                course.UpdatedAt = DateTime.UtcNow;
+
+                await _context.SaveChangesAsync();
+                return new OkObjectResult("Khóa học đã được xóa mềm.");
             }
-
-            course.IsDeleted = true;
-            course.UpdatedAt = DateTime.UtcNow;
-
-            await _context.SaveChangesAsync();
-            return new OkObjectResult("Khóa học soft-deleted successfully.");
+            catch (Exception)
+            {
+                return new ObjectResult("Lỗi khi xóa mềm khóa học.") { StatusCode = 500 };
+            }
         }
 
-        // --- Slug Deduplication ---
         private async Task<string> GenerateUniqueSlugAsync(string baseSlug, Guid? excludeId = null)
         {
             var slug = baseSlug;
@@ -190,7 +225,5 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 
             return slug;
         }
-
-
     }
 }

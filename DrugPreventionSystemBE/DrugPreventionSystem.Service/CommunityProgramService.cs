@@ -19,31 +19,28 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
 
         public async Task<IActionResult> GetCommunityProgramsByPageAsync(int pageNumber, int pageSize, string? filterByName)
         {
-            var safePageNumber = pageNumber < 1 ? 1 : pageNumber;
-            var safePageSize = pageSize < 1 ? 12 : pageSize;
-
-            var query = _context.Programs.AsQueryable();
-
-            if (!string.IsNullOrEmpty(filterByName))
+            try
             {
-                query = query.Where(p => p.Name != null && EF.Functions.Like(p.Name, $"%{filterByName}%"));
-            }
+                int currentPage = pageNumber < 1 ? 1 : pageNumber;
+                int currentPageSize = pageSize < 1 ? 12 : pageSize;
 
-            var totalCount = await query.CountAsync();
+                var query = _context.Programs
+                    .Where(p => !p.IsDeleted);
 
-            var programs = await query
-                .Where(p => !p.IsDeleted)
-                .OrderBy(p => p.Id)
-                .Skip((safePageNumber - 1) * safePageSize)
-                .Take(safePageSize)
-                .ToListAsync();
+                if (!string.IsNullOrEmpty(filterByName))
+                {
+                    query = query.Where(p => EF.Functions.Like(p.Name!, $"%{filterByName}%"));
+                }
 
-            var totalPages = (int)Math.Ceiling((double)totalCount / safePageSize);
+                int totalCount = await query.CountAsync();
 
-            return new OkObjectResult(new GetProgramsByPageResponse
-            {
-                Success = true,
-                Data = programs.Select(p => new CommunityProgramResponseModel
+                var programs = await query
+                    .OrderBy(p => p.Id)
+                    .Skip((currentPage - 1) * currentPageSize)
+                    .Take(currentPageSize)
+                    .ToListAsync();
+
+                var programDtos = programs.Select(p => new CommunityProgramResponseModel
                 {
                     Id = p.Id,
                     Name = p.Name,
@@ -52,78 +49,136 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
                     EndDate = p.EndDate,
                     CreatedAt = p.CreatedAt,
                     UpdatedAt = p.UpdatedAt
-                }).ToList(),
-                TotalCount = totalCount,
-                PageNumber = safePageNumber,
-                PageSize = safePageSize,
-                TotalPages = totalPages
-            });
+                }).ToList();
+
+                return new OkObjectResult(new GetProgramsByPageResponse
+                {
+                    Success = true,
+                    Data = programDtos,
+                    TotalCount = totalCount,
+                    PageNumber = currentPage,
+                    PageSize = currentPageSize,
+                    TotalPages = (int)Math.Ceiling((double)totalCount / currentPageSize)
+                });
+            }
+            catch (Exception)
+            {
+                return new ObjectResult("Lỗi khi truy xuất danh sách chương trình.") { StatusCode = 500 };
+            }
         }
 
         public async Task<IActionResult> GetCommunityProgramByIdAsync(Guid programId)
         {
-            var program = await _context.Programs
-                .Where(p => p.Id == programId)
-                .FirstOrDefaultAsync();
-
-            if (program == null)
+            try
             {
-                return new NotFoundObjectResult("Không tìm thấy chương trình.");
+                var program = await _context.Programs
+                    .FirstOrDefaultAsync(p => p.Id == programId && !p.IsDeleted);
+
+                if (program == null)
+                {
+                    return new NotFoundObjectResult("Không tìm thấy chương trình.");
+                }
+
+                var response = new CommunityProgramResponseModel
+                {
+                    Id = program.Id,
+                    Name = program.Name,
+                    Description = program.Description,
+                    StartDate = program.StartDate,
+                    EndDate = program.EndDate,
+                    CreatedAt = program.CreatedAt,
+                    UpdatedAt = program.UpdatedAt
+                };
+
+                return new OkObjectResult(new SingleCommunityProgramResponse
+                {
+                    Success = true,
+                    Data = response
+                });
             }
-
-            var programResponse = new CommunityProgramResponseModel
+            catch (Exception)
             {
-                Id = program.Id,
-                Name = program.Name,
-                Description = program.Description,
-                StartDate = program.StartDate,
-                EndDate = program.EndDate,
-                CreatedAt = program.CreatedAt,
-                UpdatedAt = program.UpdatedAt
-            };
+                return new ObjectResult("Lỗi khi truy xuất chương trình.") { StatusCode = 500 };
+            }
+        }
 
-            return new OkObjectResult(new SingleCommunityProgramResponse
+        public async Task<IActionResult> CreateCommunityProgramAsync(CommunityProgram program)
+        {
+            try
             {
-                Success = true,
-                Data = programResponse
-            });
+                program.Id = Guid.NewGuid();
+                program.CreatedAt = DateTime.UtcNow;
+
+                _context.Programs.Add(program);
+                await _context.SaveChangesAsync();
+
+                return new OkObjectResult(new
+                {
+                    Success = true,
+                    Message = "Tạo chương trình thành công.",
+                    Data = program
+                });
+            }
+            catch (Exception)
+            {
+                return new ObjectResult("Lỗi khi tạo chương trình.") { StatusCode = 500 };
+            }
         }
 
-        public async Task<CommunityProgram> CreateCommunityProgramAsync(CommunityProgram program)
+        public async Task<IActionResult> UpdateCommunityProgramAsync(Guid id, CommunityProgram updated)
         {
-            program.Id = Guid.NewGuid();
-            _context.Programs.Add(program);
-            await _context.SaveChangesAsync();
-            return program;
+            try
+            {
+                var program = await _context.Programs
+                    .FirstOrDefaultAsync(p => p.Id == id && !p.IsDeleted);
+
+                if (program == null)
+                {
+                    return new NotFoundObjectResult("Không tìm thấy chương trình.");
+                }
+
+                program.Name = updated.Name;
+                program.Description = updated.Description;
+                program.Location = updated.Location;
+                program.Type = updated.Type;
+                program.StartDate = updated.StartDate;
+                program.EndDate = updated.EndDate;
+                program.ProgramImgUrl = updated.ProgramImgUrl;
+                program.UpdatedAt = DateTime.UtcNow;
+
+                await _context.SaveChangesAsync();
+
+                return new OkObjectResult("Cập nhật chương trình thành công.");
+            }
+            catch (Exception)
+            {
+                return new ObjectResult("Lỗi khi cập nhật chương trình.") { StatusCode = 500 };
+            }
         }
 
-        public async Task<bool> UpdateCommunityProgramAsync(Guid id, CommunityProgram updatedProgram)
+        public async Task<IActionResult> DeleteProgramAsync(Guid id)
         {
-            var program = await _context.Programs.FindAsync(id);
-            if (program == null) return false;
+            try
+            {
+                var program = await _context.Programs
+                    .FirstOrDefaultAsync(p => p.Id == id && !p.IsDeleted);
 
-            program.Name = updatedProgram.Name;
-            program.Description = updatedProgram.Description;
-            program.Location = updatedProgram.Location;
-            program.Type = updatedProgram.Type;
-            program.StartDate = updatedProgram.StartDate;
-            program.EndDate = updatedProgram.EndDate;
-            program.ProgramImgUrl = updatedProgram.ProgramImgUrl;
+                if (program == null)
+                {
+                    return new NotFoundObjectResult("Chương trình không tồn tại hoặc đã bị xóa.");
+                }
 
-            await _context.SaveChangesAsync();
-            return true;
-        }
+                program.IsDeleted = true;
+                program.UpdatedAt = DateTime.UtcNow;
 
-        public async Task<bool> DeleteProgramAsync(Guid id)
-        {
-            var program = await _context.Programs.FindAsync(id);
-            if (program == null) return false;
+                await _context.SaveChangesAsync();
 
-            program.IsDeleted = true;
-            _context.Programs.Update(program);
-            await _context.SaveChangesAsync();
-
-            return true;
+                return new OkObjectResult("Xóa mềm chương trình thành công.");
+            }
+            catch (Exception)
+            {
+                return new ObjectResult("Lỗi khi xóa chương trình.") { StatusCode = 500 };
+            }
         }
     }
 }

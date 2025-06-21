@@ -1,11 +1,14 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.Enity;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
-namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
+namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class CommunityProgramController : ControllerBase
     {
         private readonly ICommunityProgramService _programService;
@@ -15,54 +18,53 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
             _programService = programService;
         }
 
-        /// <summary>
-        /// Lấy danh sách chương trình có phân trang và lọc theo tên (nếu có).
-        /// </summary>
-        [HttpGet("paged")]
-        public async Task<IActionResult> GetProgramsPaged([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 12, [FromQuery] string? filterByName = null)
+        // GET: api/CommunityProgram?pageNumber=1&pageSize=10&filterByName=abc
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetProgramsByPage(
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 12,
+            [FromQuery] string? filterByName = null)
         {
             return await _programService.GetCommunityProgramsByPageAsync(pageNumber, pageSize, filterByName);
         }
 
-        /// <summary>
-        /// Lấy chi tiết chương trình theo ID
-        /// </summary>
+        // GET: api/CommunityProgram/{id}
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetProgram(Guid id)
+        [AllowAnonymous]
+        public async Task<IActionResult> GetProgramById(Guid id)
         {
             return await _programService.GetCommunityProgramByIdAsync(id);
         }
 
-        /// <summary>
-        /// Tạo mới chương trình cộng đồng
-        /// </summary>
+        // POST: api/CommunityProgram
         [HttpPost]
-        public async Task<IActionResult> CreateCommunityProgramAsync([FromBody] CommunityProgram program)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> CreateProgram([FromBody] CommunityProgram program)
         {
-            var created = await _programService.CreateCommunityProgramAsync(program);
-            return CreatedAtAction(nameof(GetProgram), new { id = created.Id }, created);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return await _programService.CreateCommunityProgramAsync(program);
         }
 
-        /// <summary>
-        /// Cập nhật chương trình theo ID
-        /// </summary>
+        // PUT: api/CommunityProgram/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCommunityProgram(Guid id, [FromBody] CommunityProgram program)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UpdateProgram(Guid id, [FromBody] CommunityProgram program)
         {
-            var result = await _programService.UpdateCommunityProgramAsync(id, program);
-            if (!result) return NotFound("Không tìm thấy chương trình cần cập nhật.");
-            return Ok("Cập nhật thành công.");
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return await _programService.UpdateCommunityProgramAsync(id, program);
         }
 
-        /// <summary>
-        /// Xóa mềm chương trình theo ID
-        /// </summary>
+        // DELETE: api/CommunityProgram/{id}
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteProgram(Guid id)
         {
-            var result = await _programService.DeleteProgramAsync(id);
-            if (!result) return NotFound("Không tìm thấy chương trình cần xóa.");
-            return Ok("Xóa mềm chương trình thành công.");
+            return await _programService.DeleteProgramAsync(id);
         }
     }
 }

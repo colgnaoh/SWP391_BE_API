@@ -2,6 +2,7 @@
 using DrugPreventionSystemBE.DrugPreventionSystem.Enity;
 using DrugPreventionSystemBE.DrugPreventionSystem.Helpers;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.AuthModel;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.UserSearchModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
@@ -31,11 +32,22 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
             _emailService = emailService;
         }
 
-        public async Task<IEnumerable<User>> GetAllUsersAsync()
+        public async Task<IEnumerable<UserResponseModel>> GetAllUsersAsync()
         {
             return await _context.Users
-                                 //.Where(u => !u.IsDeleted)
-                                 .ToListAsync();
+        .Where(u => !u.IsDeleted)
+        .Select(u => new UserResponseModel
+        {
+            Id = u.Id,
+            FullName = u.FirstName + " " + u.LastName,
+            Email = u.Email,
+            PhoneNumber = u.PhoneNumber,
+            Gender = u.Gender,
+            Dob = u.Dob,
+            ProfilePicUrl = u.ProfilePicUrl,
+            Role = u.Role.ToString()
+        })
+        .ToListAsync();
         }
 
 
@@ -170,9 +182,72 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
             return _context.Users.Any(u => u.Id == id);
         }
 
-        public Task<IEnumerable<User>> SearchUsersAsync(UserSearchModel search)
+
+        public async Task<SearchUserResponseModel> SearchUsersAsync(UserSearchModel search)
         {
-            throw new NotImplementedException();
+            var query = _context.Users.AsQueryable();
+
+            if (!string.IsNullOrEmpty(search.FullName))
+                query = query.Where(u => (u.FirstName + " " + u.LastName).Contains(search.FullName));
+
+            if (!string.IsNullOrEmpty(search.Email))
+                query = query.Where(u => u.Email!.Contains(search.Email));
+
+            if (!string.IsNullOrEmpty(search.PhoneNumber))
+                query = query.Where(u => u.PhoneNumber!.Contains(search.PhoneNumber));
+
+            if (!string.IsNullOrEmpty(search.Gender))
+                query = query.Where(u => u.Gender == search.Gender);
+
+            if (!string.IsNullOrEmpty(search.AgeGroup))
+                query = query.Where(u => u.AgeGroup.ToString() == search.AgeGroup);
+
+            if (search.IsDeleted.HasValue)
+            {
+                query = query.Where(u => u.IsDeleted == search.IsDeleted);
+            }
+            else
+            {
+                query = query.Where(u => !u.IsDeleted); // default behavior
+            }
+
+            var totalCount = await query.CountAsync();
+
+            // Sorting
+            if (!string.IsNullOrEmpty(search.SortBy))
+            {
+                query = search.SortBy switch
+                {
+                    "FirstName" => search.IsDescending ? query.OrderByDescending(u => u.FirstName) : query.OrderBy(u => u.FirstName),
+                    "LastName" => search.IsDescending ? query.OrderByDescending(u => u.LastName) : query.OrderBy(u => u.LastName),
+                    _ => search.IsDescending ? query.OrderByDescending(u => u.CreatedAt) : query.OrderBy(u => u.CreatedAt)
+                };
+            }
+
+            var users = await query.Skip((search.PageNumber - 1) * search.PageSize)
+                                   .Take(search.PageSize)
+                                   .ToListAsync();
+
+            var result = users.Select(u => new UserResponseModel
+            {
+                Id = u.Id,
+                FullName = u.FirstName + " " + u.LastName,
+                Email = u.Email,
+                PhoneNumber = u.PhoneNumber,
+                Gender = u.Gender,
+                Dob = u.Dob,
+                ProfilePicUrl = u.ProfilePicUrl,
+                Role = u.Role.ToString()
+            }).ToList();
+
+            return new SearchUserResponseModel
+            {
+                Success = true,
+                Data = result,
+                TotalCount = totalCount,
+                PageNumber = search.PageNumber,
+                PageSize = search.PageSize
+            };
         }
     }
 }
