@@ -182,3 +182,12 @@ D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Debug\
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Debug\net8.0\DrugPreventionSystemBE.pdb
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Debug\net8.0\DrugPreventionSystemBE.genruntimeconfig.cache
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\obj\Debug\net8.0\ref\DrugPreventionSystemBE.dll
+D:\SWP\SWP391_BE_API\DrugPreventionSystemBE\obj\Debug\net8.0\DrugPreventionSystemBE.csproj.AssemblyReference.cache
+D:\SWP\SWP391_BE_API\DrugPreventionSystemBE\obj\Debug\net8.0\DrugPreventionSystemBE.GeneratedMSBuildEditorConfig.editorconfig
+D:\SWP\SWP391_BE_API\DrugPreventionSystemBE\obj\Debug\net8.0\DrugPreventionSystemBE.csproj.CoreCompileInputs.cache
+D:\SWP\SWP391_BE_API\DrugPreventionSystemBE\obj\Debug\net8.0\DrugPreventionSystemBE.MvcApplicationPartsAssemblyInfo.cs
+D:\SWP\SWP391_BE_API\DrugPreventionSystemBE\obj\Debug\net8.0\DrugPreventionSystemBE.MvcApplicationPartsAssemblyInfo.cache
+D:\SWP\SWP391_BE_API\DrugPreventionSystemBE\obj\Debug\net8.0\DrugPreventionSystemBE.sourcelink.json
+D:\SWP\SWP391_BE_API\DrugPreventionSystemBE\obj\Debug\net8.0\DrugPreventionSystemBE.dll
+D:\SWP\SWP391_BE_API\DrugPreventionSystemBE\obj\Debug\net8.0\refint\DrugPreventionSystemBE.dll
+D:\SWP\SWP391_BE_API\DrugPreventionSystemBE\obj\Debug\net8.0\DrugPreventionSystemBE.pdb

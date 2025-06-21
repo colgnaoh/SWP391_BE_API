@@ -1,16 +1,11 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.Data;
 using DrugPreventionSystemBE.DrugPreventionSystem.Enity;
+using DrugPreventionSystemBE.DrugPreventionSystem.Helpers;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CourseReqModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 {
@@ -33,156 +28,169 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 
             var query = _context.Courses.AsQueryable();
 
+
+
             if (!string.IsNullOrEmpty(filterByName))
             {
                 query = query.Where(b => b.Name != null && EF.Functions.Like(b.Name, $"%{filterByName}%"));
             }
+            var totalCount = await query.CountAsync();
 
             var courses = await query
+                .Where(c => !c.IsDeleted)
                 .OrderBy(c => c.Id)
                 .Skip((safePageNumber - 1) * safePageSize)
                 .Take(safePageSize)
                 .ToListAsync();
+            var totalPages = (int)Math.Ceiling((double)totalCount / safePageSize);
 
             return new OkObjectResult(new GetCoursesByPageResponse
             {
                 Success = true,
-                Data = courses.Select(b => new CourseResponseModel
+                Data = courses.Select(c => new CourseResponseModel
                 {
-                    Id = b.Id,
-                    UserId = (Guid)b.UserId,
-                    CategoryId = b.CategoryId,
-                    Name = b.Name,
-                    Content = b.Content,
-                    Status = b.Status,
-                    TargetAudience = b.TargetAudience,
-                    ImageUrl = b.ImageUrl,
-                    Price = b.Price,
-                    Discount = b.Discount,
-                    Slug = b.Slug
-                }).ToList()
+                    Id = c.Id,
+                    UserId = (Guid)c.UserId,
+                    CategoryId = c.CategoryId,
+                    Name = c.Name,
+                    Content = c.Content,
+                    Status = c.Status,
+                    TargetAudience = c.TargetAudience,
+                    ImageUrl = c.ImageUrl,
+                    Price = c.Price,
+                    Discount = c.Discount,
+                    Slug = c.Slug
+                }).ToList(),
+                TotalCount = totalCount,
+                PageNumber = safePageNumber,
+                PageSize = safePageSize,
+                TotalPages = totalPages
             });
         }
-        public Task<IActionResult> GetCourseByIdAsync(int courseId)
+        public async Task<IActionResult> GetCourseByIdAsync(Guid courseId)
         {
-            throw new NotImplementedException();
+            var course = await _context.Courses
+                 .Where(c => c.Id == courseId)
+                 .FirstOrDefaultAsync();
+
+            if (course == null) return new NotFoundObjectResult("Không tìm thấy khóa học."); ;
+
+            return new OkObjectResult(new CourseResponseModel
+            {
+                Id = course.Id,
+                Name = course.Name,
+                Content = course.Content,
+                ImageUrl = course.ImageUrl,
+                Price = course.Price,
+                Discount = course.Discount,
+                Status = course.Status,
+                TargetAudience = course.TargetAudience
+            });
         }
 
-        public async Task<IActionResult> CreateCourseAsync(CourseCreateRequest request)
+        public async Task<IActionResult> CreateCourseAsync(CourseCreateModel CourseCreateRequest)
         {
-            // Kiểm tra dữ liệu đầu vào
-            if (request == null || string.IsNullOrEmpty(request.Name) || request.CategoryId == Guid.Empty || string.IsNullOrEmpty(request.token))
+            var course = new Course
             {
-                return new BadRequestObjectResult("Dữ liệu đầu vào không hợp lệ");
-            }
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Secret"]);
-            try
+                Id = Guid.NewGuid(),
+                Name = CourseCreateRequest.Name,
+                UserId = Guid.NewGuid(),
+                CategoryId = CourseCreateRequest.CategoryId,
+                Content = CourseCreateRequest.Content,
+                Status = CourseCreateRequest.Status,
+                TargetAudience = CourseCreateRequest.TargetAudience,
+                ImageUrl = CourseCreateRequest.ImageUrl,
+                Price = CourseCreateRequest.Price,
+                Discount = CourseCreateRequest.Discount,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            var baseSlug = string.IsNullOrWhiteSpace(CourseCreateRequest.Slug)
+                ? SlugGeneratorHelper.GenerateSlug(CourseCreateRequest.Name)
+                : SlugGeneratorHelper.GenerateSlug(CourseCreateRequest.Slug);
+
+            course.Slug = await GenerateUniqueSlugAsync(baseSlug);
+
+            _context.Courses.Add(course);
+            await _context.SaveChangesAsync();
+
+            return new OkObjectResult(new CourseResponseModel
             {
-                tokenHandler.ValidateToken(request.token, new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false, // Có thể bật nếu dùng Issuer
-                    ValidateAudience = false, // Có thể bật nếu dùng Audience
-                    ClockSkew = TimeSpan.Zero
-                }, out SecurityToken validatedToken);
-
-                var jwtToken = (JwtSecurityToken)validatedToken;
-                var userId = jwtToken.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-
-                if (string.IsNullOrEmpty(userId) || !Guid.TryParse(userId, out var userIdGuid))
-                {
-                    return new UnauthorizedObjectResult("Token không hợp lệ hoặc không chứa UserId.");
-                }
-
-                // Kiểm tra user tồn tại
-                var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userIdGuid && !u.IsDeleted);
-                if (user == null)
-                {
-                    return new BadRequestObjectResult("Người dùng không tồn tại hoặc đã bị xóa.");
-                }
-
-                // Kiểm tra user đã xác thực email
-                if (!user.IsVerified)
-                {
-                    return new UnauthorizedObjectResult("Tài khoản chưa được xác thực email.");
-                }
-
-                // Kiểm tra quyền (nếu chỉ giáo viên/admin được tạo khóa học)
-                if (user.Role != Enum.Role.Manager && user.Role != Enum.Role.Admin)
-                {
-                    return new ForbidResult("Chỉ nhân viên hoặc admin được phép tạo khóa học.");
-                }
-
-                // Kiểm tra CategoryId
-                var categoryExists = await _context.Categories.AnyAsync(c => c.Id == request.CategoryId && !c.IsDeleted);
-                if (!categoryExists)
-                {
-                    return new BadRequestObjectResult("Danh mục không tồn tại hoặc đã bị xóa.");
-                }
-
-                // Kiểm tra giá và giảm giá
-                if (request.Price.HasValue && request.Price < 0)
-                {
-                    return new BadRequestObjectResult("Giá khóa học không được âm.");
-                }
-                if (request.Discount.HasValue && (request.Discount < 0 || (request.Price.HasValue && request.Discount > request.Price)))
-                {
-                    return new BadRequestObjectResult("Giảm giá không hợp lệ.");
-                }
-
-                // Tạo entity Course
-                var course = new Course
-                {
-                    //Id = Guid.NewGuid(),
-                    //Name = request.Name,
-                    //UserId = userIdGuid, // Lấy từ token
-                    //CategoryId = request.CategoryId,
-                    //Content = request.Content,
-                    //Status = request.Status,
-                    //TargetAudience = request.,
-                    //Price = request.Price,
-                    //Discount = request.Discount,
-                    //CreatedAt = DateTime.UtcNow,
-                    //UpdatedAt = DateTime.UtcNow,
-                    //IsDeleted = false,
-                    //CourseImgUrl = request.CourseImgUrl
-                };
-
-                // Lưu vào database
-                try
-                {
-                    _context.Courses.Add(course);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateException ex)
-                {
-                    return new ObjectResult($"Lỗi khi lưu khóa học: {ex.Message}") { StatusCode = 500 };
-                }
-
-                // Trả về response theo phong cách AuthenticationService
-                return new OkObjectResult(new
-                {
-                    Success = true,
-                    Message = "Tạo khóa học thành công.",
-                    Data = new
-                    {
-                        CourseId = course.Id,
-                        Name = course.Name,
-                        CreatedAt = course.CreatedAt,
-                        UserId = course.UserId
-                    }
-                });
-            }
-            catch (SecurityTokenException ex)
-            {
-                return new UnauthorizedObjectResult($"Token không hợp lệ: {ex.Message}");
-            }
-            catch (Exception ex)
-            {
-                return new ObjectResult($"Lỗi hệ thống: {ex.Message}") { StatusCode = 500 };
-            }
+                Id = course.Id,
+                Name = course.Name,
+                Content = course.Content,
+                ImageUrl = course.ImageUrl,
+                Price = course.Price,
+                Discount = course.Discount,
+                Status = course.Status,
+                TargetAudience = course.TargetAudience
+            });
         }
+
+        public async Task<IActionResult> UpdateCourseAsync(CourseUpdateModel model)
+        {
+            var course = await _context.Courses
+                .FirstOrDefaultAsync(c => c.Id == model.Id && !c.IsDeleted);
+
+            if (course == null) return new NotFoundObjectResult("Không tìm thấy khóa học.");
+
+            course.Name = model.Name;
+            course.UserId = Guid.NewGuid();
+            course.CategoryId = model.CategoryId;
+            course.Content = model.Content;
+            course.Status = model.Status;
+            course.TargetAudience = model.TargetAudience;
+            course.ImageUrl = model.ImageUrl;
+            course.Price = model.Price;
+            course.Discount = model.Discount;
+            course.UpdatedAt = DateTime.UtcNow;
+
+            var desiredSlug = string.IsNullOrWhiteSpace(model.Slug)
+                ? SlugGeneratorHelper.GenerateSlug(model.Name)
+                : SlugGeneratorHelper.GenerateSlug(model.Slug);
+
+            if (course.Slug != desiredSlug)
+            {
+                course.Slug = await GenerateUniqueSlugAsync(desiredSlug, course.Id);
+            }
+
+            _context.Courses.Update(course);
+            await _context.SaveChangesAsync();
+            return new OkObjectResult("Cập nhật blog thành công.");
+        }
+
+        public async Task<IActionResult> SoftDeleteCourseAsync(Guid CourseId)
+        {
+            var course = await _context.Blogs.FindAsync(CourseId);
+            if (course == null || course.IsDeleted)
+            {
+                return new NotFoundResult();
+            }
+
+            course.IsDeleted = true;
+            course.UpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+            return new OkObjectResult("Khóa học soft-deleted successfully.");
+        }
+
+        // --- Slug Deduplication ---
+        private async Task<string> GenerateUniqueSlugAsync(string baseSlug, Guid? excludeId = null)
+        {
+            var slug = baseSlug;
+            var suffix = 1;
+
+            while (await _context.Courses.AnyAsync(c =>
+                c.Slug == slug &&
+                !c.IsDeleted &&
+                (excludeId == null || c.Id != excludeId)))
+            {
+                slug = $"{baseSlug}-{suffix++}";
+            }
+
+            return slug;
+        }
+
+
     }
 }

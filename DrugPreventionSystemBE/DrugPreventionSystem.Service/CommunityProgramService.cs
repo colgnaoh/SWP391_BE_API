@@ -2,6 +2,7 @@
 using DrugPreventionSystemBE.DrugPreventionSystem.Enity;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CommunityProgramResModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel;
+using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,25 +19,25 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
 
         public async Task<IActionResult> GetCommunityProgramsByPageAsync(int pageNumber, int pageSize, string? filterByName)
         {
-            // Ensure safe values
             var safePageNumber = pageNumber < 1 ? 1 : pageNumber;
             var safePageSize = pageSize < 1 ? 12 : pageSize;
 
             var query = _context.Programs.AsQueryable();
 
-            // Optional filtering
             if (!string.IsNullOrEmpty(filterByName))
             {
                 query = query.Where(p => p.Name != null && EF.Functions.Like(p.Name, $"%{filterByName}%"));
             }
+
             var totalCount = await query.CountAsync();
 
             var programs = await query
-                .Where(p => !p.IsDeleted) // Optional soft-delete filter
+                .Where(p => !p.IsDeleted)
                 .OrderBy(p => p.Id)
                 .Skip((safePageNumber - 1) * safePageSize)
                 .Take(safePageSize)
                 .ToListAsync();
+
             var totalPages = (int)Math.Ceiling((double)totalCount / safePageSize);
 
             return new OkObjectResult(new GetProgramsByPageResponse
@@ -88,7 +89,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
             });
         }
 
-
         public async Task<CommunityProgram> CreateCommunityProgramAsync(CommunityProgram program)
         {
             program.Id = Guid.NewGuid();
@@ -119,47 +119,11 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
             var program = await _context.Programs.FindAsync(id);
             if (program == null) return false;
 
-            program.IsDeleted = true; //Soft delete
+            program.IsDeleted = true;
             _context.Programs.Update(program);
-
             await _context.SaveChangesAsync();
+
             return true;
-        }
-
-
-        Task<IEnumerable<CommunityProgram>> ICommunityProgramService.GetAllProgramsAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<CommunityProgram?> ICommunityProgramService.GetProgramByIdAsync(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<CommunityProgram> CreateProgramAsync(Program program)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> UpdateProgramAsync(Guid id, Program updatedProgram)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<CommunityProgram> CreateCommunityProgramAsync(Program program)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> UpdateCommunityProgramAsync(Guid id, Program updatedProgram)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<CommunityProgram> ICommunityProgramService.CreateCommunityProgramAsync(CommunityProgram program)
-        {
-            throw new NotImplementedException();
         }
     }
 }
