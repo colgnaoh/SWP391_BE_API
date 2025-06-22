@@ -17,7 +17,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
         }
 
         [HttpPost("create")]
-        [Authorize]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> CreateCategoryAsync([FromBody] CreateCategoryRequest request)
         {
             return await _categoryService.CreateCategoryAsync(request);

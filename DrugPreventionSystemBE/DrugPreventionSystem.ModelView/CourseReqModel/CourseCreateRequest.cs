@@ -8,8 +8,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CourseReqModel
         [Required]
         public string? Name { get; set; }
         [Required]
-        public string? token { get; set; }
-        [Required]
         public Guid CategoryId { get; set; }
         public string? Content { get; set; }
         [Required]

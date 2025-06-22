@@ -39,7 +39,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
 
         // POST: api/Course
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> CreateCourse([FromBody] CourseCreateModel request)
         {
             if (!ModelState.IsValid)
@@ -50,7 +50,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
 
         // PUT: api/Course
         [HttpPut]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> UpdateCourse([FromBody] CourseUpdateModel request)
         {
             if (!ModelState.IsValid)
@@ -61,7 +61,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
 
         // DELETE: api/Course/{id}
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> SoftDeleteCourse(Guid id)
         {
             return await _courseService.SoftDeleteCourseAsync(id);

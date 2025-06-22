@@ -109,7 +109,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 {
                     Id = Guid.NewGuid(),
                     Name = CourseCreateRequest.Name,
-                    UserId = Guid.NewGuid(), // TODO: Replace with actual user ID (from token?)
+                    UserId = Guid.NewGuid(), 
                     CategoryId = CourseCreateRequest.CategoryId,
                     Content = CourseCreateRequest.Content,
                     Status = CourseCreateRequest.Status,
