@@ -6,6 +6,7 @@ using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 {
@@ -13,11 +14,13 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
     {
         private readonly DrugPreventionDbContext _context;
         private readonly IConfiguration _configuration;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public CourseService(DrugPreventionDbContext context, IConfiguration configuration)
+        public CourseService(DrugPreventionDbContext context, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _configuration = configuration;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<IActionResult> GetCoursesByPageAsync(int pageNumber, int pageSize, string? filterByName)
@@ -103,13 +106,24 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 
         public async Task<IActionResult> CreateCourseAsync(CourseCreateModel CourseCreateRequest)
         {
+            var userPrincipal = _httpContextAccessor.HttpContext?.User;
+            if (userPrincipal == null)
+            {
+                return new UnauthorizedResult();
+            }
+            var userIdClaim = userPrincipal.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (userIdClaim == null || !Guid.TryParse(userIdClaim.Value, out Guid userId))
+            {
+                return new BadRequestObjectResult("Không tìm thấy ID người dùng.");
+            }
             try
             {
                 var course = new Course
                 {
                     Id = Guid.NewGuid(),
                     Name = CourseCreateRequest.Name,
-                    UserId = Guid.NewGuid(), 
+                    UserId = userId, // Fixed: Assigning the parsed Guid value
                     CategoryId = CourseCreateRequest.CategoryId,
                     Content = CourseCreateRequest.Content,
                     Status = CourseCreateRequest.Status,
