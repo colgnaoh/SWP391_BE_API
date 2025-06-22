@@ -131,7 +131,9 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     ImageUrl = CourseCreateRequest.ImageUrl,
                     Price = CourseCreateRequest.Price,
                     Discount = CourseCreateRequest.Discount,
-                    CreatedAt = DateTime.UtcNow
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow,
+                    IsDeleted = false
                 };
 
                 var baseSlug = string.IsNullOrWhiteSpace(CourseCreateRequest.Slug)

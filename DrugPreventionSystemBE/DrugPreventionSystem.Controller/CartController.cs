@@ -17,7 +17,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
         }
 
         [Authorize]
-        [HttpPost("add")]
+        [HttpPost("addCourse")]
         public async Task<IActionResult> AddCourseToCartAsync([FromBody] AddToCartRequest request)
         {
             if (request == null)
