@@ -3,19 +3,19 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CourseReqModel
 {
-    public class CourseCreateRequest
+    public class CourseCreateModel
     {
         [Required]
         public string? Name { get; set; }
         [Required]
-        public string token { get; set; }
+        public string? token { get; set; }
         [Required]
         public Guid CategoryId { get; set; }
         public string? Content { get; set; }
         [Required]
         public CourseStatus Status { get; set; }
         [Required]
-        public targetAudience TargetAudience { get; set; } 
+        public targetAudience TargetAudience { get; set; }
         public string? VideoUrl { get; set; }
         public string? ImageUrl { get; set; }
         public decimal? Price { get; set; }
@@ -24,5 +24,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CourseReqModel
         public DateTime? UpdatedAt { get; set; }
         public bool IsDeleted { get; set; } = false;
         public string? CourseImgUrl { get; set; }
+        public string? Slug { get; set; }
     }
 }

@@ -2,15 +2,15 @@
 {
     public class UserSearchModel
     {
-        // Pagination
-        public int PageNum { get; set; } = 1;
-        public int PageSize { get; set; } = 10;
-
-        // Search filters
-        public string? Keyword { get; set; }
-        public List<string>? Role { get; set; }
-        public bool? IsVerified { get; set; }
-        public bool? Status { get; set; }
+        public string? FullName { get; set; }
+        public string? Email { get; set; }
+        public string? PhoneNumber { get; set; }
+        public string? Gender { get; set; }
+        public string? AgeGroup { get; set; }
         public bool? IsDeleted { get; set; }
+        public int PageNumber { get; set; } = 1;
+        public int PageSize { get; set; } = 10;
+        public string? SortBy { get; set; } = "CreatedAt"; //default
+        public bool IsDescending { get; set; } = true;
     }
 }
