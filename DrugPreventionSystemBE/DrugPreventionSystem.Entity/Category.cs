@@ -1,6 +1,6 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.Core;
 
-namespace DrugPreventionSystemBE.DrugPreventionSystem.Enity
+namespace DrugPreventionSystemBE.DrugPreventionSystem.Entity
 {
     public class Category : BaseEnity
     {

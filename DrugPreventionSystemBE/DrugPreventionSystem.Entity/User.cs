@@ -3,7 +3,7 @@
 using DrugPreventionSystemBE.DrugPreventionSystem.Entity;
 using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
 
-namespace DrugPreventionSystemBE.DrugPreventionSystem.Enity
+namespace DrugPreventionSystemBE.DrugPreventionSystem.Entity
 {
     public class User : BaseEnity
     {

@@ -1,5 +1,5 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.Core;
-using DrugPreventionSystemBE.DrugPreventionSystem.Enity;
+using DrugPreventionSystemBE.DrugPreventionSystem.Entity;
 
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Entity
 {

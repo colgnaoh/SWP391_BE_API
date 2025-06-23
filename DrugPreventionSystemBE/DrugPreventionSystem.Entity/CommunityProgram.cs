@@ -1,7 +1,7 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.Core;
 using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
 
-namespace DrugPreventionSystemBE.DrugPreventionSystem.Enity
+namespace DrugPreventionSystemBE.DrugPreventionSystem.Entity
 {
     public class CommunityProgram : BaseEnity
     {

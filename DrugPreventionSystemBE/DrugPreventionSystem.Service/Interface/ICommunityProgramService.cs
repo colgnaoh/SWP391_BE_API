@@ -1,4 +1,4 @@
-﻿using DrugPreventionSystemBE.DrugPreventionSystem.Enity;
+﻿using DrugPreventionSystemBE.DrugPreventionSystem.Entity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;

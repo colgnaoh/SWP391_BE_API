@@ -11,9 +11,13 @@
 </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\**" />
     <Compile Remove="ResponeFormat\**" />
+    <Content Remove="Migrations\**" />
     <Content Remove="ResponeFormat\**" />
+    <EmbeddedResource Remove="Migrations\**" />
     <EmbeddedResource Remove="ResponeFormat\**" />
+    <None Remove="Migrations\**" />
     <None Remove="ResponeFormat\**" />
   </ItemGroup>
 

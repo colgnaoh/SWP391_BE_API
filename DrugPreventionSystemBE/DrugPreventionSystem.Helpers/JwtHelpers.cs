@@ -1,12 +1,11 @@
 ﻿namespace DrugPreventionSystemBE.DrugPreventionSystem.Helpers
 {
-    using DrugPreventionSystemBE.DrugPreventionSystem.Enity;
+    using DrugPreventionSystemBE.DrugPreventionSystem.Entity;
     using Microsoft.IdentityModel.Tokens;
     using System.IdentityModel.Tokens.Jwt;
     using System.Security.Claims;
     using System.Text;
     using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
-    using DrugPreventionSystemBE.DrugPreventionSystem.Enity;
 
     public class JwtHelpers
     {

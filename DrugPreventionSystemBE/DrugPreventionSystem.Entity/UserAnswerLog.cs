@@ -1,4 +1,4 @@
-﻿using DrugPreventionSystemBE.DrugPreventionSystem.Enity;
+﻿using DrugPreventionSystemBE.DrugPreventionSystem.Entity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

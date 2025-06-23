@@ -56,341 +56,6 @@ namespace DrugPreventionSystemBE.Migrations
                     b.ToTable("AnswerOptions");
                 });
 
-            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Enity.Category", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Enity.CommunityProgram", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProgramImgUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Type")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Programs");
-                });
-
-            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Enity.Course", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("CategoryId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("CommunityProgramId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal?>("Discount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal?>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Slug")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TargetAudience")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("CommunityProgramId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Courses");
-                });
-
-            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Enity.Lesson", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("CourseId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("FullTime")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LessonType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("PositionOrder")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("SessionId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("VideoUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CourseId");
-
-                    b.HasIndex("SessionId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Lessons");
-                });
-
-            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Enity.Session", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("CourseId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PositionOrder")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Slug")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CourseId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Sessions");
-                });
-
-            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Enity.SurveyResult", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("CompletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid?>("ProgramId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("RiskLevel")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("SurveyId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int?>("TotalScore")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProgramId");
-
-                    b.HasIndex("SurveyId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("SurveyResults");
-                });
-
-            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Enity.User", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AgeGroup")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("Dob")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Gender")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsVerified")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PasswordResetToken")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProfilePicUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ResetTokenExpires")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("VerificationToken")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("VerificationTokenExpires")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
-                });
-
             modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Blog", b =>
                 {
                     b.Property<Guid>("Id")
@@ -466,6 +131,70 @@ namespace DrugPreventionSystemBE.Migrations
                     b.ToTable("Carts");
                 });
 
+            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Category", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.CommunityProgram", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProgramImgUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Programs");
+                });
+
             modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Consultants", b =>
                 {
                     b.Property<Guid>("Id")
@@ -507,6 +236,121 @@ namespace DrugPreventionSystemBE.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Consultants");
+                });
+
+            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Course", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CommunityProgramId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal?>("Discount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Slug")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TargetAudience")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("CommunityProgramId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Courses");
+                });
+
+            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Lesson", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("CourseId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("FullTime")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LessonType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("PositionOrder")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("SessionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("VideoUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("SessionId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Lessons");
                 });
 
             modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Order", b =>
@@ -647,6 +491,162 @@ namespace DrugPreventionSystemBE.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Reviews");
+                });
+
+            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Session", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("CourseId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PositionOrder")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Slug")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Sessions");
+                });
+
+            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.SurveyResult", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("ProgramId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("RiskLevel")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("SurveyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int?>("TotalScore")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProgramId");
+
+                    b.HasIndex("SurveyId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("SurveyResults");
+                });
+
+            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AgeGroup")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Dob")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Gender")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsVerified")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PasswordResetToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProfilePicUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ResetTokenExpires")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("VerificationToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("VerificationTokenExpires")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Question", b =>
@@ -807,87 +807,9 @@ namespace DrugPreventionSystemBE.Migrations
                     b.Navigation("Question");
                 });
 
-            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Enity.Course", b =>
-                {
-                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Enity.Category", "Category")
-                        .WithMany("Courses")
-                        .HasForeignKey("CategoryId");
-
-                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Enity.CommunityProgram", null)
-                        .WithMany("Courses")
-                        .HasForeignKey("CommunityProgramId");
-
-                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Enity.User", "User")
-                        .WithMany("CreatedCourses")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Category");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Enity.Lesson", b =>
-                {
-                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Enity.Course", "Course")
-                        .WithMany("Lessons")
-                        .HasForeignKey("CourseId");
-
-                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Enity.Session", "Session")
-                        .WithMany("Lessons")
-                        .HasForeignKey("SessionId");
-
-                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Enity.User", "User")
-                        .WithMany("CreatedLessons")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Course");
-
-                    b.Navigation("Session");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Enity.Session", b =>
-                {
-                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Enity.Course", "Course")
-                        .WithMany("Sessions")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Enity.User", "User")
-                        .WithMany("CreatedSessions")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Course");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Enity.SurveyResult", b =>
-                {
-                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Enity.CommunityProgram", "Program")
-                        .WithMany("SurveyResults")
-                        .HasForeignKey("ProgramId");
-
-                    b.HasOne("Survey", "Survey")
-                        .WithMany("SurveyResults")
-                        .HasForeignKey("SurveyId");
-
-                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Enity.User", "User")
-                        .WithMany("SurveyResults")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Program");
-
-                    b.Navigation("Survey");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Blog", b =>
                 {
-                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Enity.User", "User")
+                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Entity.User", "User")
                         .WithMany("Blogs")
                         .HasForeignKey("UserId");
 
@@ -896,11 +818,11 @@ namespace DrugPreventionSystemBE.Migrations
 
             modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Cart", b =>
                 {
-                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Enity.Course", "Course")
+                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Course", "Course")
                         .WithMany("Carts")
                         .HasForeignKey("CourseId");
 
-                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Enity.User", "User")
+                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Entity.User", "User")
                         .WithMany("Carts")
                         .HasForeignKey("UserId");
 
@@ -911,9 +833,49 @@ namespace DrugPreventionSystemBE.Migrations
 
             modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Consultants", b =>
                 {
-                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Enity.User", "User")
+                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Entity.User", "User")
                         .WithMany("ConsultantProfiles")
                         .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Course", b =>
+                {
+                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Category", "Category")
+                        .WithMany("Courses")
+                        .HasForeignKey("CategoryId");
+
+                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Entity.CommunityProgram", null)
+                        .WithMany("Courses")
+                        .HasForeignKey("CommunityProgramId");
+
+                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Entity.User", "User")
+                        .WithMany("CreatedCourses")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Category");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Lesson", b =>
+                {
+                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Course", "Course")
+                        .WithMany("Lessons")
+                        .HasForeignKey("CourseId");
+
+                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Session", "Session")
+                        .WithMany("Lessons")
+                        .HasForeignKey("SessionId");
+
+                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Entity.User", "User")
+                        .WithMany("CreatedLessons")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Session");
 
                     b.Navigation("User");
                 });
@@ -944,7 +906,7 @@ namespace DrugPreventionSystemBE.Migrations
 
             modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Payment", b =>
                 {
-                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Enity.User", "User")
+                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Entity.User", "User")
                         .WithMany("Payments")
                         .HasForeignKey("UserId");
 
@@ -953,15 +915,53 @@ namespace DrugPreventionSystemBE.Migrations
 
             modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Review", b =>
                 {
-                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Enity.Course", "Course")
+                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Course", "Course")
                         .WithMany("Reviews")
                         .HasForeignKey("CourseId");
 
-                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Enity.User", "User")
+                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Entity.User", "User")
                         .WithMany("Reviews")
                         .HasForeignKey("UserId");
 
                     b.Navigation("Course");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Session", b =>
+                {
+                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Course", "Course")
+                        .WithMany("Sessions")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Entity.User", "User")
+                        .WithMany("CreatedSessions")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Course");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.SurveyResult", b =>
+                {
+                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Entity.CommunityProgram", "Program")
+                        .WithMany("SurveyResults")
+                        .HasForeignKey("ProgramId");
+
+                    b.HasOne("Survey", "Survey")
+                        .WithMany("SurveyResults")
+                        .HasForeignKey("SurveyId");
+
+                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Entity.User", "User")
+                        .WithMany("SurveyResults")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Program");
+
+                    b.Navigation("Survey");
 
                     b.Navigation("User");
                 });
@@ -977,11 +977,11 @@ namespace DrugPreventionSystemBE.Migrations
 
             modelBuilder.Entity("Transaction", b =>
                 {
-                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Enity.User", "Consultant")
+                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Entity.User", "Consultant")
                         .WithMany("Transactions")
                         .HasForeignKey("ConsultantId");
 
-                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Enity.Course", "Course")
+                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Course", "Course")
                         .WithMany("Transactions")
                         .HasForeignKey("CourseId");
 
@@ -989,7 +989,7 @@ namespace DrugPreventionSystemBE.Migrations
                         .WithMany("Transactions")
                         .HasForeignKey("PaymentId");
 
-                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Enity.CommunityProgram", "Program")
+                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Entity.CommunityProgram", "Program")
                         .WithMany("Transactions")
                         .HasForeignKey("ProgramId");
 
@@ -1008,7 +1008,7 @@ namespace DrugPreventionSystemBE.Migrations
                         .WithMany("UserAnswerLogs")
                         .HasForeignKey("AnswerOptionId");
 
-                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Enity.CommunityProgram", "Program")
+                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Entity.CommunityProgram", "Program")
                         .WithMany("UserAnswerLogs")
                         .HasForeignKey("ProgramId");
 
@@ -1016,7 +1016,7 @@ namespace DrugPreventionSystemBE.Migrations
                         .WithMany("UserAnswerLogs")
                         .HasForeignKey("QuestionId");
 
-                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Enity.SurveyResult", "SurveyResult")
+                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Entity.SurveyResult", "SurveyResult")
                         .WithMany("UserAnswerLogs")
                         .HasForeignKey("SurveyResultId");
 
@@ -1034,12 +1034,17 @@ namespace DrugPreventionSystemBE.Migrations
                     b.Navigation("UserAnswerLogs");
                 });
 
-            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Enity.Category", b =>
+            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Cart", b =>
+                {
+                    b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Category", b =>
                 {
                     b.Navigation("Courses");
                 });
 
-            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Enity.CommunityProgram", b =>
+            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.CommunityProgram", b =>
                 {
                     b.Navigation("Courses");
 
@@ -1050,7 +1055,7 @@ namespace DrugPreventionSystemBE.Migrations
                     b.Navigation("UserAnswerLogs");
                 });
 
-            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Enity.Course", b =>
+            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Course", b =>
                 {
                     b.Navigation("Carts");
 
@@ -1063,17 +1068,27 @@ namespace DrugPreventionSystemBE.Migrations
                     b.Navigation("Transactions");
                 });
 
-            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Enity.Session", b =>
+            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Order", b =>
+                {
+                    b.Navigation("OrderDetails");
+                });
+
+            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Payment", b =>
+                {
+                    b.Navigation("Transactions");
+                });
+
+            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Session", b =>
                 {
                     b.Navigation("Lessons");
                 });
 
-            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Enity.SurveyResult", b =>
+            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.SurveyResult", b =>
                 {
                     b.Navigation("UserAnswerLogs");
                 });
 
-            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Enity.User", b =>
+            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.User", b =>
                 {
                     b.Navigation("Blogs");
 
@@ -1093,21 +1108,6 @@ namespace DrugPreventionSystemBE.Migrations
 
                     b.Navigation("SurveyResults");
 
-                    b.Navigation("Transactions");
-                });
-
-            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Cart", b =>
-                {
-                    b.Navigation("Orders");
-                });
-
-            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Order", b =>
-                {
-                    b.Navigation("OrderDetails");
-                });
-
-            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Payment", b =>
-                {
                     b.Navigation("Transactions");
                 });
 

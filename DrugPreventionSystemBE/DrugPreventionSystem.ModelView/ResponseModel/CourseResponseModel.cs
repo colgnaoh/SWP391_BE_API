@@ -1,4 +1,4 @@
-﻿using DrugPreventionSystemBE.DrugPreventionSystem.Enity;
+﻿using DrugPreventionSystemBE.DrugPreventionSystem.Entity;
 using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
 
 namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel

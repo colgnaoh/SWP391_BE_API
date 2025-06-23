@@ -1,0 +1,625 @@
+[
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.AuthController",
+    "Method": "Login",
+    "RelativePath": "api/auth",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.AuthModel.LoginRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.AuthController",
+    "Method": "ConfirmEmail",
+    "RelativePath": "api/auth/confirm-email",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "token",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.AuthController",
+    "Method": "Register",
+    "RelativePath": "api/auth/register",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.AuthModel.UserRegisterRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.AuthController",
+    "Method": "RequestPasswordReset",
+    "RelativePath": "api/auth/request-password-reset",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.AuthModel.ForgotPasswordRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.AuthController",
+    "Method": "ResendToken",
+    "RelativePath": "api/auth/resend-token",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.AuthModel.ResendTokenRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.AuthController",
+    "Method": "ResetPassword",
+    "RelativePath": "api/auth/reset-password",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.AuthModel.ResetPasswordRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.BlogController",
+    "Method": "GetBlogsByPageAsync",
+    "RelativePath": "api/blog",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pageNumber",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "filterByContent",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.BlogController",
+    "Method": "GetBlogById",
+    "RelativePath": "api/blog/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.BlogController",
+    "Method": "UpdateBlog",
+    "RelativePath": "api/blog/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.BlogReqModel.UpdateBlogRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.BlogController",
+    "Method": "SoftDeleteBlog",
+    "RelativePath": "api/blog/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.BlogController",
+    "Method": "CreateBlogAsync",
+    "RelativePath": "api/blog/create",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.BlogReqModel.CreateBlogRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.BlogController",
+    "Method": "GetBlogsByUser",
+    "RelativePath": "api/blog/user/{userId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "pageNumber",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.CartController",
+    "Method": "AddCourseToCartAsync",
+    "RelativePath": "api/cart/addCourse",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CourseReqModel.AddToCartRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.CartController",
+    "Method": "GetUserCartAsync",
+    "RelativePath": "api/cart/myCart",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.CategoryController",
+    "Method": "ListCategories",
+    "RelativePath": "api/category",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.CategoryController",
+    "Method": "CreateCategoryAsync",
+    "RelativePath": "api/category/create",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CategoryReqModel.CreateCategoryRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.CommunityProgramController",
+    "Method": "GetProgramsByPage",
+    "RelativePath": "api/CommunityProgram",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pageNumber",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "filterByName",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.CommunityProgramController",
+    "Method": "CreateProgram",
+    "RelativePath": "api/CommunityProgram",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "program",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.Entity.CommunityProgram",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.CommunityProgramController",
+    "Method": "GetProgramById",
+    "RelativePath": "api/CommunityProgram/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.CommunityProgramController",
+    "Method": "UpdateProgram",
+    "RelativePath": "api/CommunityProgram/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "program",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.Entity.CommunityProgram",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.CommunityProgramController",
+    "Method": "DeleteProgram",
+    "RelativePath": "api/CommunityProgram/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.CourseController",
+    "Method": "GetCoursesByPage",
+    "RelativePath": "api/Course",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pageNumber",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "filterByName",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.CourseController",
+    "Method": "CreateCourse",
+    "RelativePath": "api/Course",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CourseReqModel.CourseCreateModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.CourseController",
+    "Method": "UpdateCourse",
+    "RelativePath": "api/Course",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CourseReqModel.CourseUpdateModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.CourseController",
+    "Method": "GetCourseById",
+    "RelativePath": "api/Course/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.CourseController",
+    "Method": "SoftDeleteCourse",
+    "RelativePath": "api/Course/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.ReviewController",
+    "Method": "GetAll",
+    "RelativePath": "api/Review",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.ReviewController",
+    "Method": "Create",
+    "RelativePath": "api/Review",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ReviewReqModel.CreateReviewReqModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.ReviewController",
+    "Method": "GetById",
+    "RelativePath": "api/Review/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.ReviewController",
+    "Method": "Update",
+    "RelativePath": "api/Review/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ReviewReqModel.UpdateReviewReqModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.ReviewController",
+    "Method": "Delete",
+    "RelativePath": "api/Review/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.Controllers.TestController",
+    "Method": "Get",
+    "RelativePath": "api/Test",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.UserController",
+    "Method": "GetAllUsers",
+    "RelativePath": "api/User",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.UserController",
+    "Method": "GetUserById",
+    "RelativePath": "api/User/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.UserController",
+    "Method": "DeleteUser",
+    "RelativePath": "api/User/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.UserController",
+    "Method": "UpdateUserProfile",
+    "RelativePath": "api/User/profile",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.AuthModel.UserProfileUpdateRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.UserController",
+    "Method": "SearchUsers",
+    "RelativePath": "api/User/search",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "search",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.UserSearchModel.UserSearchModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

@@ -1,7 +1,8 @@
-﻿using DrugPreventionSystemBE.DrugPreventionSystem.Enity;
+﻿//using DrugPreventionSystemBE.DrugPreventionSystem.Enity;
 using DrugPreventionSystemBE.DrugPreventionSystem.Entity;
 using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Newtonsoft.Json;
 using System;
@@ -11,36 +12,36 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Data
 {
     public class DrugPreventionDbContext : DbContext
     {
-        
-            // Constructor nhận options, dùng để config chuỗi kết nối
-            public DrugPreventionDbContext(DbContextOptions<DrugPreventionDbContext> options)
-                : base(options)
-            {
-            }
 
-            // Khai báo Entities
-            public DbSet<User> Users { get; set; }
-            public DbSet<CommunityProgram> Programs { get; set; }
-            public DbSet<Course> Courses { get; set; }
-            public DbSet<Category> Categories { get; set; }
-            public DbSet<Blog> Blogs { get; set; }
-    
-            public DbSet<Session> Sessions { get; set; }
-            public DbSet<Lesson> Lessons { get; set; }
-            public DbSet<Review> Reviews { get; set; }
+        // Constructor nhận options, dùng để config chuỗi kết nối
+        public DrugPreventionDbContext(DbContextOptions<DrugPreventionDbContext> options)
+            : base(options)
+        {
+        }
 
-            public DbSet<Cart> Carts { get; set; }
-            public DbSet<Order> Orders { get; set; }
-            public DbSet<OrderDetail> OrderDetails { get; set; }
+        // Khai báo Entities
+        public DbSet<User> Users { get; set; }
+        public DbSet<CommunityProgram> Programs { get; set; }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Blog> Blogs { get; set; }
 
-            public DbSet<Survey> Surveys { get; set; }
-            public DbSet<Question> Questions { get; set; }
-            public DbSet<AnswerOption> AnswerOptions { get; set; }
-            public DbSet<SurveyResult> SurveyResults { get; set; }
-            public DbSet<UserAnswerLog> UserAnswerLogs { get; set; }
+        public DbSet<Session> Sessions { get; set; }
+        public DbSet<Lesson> Lessons { get; set; }
+        public DbSet<Review> Reviews { get; set; }
 
-            public DbSet<Payment> Payments { get; set; }
-            public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<Cart> Carts { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
+
+        public DbSet<Survey> Surveys { get; set; }
+        public DbSet<Question> Questions { get; set; }
+        public DbSet<AnswerOption> AnswerOptions { get; set; }
+        public DbSet<SurveyResult> SurveyResults { get; set; }
+        public DbSet<UserAnswerLog> UserAnswerLogs { get; set; }
+
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
 
 
 
@@ -73,9 +74,13 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Data
             modelBuilder.Entity<Consultants>()
                 .Property(con => con.Qualifications)
                 .HasConversion(
-                    v => JsonConvert.SerializeObject(v), // Chuyển List<string> sang JSON string
-                    v => JsonConvert.DeserializeObject<List<string>>(v) ?? new List<string>() // Chuyển JSON string ngược lại List<string>
-                );
+                    v => JsonConvert.SerializeObject(v),
+                    v => JsonConvert.DeserializeObject<List<string>>(v) ?? new List<string>()
+                )
+                .Metadata.SetValueComparer(new ValueComparer<ICollection<string>>(
+                    (c1, c2) => c1.OrderBy(s => s).SequenceEqual(c2.OrderBy(s => s)),
+                    c => c.Aggregate(0, (hash, s) => HashCode.Combine(hash, s.GetHashCode()))
+                ));
             //----------------------------------------------------------------------- dưới đây Khôi cấu hình các quan hệ bản trong DbContext này
             // Cấu hình mối quan hệ (Relationships)
 
@@ -159,7 +164,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Data
             // OrderDetail - Transaction
             modelBuilder.Entity<OrderDetail>()
                 .HasOne(od => od.Transaction)
-                .WithMany(t => t.OrderDetails) 
+                .WithMany(t => t.OrderDetails)
                 .HasForeignKey(od => od.TransactionId)
                 .IsRequired(false);
 
@@ -230,7 +235,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Data
             modelBuilder.Entity<SurveyResult>()
                 .HasOne(sr => sr.Program)
                 .WithMany(cp => cp.SurveyResults)
-                .HasForeignKey(sr => sr.ProgramId) 
+                .HasForeignKey(sr => sr.ProgramId)
                 .IsRequired(false);
 
             // UserAnswerLog - SurveyResult
@@ -250,34 +255,34 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Data
             // UserAnswerLog - AnswerOption
             modelBuilder.Entity<UserAnswerLog>()
                 .HasOne(ual => ual.AnswerOption)
-                .WithMany(ao => ao.UserAnswerLogs) 
+                .WithMany(ao => ao.UserAnswerLogs)
                 .HasForeignKey(ual => ual.AnswerOptionId)
                 .IsRequired(false);
 
             // UserAnswerLog - CommunityProgram 
             modelBuilder.Entity<UserAnswerLog>()
                 .HasOne(ual => ual.Program)
-                .WithMany(cp => cp.UserAnswerLogs) 
-                .HasForeignKey(ual => ual.ProgramId) 
+                .WithMany(cp => cp.UserAnswerLogs)
+                .HasForeignKey(ual => ual.ProgramId)
                 .IsRequired(false);
 
             // Transaction - Consultants
             modelBuilder.Entity<Transaction>()
                 .HasOne(t => t.Consultant)
-                .WithMany(con => con.Transactions) 
+                .WithMany(con => con.Transactions)
                 .HasForeignKey(t => t.ConsultantId)
                 .IsRequired(false);
 
             // Transaction - Course
             modelBuilder.Entity<Transaction>()
                 .HasOne(t => t.Course)
-                .WithMany(co => co.Transactions) 
+                .WithMany(co => co.Transactions)
                 .HasForeignKey(t => t.CourseId)
                 .IsRequired(false);
             modelBuilder.Entity<Transaction>()
-             .HasOne(t => t.Program) 
-             .WithMany(cp => cp.Transactions) 
-             .HasForeignKey(t => t.ProgramId) 
+             .HasOne(t => t.Program)
+             .WithMany(cp => cp.Transactions)
+             .HasForeignKey(t => t.ProgramId)
              .IsRequired(false);
             // Global filter: exclude soft-deleted users
             modelBuilder.Entity<User>().HasQueryFilter(u => !u.IsDeleted);

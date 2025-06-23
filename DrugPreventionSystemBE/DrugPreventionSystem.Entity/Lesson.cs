@@ -2,7 +2,7 @@
 using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
 using System.ComponentModel.DataAnnotations;
 
-namespace DrugPreventionSystemBE.DrugPreventionSystem.Enity
+namespace DrugPreventionSystemBE.DrugPreventionSystem.Entity
 {
     public class Lesson : BaseEnity
     {

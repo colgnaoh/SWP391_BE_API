@@ -1,5 +1,5 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.Data;
-using DrugPreventionSystemBE.DrugPreventionSystem.Enity;
+using DrugPreventionSystemBE.DrugPreventionSystem.Entity;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CommunityProgramResModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
