@@ -21,7 +21,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView.AuthModel
         public string PhoneNumber { get; set; }     
 
         [Required]
-        public Role Role { get; set; }
+        public string Role { get; set; }
         public string Address { get; set; }
 
         public string Gender { get; set; }

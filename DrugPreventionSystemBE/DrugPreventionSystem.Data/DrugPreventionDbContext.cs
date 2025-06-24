@@ -24,6 +24,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Data
         public DbSet<CommunityProgram> Programs { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Consultants> consultants { get; set; }
         public DbSet<Blog> Blogs { get; set; }
 
         public DbSet<Session> Sessions { get; set; }
@@ -71,16 +72,16 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Data
 
             //----------------------------------------------------------------------- cho đỡ rối ở trên là enh cấu hình các Enum trong DbContext này
             // Cấu hình cho List<string> trong Consultants
-            modelBuilder.Entity<Consultants>()
-                .Property(con => con.Qualifications)
-                .HasConversion(
-                    v => JsonConvert.SerializeObject(v),
-                    v => JsonConvert.DeserializeObject<List<string>>(v) ?? new List<string>()
-                )
-                .Metadata.SetValueComparer(new ValueComparer<ICollection<string>>(
-                    (c1, c2) => c1.OrderBy(s => s).SequenceEqual(c2.OrderBy(s => s)),
-                    c => c.Aggregate(0, (hash, s) => HashCode.Combine(hash, s.GetHashCode()))
-                ));
+            //modelBuilder.Entity<Consultants>()
+            //    .Property(con => con.Qualifications)
+            //    .HasConversion(
+            //        v => JsonConvert.SerializeObject(v),
+            //        v => JsonConvert.DeserializeObject<List<string>>(v) ?? new List<string>()
+            //    )
+            //    .Metadata.SetValueComparer(new ValueComparer<ICollection<string>>(
+            //        (c1, c2) => c1.OrderBy(s => s).SequenceEqual(c2.OrderBy(s => s)),
+            //        c => c.Aggregate(0, (hash, s) => HashCode.Combine(hash, s.GetHashCode()))
+            //    ));
             //----------------------------------------------------------------------- dưới đây Khôi cấu hình các quan hệ bản trong DbContext này
             // Cấu hình mối quan hệ (Relationships)
 

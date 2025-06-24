@@ -11,6 +11,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
 {
     public interface IUserService
     {
+        Task<IActionResult> CreateUserAsync(UserRegisterRequest request);
         Task<IEnumerable<UserResponseModel>> GetAllUsersAsync();
         Task<User?> GetUserByIdAsync(Guid id);
         Task<SearchUserResponseModel> SearchUsersAsync(UserSearchModel search);

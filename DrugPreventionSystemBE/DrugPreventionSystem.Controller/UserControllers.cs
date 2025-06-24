@@ -21,6 +21,18 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
             _userService = userService;
         }
 
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> CreateUser([FromBody] UserRegisterRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            var result = await _userService.CreateUserAsync(request);
+            return result;
+        }
+        
+        
+
         // GET: api/User
         [HttpGet]
         [Authorize(Roles = "Admin")]

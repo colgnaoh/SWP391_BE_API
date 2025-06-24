@@ -1,9 +1,11 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.Data;
 using DrugPreventionSystemBE.DrugPreventionSystem.Entity;
+using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
 using DrugPreventionSystemBE.DrugPreventionSystem.Helpers;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.AuthModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.UserSearchModel;
+using DrugPreventionSystemBE.DrugPreventionSystem.Service;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,16 +22,125 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IConfiguration _configuration;
         private readonly IEmailService _emailService;
+        private readonly IdServices _idServices;
 
         public UserService(DrugPreventionDbContext context,
              IEmailService emailService,
             IConfiguration configuration,
-            IHttpContextAccessor httpContextAccessor)
+            IHttpContextAccessor httpContextAccessor,
+            IdServices idServices)
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
             _configuration = configuration;
             _emailService = emailService;
+            _idServices = idServices;
+        }
+
+        public async Task<IActionResult> CreateUserAsync(UserRegisterRequest request)
+        {
+            // Kiểm tra ràng buộc ngày tháng
+            var minSqlDate = new DateTime(1753, 1, 1);
+            var maxSqlDate = new DateTime(9999, 12, 31);
+
+            if (request.Dob < minSqlDate || request.Dob > maxSqlDate)
+            {
+                return new BadRequestObjectResult($"Ngày sinh phải nằm trong khoảng từ {minSqlDate:yyyy-MM-dd} đến {maxSqlDate:yyyy-MM-dd}");
+            }
+
+            if (request.Dob > DateTime.UtcNow)
+            {
+                return new BadRequestObjectResult("Ngày sinh không được lớn hơn ngày hiện tại.");
+            }
+
+            // Kiểm tra định dạng email và số điện thoại
+            if (!ValidationHelper.IsValidEmail(request.Email))
+            {
+                return new BadRequestObjectResult("Email không đúng định dạng.");
+            }
+            if (!ValidationHelper.IsValidPhoneNumber(request.PhoneNumber))
+            {
+                return new BadRequestObjectResult("Số điện thoại không đúng định dạng.");
+            }
+
+            // Kiểm tra email và số điện thoại đã tồn tại
+            if (_context.Users.Any(u => u.Email == request.Email))
+            {
+                return new BadRequestObjectResult("Email đã tồn tại.");
+            }
+            if (_context.Users.Any(u => u.PhoneNumber == request.PhoneNumber))
+            {
+                return new BadRequestObjectResult("Số điện thoại đã tồn tại.");
+            }
+
+            // Phân tích vai trò (Role)
+            if (!System.Enum.TryParse<Role>(request.Role, true, out Role parsedRole))
+            {
+                return new BadRequestObjectResult("Vai trò không hợp lệ.");
+            }
+
+            var nextId = _idServices.GenerateNextId();
+            var token = Guid.NewGuid().ToString();
+            var age = DateTime.UtcNow.Year - request.Dob.Year;
+            var ageGroup = AgeGroupHelper.GetAgeGroup(age);
+            var createDate = DateTime.UtcNow;
+
+            var user = new User
+            {
+                Id = nextId,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                Email = request.Email,
+                Password = BCrypt.Net.BCrypt.HashPassword(request.Password),
+                PhoneNumber = request.PhoneNumber,
+                Address = request.Address,
+                Gender = request.Gender,
+                Role = parsedRole, 
+                Dob = request.Dob,
+                AgeGroup = ageGroup,
+                VerificationToken = token,
+                ProfilePicUrl = request.ProfilePicUrl,
+                VerificationTokenExpires = DateTime.UtcNow.AddHours(24),
+                IsVerified = false,
+                CreatedAt = createDate,
+                UpdatedAt = createDate
+            };
+
+            _context.Users.Add(user);
+
+            // Xử lý tạo thông tin Consultant nếu vai trò là Consultant
+            if (parsedRole == Role.Consultant)
+            {
+                var consultant = new Consultants
+                {
+                    Id = Guid.NewGuid(), 
+                    UserId = user.Id,
+                    FullName = user.FirstName + " " + user.LastName, 
+                    Email = user.Email,
+                    Qualifications = "", 
+                    JobTitle = null, 
+                    HireDate = null, 
+                    Salary = null, 
+                    Status = ConsultantStatus.Active, // Mặc định là Active
+                    CreatedAt = createDate
+                };
+
+                _context.consultants.Add(consultant);
+            }
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                var confirmationUrl = $"{_configuration["Frontend:BaseUrl"]}/confirm-email?token={token}";
+                var emailBody = $"<p>Vui lòng xác nhận email của bạn bằng cách nhấn vào liên kết sau: <a href='{confirmationUrl}'>Xác nhận email</a></p>";
+                await _emailService.SendEmailAsync(request.Email, "Xác thực email", emailBody);
+
+                return new OkObjectResult("Đăng ký thành công. Vui lòng kiểm tra email để xác thực.");
+            }
+            catch (DbUpdateException ex)
+            {
+                return new ObjectResult($"Lỗi khi tạo người dùng: {ex.Message}") { StatusCode = 500 };
+            }
         }
 
         public async Task<IEnumerable<UserResponseModel>> GetAllUsersAsync()
