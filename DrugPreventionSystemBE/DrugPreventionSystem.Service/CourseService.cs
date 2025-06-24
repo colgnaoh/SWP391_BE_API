@@ -154,7 +154,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     Price = course.Price,
                     Discount = course.Discount,
                     Status = course.Status,
-                    TargetAudience = course.TargetAudience
+                    TargetAudience = course.TargetAudience,
+                    Slug = course.Slug,
                 });
             }
             catch (Exception)
@@ -174,7 +175,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     return new NotFoundObjectResult("Không tìm thấy khóa học.");
 
                 course.Name = model.Name;
-                course.UserId = Guid.NewGuid(); // TODO: Replace with actual user ID
+                //course.UserId = Guid.NewGuid(); // TODO: Replace with actual user ID
                 course.CategoryId = model.CategoryId;
                 course.Content = model.Content;
                 course.Status = model.Status;
