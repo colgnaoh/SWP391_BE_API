@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/program")]
     public class CommunityProgramController : ControllerBase
     {
         private readonly ICommunityProgramService _programService;
@@ -38,7 +38,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
         }
 
         // POST: api/CommunityProgram
-        [HttpPost]
+        [HttpPost("create")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateProgram([FromBody] CommunityProgram program)
         {

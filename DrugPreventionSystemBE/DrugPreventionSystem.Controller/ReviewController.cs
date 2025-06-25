@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
 {
     [Authorize]
-    [Route("api/[controller]")]
+    [Route("api/review")]
     [ApiController]
     public class ReviewController : ControllerBase
     {
@@ -32,7 +32,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
             return Ok(review);
         }
 
-        [HttpPost]
+        [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] CreateReviewReqModel request)
         {
             var created = await _reviewService.CreateReviewAsync(request);

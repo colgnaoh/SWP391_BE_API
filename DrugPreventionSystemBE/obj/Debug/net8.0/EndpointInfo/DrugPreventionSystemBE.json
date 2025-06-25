@@ -500,7 +500,7 @@
         }
       }
     },
-    "/api/CommunityProgram": {
+    "/api/program": {
       "get": {
         "tags": [
           "CommunityProgram"
@@ -537,43 +537,9 @@
             "description": "OK"
           }
         }
-      },
-      "post": {
-        "tags": [
-          "CommunityProgram"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CommunityProgram"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CommunityProgram"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CommunityProgram"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        },
-        "security": [
-          {
-            "Bearer": [ ]
-          }
-        ]
       }
     },
-    "/api/CommunityProgram/{id}": {
+    "/api/program/{id}": {
       "get": {
         "tags": [
           "CommunityProgram"
@@ -655,6 +621,42 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      }
+    },
+    "/api/program/create": {
+      "post": {
+        "tags": [
+          "CommunityProgram"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommunityProgram"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommunityProgram"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommunityProgram"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -849,7 +851,7 @@
         ]
       }
     },
-    "/api/Course": {
+    "/api/course": {
       "get": {
         "tags": [
           "Course"
@@ -887,40 +889,6 @@
           }
         }
       },
-      "post": {
-        "tags": [
-          "Course"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CourseCreateModel"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CourseCreateModel"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CourseCreateModel"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        },
-        "security": [
-          {
-            "Bearer": [ ]
-          }
-        ]
-      },
       "put": {
         "tags": [
           "Course"
@@ -956,7 +924,7 @@
         ]
       }
     },
-    "/api/Course/{id}": {
+    "/api/course/{id}": {
       "get": {
         "tags": [
           "Course"
@@ -1005,41 +973,26 @@
         ]
       }
     },
-    "/api/Review": {
-      "get": {
-        "tags": [
-          "Review"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        },
-        "security": [
-          {
-            "Bearer": [ ]
-          }
-        ]
-      },
+    "/api/course/create": {
       "post": {
         "tags": [
-          "Review"
+          "Course"
         ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateReviewReqModel"
+                "$ref": "#/components/schemas/CourseCreateModel"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateReviewReqModel"
+                "$ref": "#/components/schemas/CourseCreateModel"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateReviewReqModel"
+                "$ref": "#/components/schemas/CourseCreateModel"
               }
             }
           }
@@ -1056,7 +1009,24 @@
         ]
       }
     },
-    "/api/Review/{id}": {
+    "/api/review": {
+      "get": {
+        "tags": [
+          "Review"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      }
+    },
+    "/api/review/{id}": {
       "get": {
         "tags": [
           "Review"
@@ -1143,6 +1113,42 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      }
+    },
+    "/api/review/create": {
+      "post": {
+        "tags": [
+          "Review"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateReviewReqModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateReviewReqModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateReviewReqModel"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -1167,7 +1173,7 @@
         }
       }
     },
-    "/api/User": {
+    "/api/user/create": {
       "post": {
         "tags": [
           "User"
@@ -1201,7 +1207,9 @@
             "Bearer": [ ]
           }
         ]
-      },
+      }
+    },
+    "/api/user": {
       "get": {
         "tags": [
           "User"
@@ -1218,7 +1226,7 @@
         ]
       }
     },
-    "/api/User/{id}": {
+    "/api/user/{id}": {
       "get": {
         "tags": [
           "User"
@@ -1272,7 +1280,7 @@
         ]
       }
     },
-    "/api/User/profile": {
+    "/api/user/profile": {
       "put": {
         "tags": [
           "User"
@@ -1308,7 +1316,7 @@
         ]
       }
     },
-    "/api/User/search": {
+    "/api/user/search": {
       "post": {
         "tags": [
           "User"

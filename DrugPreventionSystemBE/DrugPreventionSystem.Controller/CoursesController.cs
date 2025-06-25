@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/course")]
     public class CourseController : ControllerBase
     {
         private readonly ICourseService _courseService;
@@ -38,7 +38,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
         }
 
         // POST: api/Course
-        [HttpPost]
+        [HttpPost("create")]
         [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> CreateCourse([FromBody] CourseCreateModel request)
         {

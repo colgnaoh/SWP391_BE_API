@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/user")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -21,7 +21,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
             _userService = userService;
         }
 
-        [HttpPost]
+        [HttpPost("create")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateUser([FromBody] UserRegisterRequest request)
         {
