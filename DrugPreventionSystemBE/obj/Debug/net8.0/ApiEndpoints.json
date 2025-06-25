@@ -405,22 +405,6 @@
   },
   {
     "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.CourseController",
-    "Method": "UpdateCourse",
-    "RelativePath": "api/course",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CourseReqModel.CourseUpdateModel",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.CourseController",
     "Method": "GetCourseById",
     "RelativePath": "api/course/{id}",
     "HttpMethod": "GET",
@@ -430,6 +414,27 @@
       {
         "Name": "id",
         "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.CourseController",
+    "Method": "UpdateCourse",
+    "RelativePath": "api/course/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CourseReqModel.CourseUpdateModel",
         "IsRequired": true
       }
     ],

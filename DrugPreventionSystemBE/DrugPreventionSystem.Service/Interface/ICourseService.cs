@@ -14,7 +14,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface
         Task<IActionResult> CreateCourseAsync(CourseCreateModel courseCreateRequest);
 
 
-        Task<IActionResult> UpdateCourseAsync(CourseUpdateModel model);
+        Task<IActionResult> UpdateCourseAsync(Guid id, CourseUpdateModel model);
 
         Task<IActionResult> SoftDeleteCourseAsync(Guid courseId);
     }

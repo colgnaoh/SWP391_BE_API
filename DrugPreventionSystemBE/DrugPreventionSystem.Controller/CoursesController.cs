@@ -49,14 +49,14 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
         }
 
         // PUT: api/Course
-        [HttpPut]
+        [HttpPut("{id}")]
         [Authorize(Roles = "Admin,Manager")]
-        public async Task<IActionResult> UpdateCourse([FromBody] CourseUpdateModel request)
+        public async Task<IActionResult> UpdateCourse(Guid id, [FromBody] CourseUpdateModel request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return await _courseService.UpdateCourseAsync(request);
+            return await _courseService.UpdateCourseAsync(id, request);
         }
 
         // DELETE: api/Course/{id}

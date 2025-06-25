@@ -888,10 +888,44 @@
             "description": "OK"
           }
         }
+      }
+    },
+    "/api/course/{id}": {
+      "get": {
+        "tags": [
+          "Course"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
       },
       "put": {
         "tags": [
           "Course"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -922,29 +956,6 @@
             "Bearer": [ ]
           }
         ]
-      }
-    },
-    "/api/course/{id}": {
-      "get": {
-        "tags": [
-          "Course"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
       },
       "delete": {
         "tags": [
@@ -1993,17 +2004,15 @@
         "type": "string"
       },
       "CourseUpdateModel": {
-        "required": [
-          "categoryId",
-          "name",
-          "status",
-          "targetAudience"
-        ],
         "type": "object",
         "properties": {
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
           "name": {
-            "minLength": 1,
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "categoryId": {
             "type": "string",
@@ -2037,11 +2046,6 @@
             "format": "double",
             "nullable": true
           },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
           "updatedAt": {
             "type": "string",
             "format": "date-time",
@@ -2050,10 +2054,6 @@
           "slug": {
             "type": "string",
             "nullable": true
-          },
-          "id": {
-            "type": "string",
-            "format": "uuid"
           }
         },
         "additionalProperties": false

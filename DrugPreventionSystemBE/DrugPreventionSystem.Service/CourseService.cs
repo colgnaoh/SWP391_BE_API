@@ -62,6 +62,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                         ImageUrl = c.ImageUrl,
                         Price = c.Price,
                         Discount = c.Discount,
+                        CreatedAt = c.CreatedAt,
                         Slug = c.Slug
                     }).ToList(),
                     TotalCount = totalCount,
@@ -97,6 +98,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     ImageUrl = course.ImageUrl,
                     Price = course.Price,
                     Discount = course.Discount,
+                    CreatedAt = course.CreatedAt,
                     Slug = course.Slug
                 };
                 return new OkObjectResult(new CourseSingleItemRes
@@ -123,6 +125,14 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             if (userIdClaim == null || !Guid.TryParse(userIdClaim.Value, out Guid userId))
             {
                 return new BadRequestObjectResult("Không tìm thấy ID người dùng.");
+            }
+            if (CourseCreateRequest.CategoryId != Guid.Empty)
+            {
+                var categoryExists = await _context.Categories.AnyAsync(c => c.Id == CourseCreateRequest.CategoryId);
+                if (!categoryExists)
+                {
+                    return new BadRequestObjectResult("CategoryId không hợp lệ. Category này không tồn tại.");
+                }
             }
             try
             {
@@ -171,32 +181,105 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             }
         }
 
-        public async Task<IActionResult> UpdateCourseAsync(CourseUpdateModel model)
+        public async Task<IActionResult> UpdateCourseAsync(Guid id, CourseUpdateModel model)
         {
             try
             {
                 var course = await _context.Courses
-                    .FirstOrDefaultAsync(c => c.Id == model.Id && !c.IsDeleted);
+                    .FirstOrDefaultAsync(c => c.Id == id && !c.IsDeleted);
 
                 if (course == null)
+                {
                     return new NotFoundObjectResult("Không tìm thấy khóa học.");
+                }
 
-                course.Name = model.Name;
-                //course.UserId = Guid.NewGuid(); // TODO: Replace with actual user ID
-                course.CategoryId = model.CategoryId;
-                course.Content = model.Content;
-                course.Status = model.Status;
-                course.TargetAudience = model.TargetAudience;
-                course.ImageUrl = model.ImageUrl;
-                course.Price = model.Price;
-                course.Discount = model.Discount;
-                course.UpdatedAt = DateTime.UtcNow;
+                // Cập nhật các thuộc tính chỉ khi chúng được cung cấp (không null và không rỗng đối với string, không null và không Guid.Empty đối với Guid)
 
-                var desiredSlug = string.IsNullOrWhiteSpace(model.Slug)
-                    ? SlugGeneratorHelper.GenerateSlug(model.Name)
-                    : SlugGeneratorHelper.GenerateSlug(model.Slug);
+                // Name: string?
+                if (!string.IsNullOrWhiteSpace(model.Name))
+                {
+                    course.Name = model.Name;
+                }
 
-                if (course.Slug != desiredSlug)
+                // CategoryId: Guid?
+                // Chỉ cập nhật nếu CategoryId được truyền và không phải null HOẶC Guid.Empty
+                if (model.CategoryId != null && model.CategoryId != Guid.Empty)
+                {
+                    var categoryExists = await _context.Categories.AnyAsync(c => c.Id == model.CategoryId);
+                    if (!categoryExists)
+                    {
+                        return new BadRequestObjectResult("CategoryId không hợp lệ. Category này không tồn tại.");
+                    }
+                    course.CategoryId = model.CategoryId;
+                }
+                // Nếu model.CategoryId là null HOẶC Guid.Empty, giá trị cũ của course.CategoryId sẽ được giữ nguyên.
+
+                // UserId: Guid?
+                // Chỉ cập nhật nếu UserId được truyền và không phải null HOẶC Guid.Empty
+                if (model.UserId != null && model.UserId != Guid.Empty)
+                {
+                    var userExists = await _context.Users.AnyAsync(u => u.Id == model.UserId);
+                    if (!userExists)
+                    {
+                        return new BadRequestObjectResult("UserId không hợp lệ. Người dùng này không tồn tại.");
+                    }
+                    course.UserId = model.UserId;
+                }
+                // Nếu model.UserId là null HOẶC Guid.Empty, giá trị cũ của course.UserId sẽ được giữ nguyên.
+
+                // Content: string?
+                if (model.Content != null)
+                {
+                    course.Content = model.Content;
+                }
+
+                // Status: CourseStatus?
+                if (model.Status != null)
+                {
+                    course.Status = model.Status;
+                }
+
+                // TargetAudience: targetAudience?
+                if (model.TargetAudience != null)
+                {
+                    course.TargetAudience = model.TargetAudience;
+                }
+
+                // ImageUrl: string?
+                if (model.ImageUrl != null)
+                {
+                    course.ImageUrl = model.ImageUrl;
+                }
+
+                // Price: decimal?
+                if (model.Price != null)
+                {
+                    course.Price = model.Price;
+                }
+
+                // Discount: decimal?
+                if (model.Discount != null)
+                {
+                    course.Discount = model.Discount;
+                }
+
+                course.UpdatedAt = DateTime.UtcNow; // Luôn cập nhật thời gian thay đổi
+
+                // Xử lý Slug: string?
+                string desiredSlug = null;
+                var newSlugProvided = !string.IsNullOrWhiteSpace(model.Slug);
+                var newNameProvided = !string.IsNullOrWhiteSpace(model.Name);
+
+                if (newSlugProvided)
+                {
+                    desiredSlug = SlugGeneratorHelper.GenerateSlug(model.Slug);
+                }
+                else if (newNameProvided) // Nếu không có slug mới nhưng có tên mới được cung cấp
+                {
+                    desiredSlug = SlugGeneratorHelper.GenerateSlug(model.Name);
+                }
+
+                if (desiredSlug != null && course.Slug != desiredSlug)
                 {
                     course.Slug = await GenerateUniqueSlugAsync(desiredSlug, course.Id);
                 }
@@ -206,12 +289,12 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 
                 return new OkObjectResult("Cập nhật khóa học thành công.");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return new ObjectResult("Lỗi khi cập nhật khóa học.") { StatusCode = 500 };
+                // Ghi log chi tiết lỗi để dễ dàng gỡ lỗi
+                return new ObjectResult($"Lỗi khi cập nhật khóa học: {ex.Message}") { StatusCode = 500 };
             }
         }
-
         public async Task<IActionResult> SoftDeleteCourseAsync(Guid CourseId)
         {
             try
