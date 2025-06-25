@@ -123,7 +123,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 {
                     Id = Guid.NewGuid(),
                     Name = CourseCreateRequest.Name,
-                    UserId = userId, // Fixed: Assigning the parsed Guid value
+                    UserId = userId, 
                     CategoryId = CourseCreateRequest.CategoryId,
                     Content = CourseCreateRequest.Content,
                     Status = CourseCreateRequest.Status,
