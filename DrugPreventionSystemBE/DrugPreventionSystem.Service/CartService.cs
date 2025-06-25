@@ -94,7 +94,11 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 return new NotFoundObjectResult("Giỏ hàng của bạn trống.");
             }
 
-            return new OkObjectResult(cartItems);
+            return new OkObjectResult(new CartListResponse
+            {
+                Success = true,
+                Data = cartItems,
+            });
         }
 
         public async Task<IActionResult> RemoveCartItemAsync(Guid userId, Guid cartItemId)

@@ -85,17 +85,24 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 
                 if (course == null)
                     return new NotFoundObjectResult("Không tìm thấy khóa học.");
-
-                return new OkObjectResult(new CourseResponseModel
+                var courseResponse = new CourseResponseModel
                 {
                     Id = course.Id,
+                    UserId = (Guid)course.UserId,
+                    CategoryId = course.CategoryId,
                     Name = course.Name,
                     Content = course.Content,
+                    Status = course.Status,
+                    TargetAudience = course.TargetAudience,
                     ImageUrl = course.ImageUrl,
                     Price = course.Price,
                     Discount = course.Discount,
-                    Status = course.Status,
-                    TargetAudience = course.TargetAudience
+                    Slug = course.Slug
+                };
+                return new OkObjectResult(new CourseSingleItemRes
+                {
+                    Success = true,
+                    Data = courseResponse
                 });
             }
             catch (Exception)
