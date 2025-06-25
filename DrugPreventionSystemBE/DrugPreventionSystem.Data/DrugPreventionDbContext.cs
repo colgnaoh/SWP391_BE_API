@@ -85,6 +85,38 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Data
             //----------------------------------------------------------------------- dưới đây Khôi cấu hình các quan hệ bản trong DbContext này
             // Cấu hình mối quan hệ (Relationships)
 
+            modelBuilder.Entity<Cart>()
+               .Property(c => c.Discount)
+               .HasPrecision(10, 2);
+
+            modelBuilder.Entity<Cart>()
+                .Property(c => c.Price)
+                .HasPrecision(10, 2);
+
+            // Consultants
+            modelBuilder.Entity<Consultants>()
+                .Property(con => con.Salary)
+                .HasPrecision(10, 2);
+
+            // Course
+            modelBuilder.Entity<Course>()
+                .Property(co => co.Discount)
+                .HasPrecision(10, 2);
+
+            modelBuilder.Entity<Course>()
+                .Property(co => co.Price)
+                .HasPrecision(10, 2);
+
+            // Order
+            modelBuilder.Entity<Order>()
+                .Property(o => o.TotalAmount)
+                .HasPrecision(10, 2);
+
+            // OrderDetail
+            modelBuilder.Entity<OrderDetail>()
+                .Property(od => od.Amount)
+                .HasPrecision(10, 2);
+
             // Blog - User
             modelBuilder.Entity<Blog>()
                 .HasOne(b => b.User)
