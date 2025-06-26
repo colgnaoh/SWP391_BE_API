@@ -25,7 +25,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
         private readonly IdServices _idServices;
 
         public UserService(DrugPreventionDbContext context,
-             IEmailService emailService,
+            IEmailService emailService,
             IConfiguration configuration,
             IHttpContextAccessor httpContextAccessor,
             IdServices idServices)
@@ -143,29 +143,83 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
             }
         }
 
-        public async Task<IEnumerable<UserResponseModel>> GetAllUsersAsync()
+        public async Task<GetUserByPageResponseModel> GetUsersByPageAsync(int pageNumber, int pageSize)
         {
-            return await _context.Users
-        .Where(u => !u.IsDeleted)
-        .Select(u => new UserResponseModel
-        {
-            Id = u.Id,
-            FullName = u.FirstName + " " + u.LastName,
-            Email = u.Email,
-            PhoneNumber = u.PhoneNumber,
-            Gender = u.Gender,
-            Dob = u.Dob,
-            ProfilePicUrl = u.ProfilePicUrl,
-            Role = u.Role.ToString()
-        })
-        .ToListAsync();
+            var safePageNumber = pageNumber < 1 ? 1 : pageNumber;
+            var safePageSize = pageSize < 1 ? 10 : pageSize;
+
+            var query = _context.Users
+                .AsNoTracking()
+                .Where(u => !u.IsDeleted);
+
+            var totalCount = await query.CountAsync();
+            var totalPages = (int)Math.Ceiling((double)totalCount / safePageSize);
+
+            var users = await query
+                .OrderBy(u => u.FirstName)
+                .ThenBy(u => u.LastName)
+                .Skip((safePageNumber - 1) * safePageSize)
+                .Take(safePageSize)
+                .Select(u => new UserResponseModel
+                {
+                    Id = u.Id,
+                    FullName = $"{u.FirstName} {u.LastName}",
+                    Email = u.Email,
+                    PhoneNumber = u.PhoneNumber,
+                    Gender = u.Gender,
+                    Dob = u.Dob,
+                    ProfilePicUrl = u.ProfilePicUrl,
+                    Role = u.Role.ToString()
+                })
+                .ToListAsync();
+
+            return new GetUserByPageResponseModel
+            {
+                Success = true,
+                Users = users,
+                TotalCount = totalCount,
+                PageNumber = safePageNumber,
+                PageSize = safePageSize,
+                TotalPages = totalPages
+            };
         }
 
 
-        public async Task<User?> GetUserByIdAsync(Guid id)
+
+
+        public async Task<SingleUserResponseModel> GetUserByIdAsync(Guid id)
         {
-            return await _context.Users.FindAsync(id);
+            var user = await _context.Users
+                .AsNoTracking()
+                .Where(u => !u.IsDeleted && u.Id == id)
+                .Select(u => new UserResponseModel
+                {
+                    Id = u.Id,
+                    FullName = $"{u.FirstName} {u.LastName}",
+                    Email = u.Email,
+                    PhoneNumber = u.PhoneNumber,
+                    Gender = u.Gender,
+                    Dob = u.Dob,
+                    ProfilePicUrl = u.ProfilePicUrl,
+                    Role = u.Role.ToString()
+                })
+                .FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                return new SingleUserResponseModel
+                {
+                    Success = false
+                };
+            }
+
+            return new SingleUserResponseModel
+            {
+                Success = true,
+                Data = user
+            };
         }
+
 
         public async Task<IActionResult> UpdateUserProfileAsync(UserProfileUpdateRequest request)
         {

@@ -658,16 +658,6 @@
   },
   {
     "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.UserController",
-    "Method": "GetAllUsers",
-    "RelativePath": "api/user",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.UserController",
     "Method": "GetUserById",
     "RelativePath": "api/user/{id}",
     "HttpMethod": "GET",
@@ -710,6 +700,27 @@
         "Name": "request",
         "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.AuthModel.UserRegisterRequest",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.UserController",
+    "Method": "GetUsersPaged",
+    "RelativePath": "api/user/paged",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pageNumber",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []

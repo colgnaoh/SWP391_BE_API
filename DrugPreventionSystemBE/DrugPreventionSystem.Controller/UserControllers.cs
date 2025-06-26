@@ -33,13 +33,13 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
         
         
 
-        // GET: api/User
-        [HttpGet]
+        // GET: api/User        
+        [HttpGet("paged")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetAllUsers()
+        public async Task<IActionResult> GetUsersPaged(int pageNumber = 1, int pageSize = 10)
         {
-            var users = await _userService.GetAllUsersAsync();
-            return Ok(users);
+            var result = await _userService.GetUsersByPageAsync(pageNumber, pageSize);
+            return Ok(result);
         }
 
         // GET: api/User/{id}

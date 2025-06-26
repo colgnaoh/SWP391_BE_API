@@ -162,6 +162,15 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 return new NotFoundObjectResult($"Không tìm thấy tư vấn viên với ID: {id}");
             }
 
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == consultant.UserId);
+            if (user != null && user.Role == Role.Consultant)
+            {
+                user.Role = Role.Customer;
+                _context.Users.Update(user);
+            }
+
+            _context.consultants.Remove(consultant);
+
             _context.consultants.Remove(consultant);
             try
             {
@@ -173,7 +182,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 return new ObjectResult($"Lỗi khi xóa tư vấn viên: {ex.Message}") { StatusCode = 500 };
             }
         }
-
+            
         // --- HELPER METHOD ---
         public async Task<bool> ConsultantExists(Guid id)
         {
