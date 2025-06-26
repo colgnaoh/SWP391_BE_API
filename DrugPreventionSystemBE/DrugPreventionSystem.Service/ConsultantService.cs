@@ -86,8 +86,10 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 
         public async Task<IActionResult> GetConsultantByIdAsync(Guid id)
         {
-            var consultant = await _context.consultants.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
-
+            var consultant = await _context.consultants
+                                                .Include(c => c.User) // Tải dữ liệu người dùng
+                                                .AsNoTracking()
+                                                .FirstOrDefaultAsync(c => c.Id == id);
             if (consultant == null)
             {
                 return new NotFoundObjectResult($"Không tìm thấy tư vấn viên với ID: {id}");
@@ -107,7 +109,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     Status = (Enum.ConsultantStatus)consultant.Status,
                     Email = consultant.Email,
                     CreatedAt = (DateTime)consultant.CreatedAt,
-                    Qualifications = qualificationsList
+                    Qualifications = qualificationsList,
+                    ProfilePicUrl = consultant.User?.ProfilePicUrl ?? string.Empty // Xử lý null cho ProfilePicUrl
                 }
             });
         }
@@ -117,6 +120,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             try
             {
                 var consultants = await _context.consultants
+                    .Include(c => c.User) //tải dữ liệu từ bảng Users
                     .AsNoTracking()
                     .ToListAsync();
 
@@ -131,7 +135,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     HireDate = (DateTime)c.HireDate,
                     Salary = c.Salary ?? 0m, 
                     Status = (ConsultantStatus)c.Status,// Xử lý null cho Enum? (chọn một giá trị mặc định phù hợp)
-                    CreatedAt = (DateTime)c.CreatedAt
+                    CreatedAt = (DateTime)c.CreatedAt,
+                    ProfilePicUrl = c.User?.ProfilePicUrl
                 }).ToList();
 
                 return new ListConsultantResponse

@@ -647,6 +647,85 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.SessionController",
+    "Method": "GetAll",
+    "RelativePath": "api/Session",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.SessionController",
+    "Method": "Create",
+    "RelativePath": "api/Session",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.SessionReqModel.SessionCreateModelView",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.SessionController",
+    "Method": "GetById",
+    "RelativePath": "api/Session/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.SessionController",
+    "Method": "Update",
+    "RelativePath": "api/Session/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.SessionReqModel.SessionUpdateModelView",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.SessionController",
+    "Method": "Delete",
+    "RelativePath": "api/Session/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "DrugPreventionSystemBE.Controllers.TestController",
     "Method": "Get",
     "RelativePath": "api/Test",
