@@ -87,6 +87,8 @@ namespace DrugPreventionSystemBE
             builder.Services.AddScoped<ICourseService, CourseService>();
             builder.Services.AddScoped<IConsultantService, ConsultantService>();
             builder.Services.AddScoped<ICartService, CartService>();
+            builder.Services.AddScoped<ISessionService, SessionService>();
+
             Env.Load();
 
             // Kiểm tra cấu hình Facebook
