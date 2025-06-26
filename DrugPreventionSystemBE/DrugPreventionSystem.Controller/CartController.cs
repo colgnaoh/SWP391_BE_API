@@ -29,7 +29,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
         }
 
         [Authorize]
-        [HttpPost("myCart")]
+        [HttpGet("myCart")]
         public async Task<IActionResult> GetUserCartAsync([FromQuery] Guid userId)
         {
             return await _cartService.GetUserCartAsync(userId);
