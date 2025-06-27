@@ -48,9 +48,9 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
         /// Lấy danh sách buổi học theo khóa học (CourseId) có phân trang
         /// </summary>
         [HttpGet("course/{courseId}")]
-        public async Task<IActionResult> GetSessionsByCourse(Guid courseId, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 12)
+        public async Task<IActionResult> GetSessionByPageAsync(Guid courseId, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 12)
         {
-            return await _sessionService.GetByCourseAsync(courseId, pageNumber, pageSize);
+            return await _sessionService.GetSessionByPageAsync(courseId, pageNumber, pageSize);
         }
 
         /// <summary>

@@ -111,10 +111,10 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             });
         }
 
-        public async Task<IActionResult> GetByCourseAsync(Guid courseId, int pageNumber = 1, int pageSize = 12)
+        public async Task<IActionResult> GetSessionByPageAsync(Guid sessionId, int pageNumber = 1, int pageSize = 12)
         {
             var query = _context.Sessions
-                .Where(s => s.CourseId == courseId && !s.IsDeleted)
+                .Where(s => s.Id == sessionId && !s.IsDeleted)
                 .AsQueryable();
 
             var totalCount = await query.CountAsync();
