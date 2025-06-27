@@ -1,15 +1,12 @@
-﻿using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel;
-using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.SessionReqModel;
+﻿using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.SessionReqModel;
+using Microsoft.AspNetCore.Mvc;
 
-namespace DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface
+public interface ISessionService
 {
-    public interface ISessionService
-    {
-        Task<IEnumerable<SessionViewModel>> GetAllAsync();
-        Task<SessionSingleResponse?> GetByIdAsync(Guid id);
-        Task<SessionViewModel> CreateAsync(SessionCreateModelView request);
-        Task<bool> UpdateAsync(Guid id, SessionUpdateModelView request);
-        Task<bool> DeleteAsync(Guid id);
-    }
-
+    Task<IActionResult> CreateAsync(SessionCreateModelView request);
+    Task<IActionResult> GetAllAsync();
+    Task<IActionResult> GetByIdAsync(Guid id);
+    Task<IActionResult> GetByCourseAsync(Guid courseId, int pageNumber = 1, int pageSize = 12);
+    Task<IActionResult> UpdateAsync(Guid id, SessionUpdateModelView request);
+    Task<IActionResult> SoftDeleteAsync(Guid id);
 }
