@@ -34,7 +34,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
         
 
         // GET: api/User        
-        [HttpGet("paged")]
+        [HttpGet]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetUsersPaged(int pageNumber = 1, int pageSize = 10)
         {

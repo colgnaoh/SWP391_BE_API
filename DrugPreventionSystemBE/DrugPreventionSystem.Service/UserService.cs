@@ -176,7 +176,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
             return new GetUserByPageResponseModel
             {
                 Success = true,
-                Users = users,
+                Data = users,
                 TotalCount = totalCount,
                 PageNumber = safePageNumber,
                 PageSize = safePageSize,
