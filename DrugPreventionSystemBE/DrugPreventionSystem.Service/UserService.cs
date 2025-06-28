@@ -223,6 +223,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
 
         public async Task<IActionResult> UpdateUserProfileAsync(UserProfileUpdateRequest request)
         {
+            bool emailUpdated = false;
             var userPrincipal = _httpContextAccessor.HttpContext?.User;
             if (userPrincipal == null)
             {
@@ -259,26 +260,23 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
                 {
                     return new BadRequestObjectResult("Email đã tồn tại với người dùng khác.");
                 }
+
                 updateUser.Email = request.Email;
-                updateUser.IsVerified = false; // Đặt lại trạng thái xác thực nếu email thay đổi
+                updateUser.IsVerified = false; // Reset trạng thái xác thực
                 updateUser.VerificationToken = Guid.NewGuid().ToString(); // Gán token mới
                 updateUser.VerificationTokenExpires = DateTime.UtcNow.AddHours(24);
-
-                // Gửi email xác thực lại nếu email thay đổi
-                var confirmationUrl = $"{_configuration["Frontend:BaseUrl"]}/confirm-email?token={updateUser.VerificationToken}";
-                var emailBody = $"<p>Email của bạn đã được cập nhật. Vui lòng xác nhận email mới của bạn bằng cách nhấn vào liên kết sau: <a href='{confirmationUrl}'>Xác nhận email</a></p>";
-                await _emailService.SendEmailAsync(request.Email, "Xác thực email", emailBody);
+                emailUpdated = true;
             }
 
-            if (_context.Users.Any(u => u.PhoneNumber == request.PhoneNumber && u.Id != userId))
-            {
-                return new BadRequestObjectResult("Số điện thoại đã tồn tại với người dùng khác.");
-            }
-            if (!string.IsNullOrEmpty(request.PhoneNumber))
+            if (!string.IsNullOrEmpty(request.PhoneNumber) && updateUser.PhoneNumber != request.PhoneNumber)
             {
                 if (!ValidationHelper.IsValidPhoneNumber(request.PhoneNumber))
                 {
                     return new BadRequestObjectResult("Số điện thoại không đúng định dạng.");
+                }
+                if (_context.Users.Any(u => u.PhoneNumber == request.PhoneNumber && u.Id != userId))
+                {
+                    return new BadRequestObjectResult("Số điện thoại đã tồn tại với người dùng khác.");
                 }
                 updateUser.PhoneNumber = request.PhoneNumber;
             }
@@ -314,17 +312,23 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
 
             try
             {
-                if (!string.IsNullOrEmpty(request.Email))
-                {
-                    await _context.SaveChangesAsync();
-                    return new OkObjectResult("Cập nhật thông tin người dùng thành công, vui lòng kiếm tra email để xác nhận!");
-                }
+                // Lưu thay đổi vào database
                 await _context.SaveChangesAsync();
+
+                // Gửi email xác thực nếu email đã được cập nhật
+                if (emailUpdated)
+                {
+                    var confirmationUrl = $"{_configuration["Frontend:BaseUrl"]}/confirm-email?token={updateUser.VerificationToken}";
+                    var emailBody = $"<p>Email của bạn đã được cập nhật. Vui lòng xác nhận email mới của bạn bằng cách nhấn vào liên kết sau: <a href='{confirmationUrl}'>Xác nhận email</a></p>";
+                    await _emailService.SendEmailAsync(updateUser.Email!, "Xác thực email", emailBody);
+                    return new OkObjectResult("Cập nhật thông tin người dùng thành công, vui lòng kiểm tra email để xác nhận!");
+                }
+
                 return new OkObjectResult("Cập nhật thông tin người dùng thành công.");
             }
             catch (DbUpdateException ex)
             {
-                return new ObjectResult("Lỗi khi cập nhật dữ liệu người dùng") { StatusCode = 500 };
+                return new ObjectResult($"Lỗi khi cập nhật dữ liệu người dùng: {ex.Message}") { StatusCode = 500 };
             }
         }
 

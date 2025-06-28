@@ -426,7 +426,7 @@
       }
     },
     "/api/cart/myCart": {
-      "post": {
+      "get": {
         "tags": [
           "Cart"
         ],
@@ -1345,7 +1345,7 @@
         ]
       }
     },
-    "/api/user/paged": {
+    "/api/user": {
       "get": {
         "tags": [
           "User"
