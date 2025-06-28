@@ -1,26 +1,75 @@
-﻿using CloudinaryDotNet;
-using DrugPreventionSystemBE.DrugPreventionSystem.Data;
+﻿using DrugPreventionSystemBE.DrugPreventionSystem.Data;
 using DrugPreventionSystemBE.DrugPreventionSystem.Entity;
 using DrugPreventionSystemBE.DrugPreventionSystem.Helpers;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.SessionReqModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 {
     public class SessionService : ISessionService
     {
         private readonly DrugPreventionDbContext _context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public SessionService(DrugPreventionDbContext context)
+        public SessionService(DrugPreventionDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<IEnumerable<SessionViewModel>> GetAllAsync()
+        public async Task<IActionResult> CreateAsync(SessionCreateModelView request)
         {
-            return await _context.Sessions
+            var userPrincipal = _httpContextAccessor.HttpContext?.User;
+            if (userPrincipal == null)
+                return new UnauthorizedResult();
+
+            var userIdClaim = userPrincipal.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null || !Guid.TryParse(userIdClaim.Value, out Guid userId))
+                return new BadRequestObjectResult("Không tìm thấy ID người dùng.");
+
+            var baseSlug = string.IsNullOrWhiteSpace(request.Slug)
+                ? SlugGeneratorHelper.GenerateSlug(request.Name)
+                : SlugGeneratorHelper.GenerateSlug(request.Slug);
+
+            var uniqueSlug = await GenerateUniqueSlugAsync(baseSlug);
+
+            var session = new Session
+            {
+                Id = Guid.NewGuid(),
+                CourseId = request.CourseId,
+                Name = request.Name,
+                UserId = userId,
+                Slug = uniqueSlug,
+                Content = request.Content,
+                PositionOrder = request.PositionOrder,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
+                IsDeleted = false
+            };
+
+            _context.Sessions.Add(session);
+            await _context.SaveChangesAsync();
+
+            return new OkObjectResult(new SessionViewModel
+            {
+                Id = session.Id,
+                CourseId = session.CourseId,
+                Name = session.Name,
+                UserId = session.UserId,
+                Slug = session.Slug,
+                Content = session.Content,
+                PositionOrder = session.PositionOrder
+            });
+        }
+
+        public async Task<IActionResult> GetAllAsync()
+        {
+            var sessions = await _context.Sessions
+                .Where(s => !s.IsDeleted)
                 .AsNoTracking()
                 .Select(s => new SessionViewModel
                 {
@@ -31,15 +80,22 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     Slug = s.Slug,
                     Content = s.Content,
                     PositionOrder = s.PositionOrder
-                }).ToListAsync();
+                })
+                .ToListAsync();
+
+            return new OkObjectResult(sessions);
         }
 
-        public async Task<SessionSingleResponse?> GetByIdAsync(Guid id)
+        public async Task<IActionResult> GetByIdAsync(Guid id)
         {
-            var s = await _context.Sessions.FindAsync(id);
-            if (s == null) return null;
+            var s = await _context.Sessions
+                .Where(x => x.Id == id && !x.IsDeleted)
+                .FirstOrDefaultAsync();
 
-            return new SessionSingleResponse
+            if (s == null)
+                return new NotFoundObjectResult("Không tìm thấy buổi học.");
+
+            return new OkObjectResult(new SessionSingleResponse
             {
                 Success = true,
                 Data = new SessionViewModel
@@ -52,81 +108,87 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     Content = s.Content,
                     PositionOrder = s.PositionOrder
                 }
-            };
+            });
         }
 
-        public async Task<SessionViewModel> CreateAsync(SessionCreateModelView request)
+        public async Task<IActionResult> GetSessionByPageAsync(Guid sessionId, int pageNumber = 1, int pageSize = 12)
         {
-            var session = new Session
+            var query = _context.Sessions
+                .Where(s => s.Id == sessionId && !s.IsDeleted)
+                .AsQueryable();
+
+            var totalCount = await query.CountAsync();
+            var sessions = await query
+                .OrderBy(s => s.PositionOrder)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return new OkObjectResult(new GetSessionsByPageResponse
             {
-                Id = Guid.NewGuid(),
-                CourseId = request.CourseId,
-                Name = request.Name,
-                UserId = request.UserId,
-                Slug = request.Slug,
-                Content = request.Content,
-                PositionOrder = request.PositionOrder,
-                CreatedAt = DateTime.UtcNow
-            };
-            var baseSlug = string.IsNullOrWhiteSpace(request.Slug)
-                ? SlugGeneratorHelper.GenerateSlug(request.Name)
-                : SlugGeneratorHelper.GenerateSlug(request.Slug);
-
-            session.Slug = await GenerateUniqueSlugAsync(baseSlug);
-
-            _context.Sessions.Add(session);
-            await _context.SaveChangesAsync();
-
-            return new SessionViewModel
-            {
-                Id = session.Id,
-                CourseId = session.CourseId,
-                Name = session.Name,
-                UserId = session.UserId,
-                Slug = session.Slug,
-                Content = session.Content,
-                PositionOrder = session.PositionOrder
-            };
+                Success = true,
+                Data = sessions.Select(s => new SessionViewModel
+                {
+                    Id = s.Id,
+                    CourseId = s.CourseId,
+                    Name = s.Name,
+                    UserId = s.UserId,
+                    Slug = s.Slug,
+                    Content = s.Content,
+                    PositionOrder = s.PositionOrder
+                }).ToList(),
+                TotalCount = totalCount,
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                TotalPages = (int)Math.Ceiling((double)totalCount / pageSize)
+            });
         }
 
-        public async Task<bool> UpdateAsync(Guid id, SessionUpdateModelView request)
+        public async Task<IActionResult> UpdateAsync(Guid id, SessionUpdateModelView request)
         {
             var s = await _context.Sessions.FindAsync(id);
-            if (s == null) return false;
+            if (s == null || s.IsDeleted)
+                return new NotFoundObjectResult("Không tìm thấy buổi học.");
 
             s.Name = request.Name ?? s.Name;
-            s.Slug = request.Slug ?? s.Slug;
             s.Content = request.Content ?? s.Content;
             s.PositionOrder = request.PositionOrder ?? s.PositionOrder;
             s.UpdatedAt = DateTime.UtcNow;
 
+            if (!string.IsNullOrWhiteSpace(request.Slug))
+            {
+                var baseSlug = SlugGeneratorHelper.GenerateSlug(request.Slug);
+                s.Slug = await GenerateUniqueSlugAsync(baseSlug, id);
+            }
+
             _context.Sessions.Update(s);
             await _context.SaveChangesAsync();
-            return true;
+            return new OkObjectResult("Cập nhật buổi học thành công.");
         }
 
-        public async Task<bool> DeleteAsync(Guid id)
+        public async Task<IActionResult> SoftDeleteAsync(Guid id)
         {
             var s = await _context.Sessions.FindAsync(id);
-            if (s == null || s.IsDeleted) return false;
+            if (s == null || s.IsDeleted)
+                return new NotFoundObjectResult("Không tìm thấy buổi học.");
 
             s.IsDeleted = true;
             s.UpdatedAt = DateTime.UtcNow;
             _context.Sessions.Update(s);
             await _context.SaveChangesAsync();
-            return true;
-        }
 
+            return new OkObjectResult("Xóa mềm buổi học thành công.");
+        }
 
         private async Task<string> GenerateUniqueSlugAsync(string baseSlug, Guid? excludeId = null)
         {
             var slug = baseSlug;
             var suffix = 1;
 
-            while (await _context.Courses.AnyAsync(c =>
-                c.Slug == slug &&
-                !c.IsDeleted &&
-                (excludeId == null || c.Id != excludeId)))
+            while (await _context.Sessions.AnyAsync(s =>
+                s.Slug == slug &&
+                !s.IsDeleted &&
+                (excludeId == null || s.Id != excludeId)))
             {
                 slug = $"{baseSlug}-{suffix++}";
             }
@@ -134,5 +196,4 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             return slug;
         }
     }
-
 }

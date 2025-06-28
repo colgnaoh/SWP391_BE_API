@@ -1,11 +1,13 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.SessionReqModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
+    [ApiController]
+    [Authorize]
     public class SessionController : ControllerBase
     {
         private readonly ISessionService _sessionService;
@@ -15,54 +17,58 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
             _sessionService = sessionService;
         }
 
-        // GET: api/session
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            var sessions = await _sessionService.GetAllAsync();
-            return Ok(sessions);
-        }
-
-        // GET: api/session/{id}
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(Guid id)
-        {
-            var result = await _sessionService.GetByIdAsync(id);
-            if (result == null) return NotFound();
-
-            return Ok(result);
-        }
-
-        // POST: api/session
+        /// <summary>
+        /// Tạo mới buổi học (Session)
+        /// </summary>
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] SessionCreateModelView request)
+        public async Task<IActionResult> CreateSession([FromBody] SessionCreateModelView request)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-
-            var created = await _sessionService.CreateAsync(request);
-            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+            return await _sessionService.CreateAsync(request);
         }
 
-        // PUT: api/session/{id}
+        /// <summary>
+        /// Lấy tất cả buổi học (không phân trang, lọc)
+        /// </summary>
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAllSessions()
+        {
+            return await _sessionService.GetAllAsync();
+        }
+
+        /// <summary>
+        /// Lấy thông tin 1 buổi học theo Id
+        /// </summary>
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetSessionById(Guid id)
+        {
+            return await _sessionService.GetByIdAsync(id);
+        }
+
+        /// <summary>
+        /// Lấy danh sách buổi học theo khóa học (CourseId) có phân trang
+        /// </summary>
+        [HttpGet("course/{courseId}")]
+        public async Task<IActionResult> GetSessionByPageAsync(Guid courseId, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 12)
+        {
+            return await _sessionService.GetSessionByPageAsync(courseId, pageNumber, pageSize);
+        }
+
+        /// <summary>
+        /// Cập nhật buổi học
+        /// </summary>
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, [FromBody] SessionUpdateModelView request)
+        public async Task<IActionResult> UpdateSession(Guid id, [FromBody] SessionUpdateModelView request)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-
-            var updated = await _sessionService.UpdateAsync(id, request);
-            if (!updated) return NotFound();
-
-            return NoContent();
+            return await _sessionService.UpdateAsync(id, request);
         }
 
-        // DELETE: api/session/{id}
+        /// <summary>
+        /// Xóa mềm buổi học
+        /// </summary>
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> SoftDeleteSession(Guid id)
         {
-            var deleted = await _sessionService.DeleteAsync(id);
-            if (!deleted) return NotFound();
-
-            return NoContent();
+            return await _sessionService.SoftDeleteAsync(id);
         }
     }
 }
