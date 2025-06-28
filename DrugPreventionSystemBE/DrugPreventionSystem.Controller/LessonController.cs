@@ -35,10 +35,10 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
             return await _lessonService.GetLessonByIdAsync(lessonId);
         }
 
-        [HttpGet("user/{userId}")]
-        public async Task<IActionResult> GetLessonsByUser(Guid userId, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 12)
+        [HttpGet("session/{sessionId}")]
+        public async Task<IActionResult> GetLessonsByUser(Guid sessionId, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 12)
         {
-            return await _lessonService.GetLessonsByUserAsync(userId, pageNumber, pageSize);
+            return await _lessonService.GetLessonsByUserAsync(sessionId, pageNumber, pageSize);
         }
 
         [HttpPut("{lessonId}")]
