@@ -24,5 +24,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Entity
         public ICollection<Cart> Carts { get; set; }
         public ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
         public ICollection<Lesson> Lessons { get; set; } = new List<Lesson>();
+        public ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
     }
 }

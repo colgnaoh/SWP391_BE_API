@@ -13,9 +13,13 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel
         public CourseStatus? Status { get; set; }
         public targetAudience? TargetAudience { get; set; }
         public string? ImageUrl { get; set; }
-        public decimal? Price { get; set; }
+        public decimal? Price { get; set; } 
         public decimal? Discount { get; set; }
         public string? Slug { get; set; }
         public DateTime? CreatedAt { get; set; }
+        public bool IsInCart { get; set; }
+        public bool IsPurchased { get; set; }
+        public List<SessionResponseModel>? SessionList { get; set; }
+
     }
 }

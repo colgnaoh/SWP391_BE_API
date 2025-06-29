@@ -2,5 +2,10 @@
 {
     public enum LessonType
     {
+        Video,
+        Quiz,
+        Text,
+        Image,
+        Audio
     }
 }

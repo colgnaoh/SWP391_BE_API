@@ -11,5 +11,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Entity
         public decimal? Amount { get; set; }
         public Guid? TransactionId { get; set; }
         public Transaction? Transaction { get; set; }
+        public Course Course { get; set; }
+        public Guid? CourseId { get; set; }
     }
 }

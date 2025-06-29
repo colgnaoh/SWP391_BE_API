@@ -79,7 +79,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 .Select(c => new CartItemResponse
                 {
                     CartId = c.Id,
-                    CourseId = c.CourseId ?? Guid.Empty, // Explicitly handle nullable Guid with a default value
+                    CourseId = c.CourseId ?? Guid.Empty, 
                     CourseName = c.Course.Name,
                     CourseImageUrl = c.Course.ImageUrl,
                     Price = c.Price,

@@ -14,6 +14,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Entity
         public CartStatus Status { get; set; }
         public decimal Price { get; set; }
         public decimal Discount { get; set; }
-        public ICollection<Order> Orders { get; set; }
+        public ICollection<OrderLog> OrderLogs { get; set; } = new List<OrderLog>();
+
+        public ICollection<Order> Orders { get; set; } = new List<Order>();
     }
 }

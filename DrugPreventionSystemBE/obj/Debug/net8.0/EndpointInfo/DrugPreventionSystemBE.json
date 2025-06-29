@@ -1199,14 +1199,14 @@
         ]
       }
     },
-    "/api/lesson/user/{userId}": {
+    "/api/lesson/session/{sessionId}": {
       "get": {
         "tags": [
           "Lesson"
         ],
         "parameters": [
           {
-            "name": "userId",
+            "name": "sessionId",
             "in": "path",
             "required": true,
             "schema": {
@@ -1397,7 +1397,7 @@
         ]
       }
     },
-    "/api/Session": {
+    "/api/session": {
       "post": {
         "tags": [
           "Session"
@@ -1433,7 +1433,7 @@
         ]
       }
     },
-    "/api/Session/all": {
+    "/api/session/all": {
       "get": {
         "tags": [
           "Session"
@@ -1450,7 +1450,7 @@
         ]
       }
     },
-    "/api/Session/{id}": {
+    "/api/session/{id}": {
       "get": {
         "tags": [
           "Session"
@@ -1549,7 +1549,7 @@
         ]
       }
     },
-    "/api/Session/course/{courseId}": {
+    "/api/session/course/{courseId}": {
       "get": {
         "tags": [
           "Session"
@@ -1963,6 +1963,13 @@
             "type": "number",
             "format": "double"
           },
+          "orderLogs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderLog"
+            },
+            "nullable": true
+          },
           "orders": {
             "type": "array",
             "items": {
@@ -2372,6 +2379,13 @@
               "$ref": "#/components/schemas/Lesson"
             },
             "nullable": true
+          },
+          "orderDetails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderDetail"
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -2689,6 +2703,13 @@
         "additionalProperties": false
       },
       "LessonType": {
+        "enum": [
+          "Video",
+          "Quiz",
+          "Text",
+          "Image",
+          "Audio"
+        ],
         "type": "string"
       },
       "LoginRequest": {
@@ -2733,10 +2754,24 @@
           "cart": {
             "$ref": "#/components/schemas/Cart"
           },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
           "orderDetails": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/OrderDetail"
+            },
+            "nullable": true
+          },
+          "orderLogs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderLog"
             },
             "nullable": true
           }
@@ -2784,6 +2819,74 @@
           },
           "transaction": {
             "$ref": "#/components/schemas/Transaction"
+          },
+          "course": {
+            "$ref": "#/components/schemas/Course"
+          },
+          "courseId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OrderLog": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "isDeleted": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "orderId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "order": {
+            "$ref": "#/components/schemas/Order"
+          },
+          "cartId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "cart": {
+            "$ref": "#/components/schemas/Cart"
+          },
+          "action": {
+            "type": "string",
+            "nullable": true
+          },
+          "oldStatus": {
+            "type": "string",
+            "nullable": true
+          },
+          "newStatus": {
+            "type": "string",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
           }
         },
         "additionalProperties": false
@@ -3586,6 +3689,20 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Transaction"
+            },
+            "nullable": true
+          },
+          "orders": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Order"
+            },
+            "nullable": true
+          },
+          "orderLogs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderLog"
             },
             "nullable": true
           }

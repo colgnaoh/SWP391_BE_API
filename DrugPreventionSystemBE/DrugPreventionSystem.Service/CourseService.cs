@@ -82,10 +82,17 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             try
             {
                 var course = await _context.Courses
+                    .Include(c => c.User) 
+                    .Include(c => c.Category)
+                    .Include(c => c.Sessions.OrderBy(s => s.PositionOrder)) 
+                    .ThenInclude(s => s.Lessons.OrderBy(l => l.PositionOrder))
+                    .Include(c => c.Reviews) 
                     .FirstOrDefaultAsync(c => c.Id == courseId && !c.IsDeleted);
 
                 if (course == null)
                     return new NotFoundObjectResult("Không tìm thấy khóa học.");
+                bool isInCart = false;
+                bool isPurchased = false;
                 var courseResponse = new CourseResponseModel
                 {
                     Id = course.Id,
@@ -99,7 +106,24 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     Price = course.Price,
                     Discount = course.Discount,
                     CreatedAt = course.CreatedAt,
-                    Slug = course.Slug
+                    Slug = course.Slug,
+                    IsInCart = isInCart,
+                    IsPurchased = isPurchased,
+                    SessionList = course.Sessions.Select(s => new SessionResponseModel
+                    {
+                        Id = s.Id,
+                        Name = s.Name,
+                        PositionOrder = s.PositionOrder,
+                        Content = s.Content,
+                        LessonList = s.Lessons.Select(l => new LessonResponseModel
+                        {
+                            Id = l.Id,
+                            Name = l.Name,
+                            LessonType = l.LessonType, // Chuyển Enum sang string
+                            PositionOrder = l.PositionOrder,
+                            FullTime = l.FullTime
+                        }).ToList()
+                    }).ToList()
                 };
                 return new OkObjectResult(new CourseSingleItemRes
                 {

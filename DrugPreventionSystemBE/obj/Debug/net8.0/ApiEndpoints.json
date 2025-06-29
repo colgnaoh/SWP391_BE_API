@@ -570,13 +570,13 @@
   {
     "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.LessonController",
     "Method": "GetLessonsByUser",
-    "RelativePath": "api/lesson/user/{userId}",
+    "RelativePath": "api/lesson/session/{sessionId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "userId",
+        "Name": "sessionId",
         "Type": "System.Guid",
         "IsRequired": true
       },
@@ -770,7 +770,7 @@
   {
     "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.SessionController",
     "Method": "CreateSession",
-    "RelativePath": "api/Session",
+    "RelativePath": "api/session",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -786,7 +786,7 @@
   {
     "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.SessionController",
     "Method": "GetSessionById",
-    "RelativePath": "api/Session/{id}",
+    "RelativePath": "api/session/{id}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -802,7 +802,7 @@
   {
     "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.SessionController",
     "Method": "UpdateSession",
-    "RelativePath": "api/Session/{id}",
+    "RelativePath": "api/session/{id}",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
@@ -823,7 +823,7 @@
   {
     "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.SessionController",
     "Method": "SoftDeleteSession",
-    "RelativePath": "api/Session/{id}",
+    "RelativePath": "api/session/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -839,7 +839,7 @@
   {
     "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.SessionController",
     "Method": "GetAllSessions",
-    "RelativePath": "api/Session/all",
+    "RelativePath": "api/session/all",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -849,7 +849,7 @@
   {
     "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.SessionController",
     "Method": "GetSessionByPageAsync",
-    "RelativePath": "api/Session/course/{courseId}",
+    "RelativePath": "api/session/course/{courseId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,

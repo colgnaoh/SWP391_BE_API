@@ -12,7 +12,10 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Entity
         public OrderStatus? Status { get; set; }
         public Guid? CartId { get; set; }
         public Cart? Cart { get; set; }
-        public ICollection<OrderDetail> OrderDetails { get; set; } 
+        public Guid UserId { get; set; }
+        public User? User { get; set; }
+        public ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
+        public ICollection<OrderLog> OrderLogs { get; set; } = new List<OrderLog>();
 
     }
 }
