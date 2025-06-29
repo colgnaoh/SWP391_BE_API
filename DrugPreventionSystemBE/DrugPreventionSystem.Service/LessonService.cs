@@ -145,7 +145,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             var safePageSize = pageSize < 1 ? 12 : pageSize;
 
             var query = _context.Lessons
-                .Where(l => l.Id == sessionId && !l.IsDeleted);
+                .Where(l => l.SessionId == sessionId && !l.IsDeleted);
 
             var totalCount = await query.CountAsync();
             var lessons = await query
