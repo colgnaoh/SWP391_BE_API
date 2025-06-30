@@ -92,7 +92,11 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 })
                 .ToListAsync();
 
-            return new OkObjectResult(sessions);
+            return new OkObjectResult(new GetAllSessionResponse
+            {
+                Success = true,
+                Data = sessions
+            });
         }
 
         public async Task<IActionResult> GetByIdAsync(Guid id)
