@@ -163,6 +163,18 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             if (s == null || s.IsDeleted)
                 return new NotFoundObjectResult("Không tìm thấy buổi học.");
 
+            // Check and update CourseId if provided and different
+            if (request.CourseId.HasValue && request.CourseId != s.CourseId)
+            {
+                var course = await _context.Courses.FirstOrDefaultAsync(c => c.Id == request.CourseId.Value && !c.IsDeleted);
+                if (course == null)
+                    return new BadRequestObjectResult("Khóa học mới không tồn tại.");
+
+                s.CourseId = request.CourseId.Value;
+            }
+
+
+
             s.Name = request.Name ?? s.Name;
             s.Content = request.Content ?? s.Content;
             s.PositionOrder = request.PositionOrder ?? s.PositionOrder;
