@@ -1,7 +1,10 @@
 ﻿namespace DrugPreventionSystemBE.DrugPreventionSystem.Enum
 {
-    public enum appointmentStatus
+    public enum AppointmentStatus
     {
-        nothing
+        Pending,    // Mới tạo
+        Confirmed,  // Đã xác nhận (có tư vấn viên & thời gian)
+        Completed   // Đã hoàn thành tư vấn
     }
+
 }

@@ -46,6 +46,9 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Data
 
         public DbSet<OrderLog> OrderLogs { get; set; }
 
+        public DbSet<Appointment> Appointments { get; set; }
+
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -208,7 +211,21 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Data
             
             // Transaction - Program
             modelBuilder.Entity<Transaction>().HasOne(t => t.Program).WithMany(cp => cp.Transactions).HasForeignKey(t => t.ProgramId).IsRequired(false);
-            
+
+            //appoiment - user
+            modelBuilder.Entity<Appointment>()
+                .HasOne(a => a.User)
+                .WithMany()  // You can replace with .WithMany(u => u.Appointments) if needed
+                .HasForeignKey(a => a.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            //appointment - consultant
+            modelBuilder.Entity<Appointment>()
+                .HasOne(a => a.Consultant)
+                .WithMany()  // Or WithMany(u => u.Consultations)
+                .HasForeignKey(a => a.ConsultantId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             // Global filter: exclude soft-deleted users
             modelBuilder.Entity<User>().HasQueryFilter(u => !u.IsDeleted);
 
