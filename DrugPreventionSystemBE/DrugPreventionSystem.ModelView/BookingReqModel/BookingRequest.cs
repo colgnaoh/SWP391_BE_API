@@ -3,5 +3,6 @@
     public class BookingRequest
     {
         public string Note { get; set; }
+        public string? Name { get; set; }
     }
 }

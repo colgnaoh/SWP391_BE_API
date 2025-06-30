@@ -36,6 +36,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 ConsultantId = request.ConsultantUserId,
                 AppointmentTime = request.AppointmentTime,
                 Note = request.Note,
+                Name = request.Name,
                 Status = AppointmentStatus.Confirmed
             };
 
@@ -45,7 +46,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             return new OkObjectResult(new
             {
                 Message = "Đặt lịch thành công.",
-                Data = new { request.ConsultantUserId, request.AppointmentTime }
+                Data = new { request.ConsultantUserId, request.AppointmentTime, request.Name }
             });
         }
 
@@ -58,6 +59,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 ConsultantId = null,
                 AppointmentTime = null,
                 Note = request.Note,
+                Name = request.Name,
                 Status = AppointmentStatus.Pending
             };
 
@@ -67,7 +69,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             return new OkObjectResult(new
             {
                 Message = "Tạo yêu cầu tư vấn thành công.",
-                AppointmentId = appointment.Id
+                AppointmentId = appointment.Id,
+                Name = appointment.Name
             });
         }
 

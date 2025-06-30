@@ -9,6 +9,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Entity
         public Guid? ConsultantId { get; set; } // Tư vấn viên (lưu ID trong bảng User)
         public DateTime? AppointmentTime { get; set; } // Có thể null nếu chưa đặt thời gian
         public string Note { get; set; }
+        public string? Name { get; set; }
 
         public AppointmentStatus Status { get; set; } = AppointmentStatus.Pending;
 
