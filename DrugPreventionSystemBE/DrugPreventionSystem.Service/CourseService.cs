@@ -59,7 +59,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                         Content = c.Content,
                         Status = c.Status,
                         TargetAudience = c.TargetAudience,
-                        ImageUrl = c.ImageUrl,
+                        ImageUrls = c.ImageUrls,
+                        VideoUrls = c.VideoUrls,
                         Price = c.Price,
                         Discount = c.Discount,
                         CreatedAt = c.CreatedAt,
@@ -102,7 +103,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     Content = course.Content,
                     Status = course.Status,
                     TargetAudience = course.TargetAudience,
-                    ImageUrl = course.ImageUrl,
+                    ImageUrls = course.ImageUrls,
+                    VideoUrls = course.VideoUrls,
                     Price = course.Price,
                     Discount = course.Discount,
                     CreatedAt = course.CreatedAt,
@@ -170,9 +172,16 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     Content = CourseCreateRequest.Content,
                     Status = CourseCreateRequest.Status,
                     TargetAudience = CourseCreateRequest.TargetAudience,
+<<<<<<< HEAD
                     ImageUrl = CourseCreateRequest.ImageUrl,
                     Price = (decimal)CourseCreateRequest.Price,
                     Discount = (decimal)CourseCreateRequest.Discount,
+=======
+                    ImageUrls = CourseCreateRequest.ImageUrls,
+                    VideoUrls = CourseCreateRequest.VideoUrls, 
+                    Price = CourseCreateRequest.Price,
+                    Discount = CourseCreateRequest.Discount,
+>>>>>>> d04397ab2bcfc8d09e2b0784ee5804d4a2476fd2
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow,
                     IsDeleted = false
@@ -192,7 +201,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     Id = course.Id,
                     Name = course.Name,
                     Content = course.Content,
-                    ImageUrl = course.ImageUrl,
+                    ImageUrls = CourseCreateRequest.ImageUrls,
+                    VideoUrls = CourseCreateRequest.VideoUrls,
                     Price = course.Price,
                     Discount = course.Discount,
                     Status = course.Status,
@@ -270,10 +280,16 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     course.TargetAudience = model.TargetAudience;
                 }
 
-                // ImageUrl: string?
-                if (model.ImageUrl != null)
+                /// ImageUrls: List<string>?
+                if (model.ImageUrls != null && model.ImageUrls.Any())
                 {
-                    course.ImageUrl = model.ImageUrl;
+                    course.ImageUrls = model.ImageUrls;
+                }
+
+                // VideoUrls: List<string>?
+                if (model.VideoUrls != null && model.VideoUrls.Any())
+                {
+                    course.VideoUrls = model.VideoUrls;
                 }
 
                 // Price: decimal?
@@ -332,6 +348,27 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 
                 course.IsDeleted = true;
                 course.UpdatedAt = DateTime.UtcNow;
+
+                //Get all sessions related to the course
+                var sessions = await _context.Sessions
+                    .Where(s => s.CourseId == CourseId && !s.IsDeleted )
+                    .ToListAsync();
+
+                foreach (var session in sessions)
+                {
+                    session.IsDeleted = true;
+                    session.UpdatedAt = DateTime.UtcNow;
+
+                    //delete lessons related to sessions
+                    var lessons = await _context.Lessons
+                        .Where(l => l.SessionId == session.Id && !l.IsDeleted)
+                        .ToListAsync();
+                    foreach (var  lesson in lessons)
+                    {
+                        lesson.IsDeleted = true;
+                        lesson.UpdatedAt = DateTime.UtcNow;
+                    }
+                }
 
                 await _context.SaveChangesAsync();
                 return new OkObjectResult("Khóa học đã được xóa mềm.");

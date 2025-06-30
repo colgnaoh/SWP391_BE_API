@@ -81,7 +81,10 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     CartId = c.Id,
                     CourseId = c.CourseId ?? Guid.Empty, 
                     CourseName = c.Course.Name,
-                    CourseImageUrl = c.Course.ImageUrl,
+                    CourseImageUrl = c.Course.ImageUrls != null && c.Course.ImageUrls.Any()
+                        ? c.Course.ImageUrls.First()
+                        : null,
+
                     Price = c.Price,
                     Discount = c.Discount,
                     Status = c.Status,

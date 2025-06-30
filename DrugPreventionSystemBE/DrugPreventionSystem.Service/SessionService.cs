@@ -179,15 +179,27 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             return new OkObjectResult("Cập nhật buổi học thành công.");
         }
 
-        public async Task<IActionResult> SoftDeleteAsync(Guid id)
+        public async Task<IActionResult> SoftDeleteAsync(Guid id) 
         {
-            var s = await _context.Sessions.FindAsync(id);
-            if (s == null || s.IsDeleted)
+            var session = await _context.Sessions.FindAsync(id);
+            if (session == null || session.IsDeleted)
                 return new NotFoundObjectResult("Không tìm thấy buổi học.");
 
-            s.IsDeleted = true;
-            s.UpdatedAt = DateTime.UtcNow;
-            _context.Sessions.Update(s);
+            session.IsDeleted = true;
+            session.UpdatedAt = DateTime.UtcNow;
+
+            //get all related lessons
+            var relatedLessons = await _context.Lessons
+                .Where(l => l.SessionId == id && !l.IsDeleted)
+                .ToListAsync();
+
+            foreach (var lesson in relatedLessons)
+            {
+                lesson.IsDeleted = true;
+                lesson.UpdatedAt = DateTime.UtcNow;
+            }
+
+            _context.Sessions.Update(session);
             await _context.SaveChangesAsync();
 
             return new OkObjectResult("Xóa mềm buổi học thành công.");

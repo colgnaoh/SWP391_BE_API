@@ -12,8 +12,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CourseReqModel
         public string? Content { get; set; }
         public CourseStatus Status { get; set; }
         public targetAudience TargetAudience { get; set; }
-        public string? VideoUrl { get; set; }
-        public string? ImageUrl { get; set; }
+        public List<string> ImageUrls { get; set; }
+        public List<string> VideoUrls { get; set; }
         public decimal? Price { get; set; }
         public decimal? Discount { get; set; }
         public DateTime? UpdatedAt { get; set; }
