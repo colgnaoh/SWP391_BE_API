@@ -1,16 +1,11 @@
-﻿using DrugPreventionSystemBE.DrugPreventionSystem.Entity;
+﻿using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CommunityProgramReqModel;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
 
-namespace DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface
+public interface ICommunityProgramService
 {
-    public interface ICommunityProgramService
-    {
-        Task<IActionResult> GetCommunityProgramsByPageAsync(int pageNumber, int pageSize, string? filterByName);
-        Task<IActionResult> GetCommunityProgramByIdAsync(Guid programId);
-        Task<IActionResult> CreateCommunityProgramAsync(CommunityProgram program);
-        Task<IActionResult> UpdateCommunityProgramAsync(Guid id, CommunityProgram updatedProgram);
-        Task<IActionResult> DeleteProgramAsync(Guid id);
-    }
+    Task<IActionResult> GetCommunityProgramsByPageAsync(int pageNumber, int pageSize, string? filterByName);
+    Task<IActionResult> GetCommunityProgramByIdAsync(Guid programId);
+    Task<IActionResult> CreateCommunityProgramAsync(CommunityProgramCreateRequest request);
+    Task<IActionResult> UpdateCommunityProgramAsync(Guid id, CommunityProgramUpdateRequest request);
+    Task<IActionResult> DeleteProgramAsync(Guid id);
 }

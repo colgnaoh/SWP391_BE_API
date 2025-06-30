@@ -649,8 +649,8 @@
         "IsRequired": true
       },
       {
-        "Name": "program",
-        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.Entity.CommunityProgram",
+        "Name": "request",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CommunityProgramReqModel.CommunityProgramUpdateRequest",
         "IsRequired": true
       }
     ],
@@ -681,8 +681,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "program",
-        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.Entity.CommunityProgram",
+        "Name": "request",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CommunityProgramReqModel.CommunityProgramCreateRequest",
         "IsRequired": true
       }
     ],

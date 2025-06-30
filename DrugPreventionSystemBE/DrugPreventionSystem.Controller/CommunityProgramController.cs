@@ -1,4 +1,4 @@
-﻿using DrugPreventionSystemBE.DrugPreventionSystem.Entity;
+﻿using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CommunityProgramReqModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +18,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
             _programService = programService;
         }
 
-        // GET: api/CommunityProgram?pageNumber=1&pageSize=10&filterByName=abc
+        // GET: api/program?pageNumber=1&pageSize=10&filterByName=abc
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> GetProgramsByPage(
@@ -29,7 +29,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
             return await _programService.GetCommunityProgramsByPageAsync(pageNumber, pageSize, filterByName);
         }
 
-        // GET: api/CommunityProgram/{id}
+        // GET: api/program/{id}
         [HttpGet("{id}")]
         [AllowAnonymous]
         public async Task<IActionResult> GetProgramById(Guid id)
@@ -37,29 +37,29 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
             return await _programService.GetCommunityProgramByIdAsync(id);
         }
 
-        // POST: api/CommunityProgram
+        // POST: api/program/create
         [HttpPost("create")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> CreateProgram([FromBody] CommunityProgram program)
+        public async Task<IActionResult> CreateProgram([FromBody] CommunityProgramCreateRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return await _programService.CreateCommunityProgramAsync(program);
+            return await _programService.CreateCommunityProgramAsync(request);
         }
 
-        // PUT: api/CommunityProgram/{id}
+        // PUT: api/program/{id}
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateProgram(Guid id, [FromBody] CommunityProgram program)
+        public async Task<IActionResult> UpdateProgram(Guid id, [FromBody] CommunityProgramUpdateRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return await _programService.UpdateCommunityProgramAsync(id, program);
+            return await _programService.UpdateCommunityProgramAsync(id, request);
         }
 
-        // DELETE: api/CommunityProgram/{id}
+        // DELETE: api/program/{id}
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteProgram(Guid id)

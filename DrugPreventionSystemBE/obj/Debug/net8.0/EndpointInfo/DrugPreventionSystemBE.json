@@ -580,17 +580,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CommunityProgram"
+                "$ref": "#/components/schemas/CommunityProgramUpdateRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/CommunityProgram"
+                "$ref": "#/components/schemas/CommunityProgramUpdateRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/CommunityProgram"
+                "$ref": "#/components/schemas/CommunityProgramUpdateRequest"
               }
             }
           }
@@ -642,17 +642,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CommunityProgram"
+                "$ref": "#/components/schemas/CommunityProgramCreateRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/CommunityProgram"
+                "$ref": "#/components/schemas/CommunityProgramCreateRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/CommunityProgram"
+                "$ref": "#/components/schemas/CommunityProgramCreateRequest"
               }
             }
           }
@@ -1819,225 +1819,9 @@
         },
         "additionalProperties": false
       },
-      "AgeGroup": {
-        "enum": [
-          "Student",
-          "UniversityStudent",
-          "Parent"
-        ],
-        "type": "string"
-      },
-      "AnswerOption": {
+      "CommunityProgramCreateRequest": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "isDeleted": {
-            "type": "boolean"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "questionId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "question": {
-            "$ref": "#/components/schemas/Question"
-          },
-          "optionContent": {
-            "type": "string",
-            "nullable": true
-          },
-          "score": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "positionOrder": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "userAnswerLogs": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UserAnswerLog"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "Blog": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "isDeleted": {
-            "type": "boolean"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "userId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "user": {
-            "$ref": "#/components/schemas/User"
-          },
-          "content": {
-            "type": "string",
-            "nullable": true
-          },
-          "blogImgUrl": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "Cart": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "isDeleted": {
-            "type": "boolean"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "userId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "user": {
-            "$ref": "#/components/schemas/User"
-          },
-          "courseId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "course": {
-            "$ref": "#/components/schemas/Course"
-          },
-          "cartNo": {
-            "type": "string",
-            "nullable": true
-          },
-          "status": {
-            "$ref": "#/components/schemas/CartStatus"
-          },
-          "price": {
-            "type": "number",
-            "format": "double"
-          },
-          "discount": {
-            "type": "number",
-            "format": "double"
-          },
-          "orderLogs": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/OrderLog"
-            },
-            "nullable": true
-          },
-          "orders": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Order"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "CartStatus": {
-        "enum": [
-          "Pending",
-          "Completed",
-          "Canceled"
-        ],
-        "type": "string"
-      },
-      "Category": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "isDeleted": {
-            "type": "boolean"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "courses": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Course"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "CommunityProgram": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "isDeleted": {
-            "type": "boolean"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
           "name": {
             "type": "string",
             "nullable": true
@@ -2055,44 +1839,47 @@
           },
           "startDate": {
             "type": "string",
-            "format": "date-time",
-            "nullable": true
+            "format": "date-time"
           },
           "endDate": {
             "type": "string",
-            "format": "date-time",
-            "nullable": true
+            "format": "date-time"
           },
           "programImgUrl": {
             "type": "string",
             "nullable": true
-          },
-          "surveyResults": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SurveyResult"
-            },
+          }
+        },
+        "additionalProperties": false
+      },
+      "CommunityProgramUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
             "nullable": true
           },
-          "transactions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Transaction"
-            },
+          "description": {
+            "type": "string",
             "nullable": true
           },
-          "userAnswerLogs": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UserAnswerLog"
-            },
+          "location": {
+            "type": "string",
             "nullable": true
           },
-          "courses": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Course"
-            },
+          "type": {
+            "$ref": "#/components/schemas/Programtype"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "programImgUrl": {
+            "type": "string",
             "nullable": true
           }
         },
@@ -2222,170 +2009,6 @@
           },
           "status": {
             "$ref": "#/components/schemas/ConsultantStatus"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Consultants": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "userId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "user": {
-            "$ref": "#/components/schemas/User"
-          },
-          "fullName": {
-            "type": "string",
-            "nullable": true
-          },
-          "email": {
-            "type": "string",
-            "nullable": true
-          },
-          "qualifications": {
-            "type": "string",
-            "nullable": true
-          },
-          "jobTitle": {
-            "type": "string",
-            "nullable": true
-          },
-          "hireDate": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "salary": {
-            "type": "number",
-            "format": "double",
-            "nullable": true
-          },
-          "status": {
-            "$ref": "#/components/schemas/ConsultantStatus"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "Course": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "isDeleted": {
-            "type": "boolean"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "userId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "user": {
-            "$ref": "#/components/schemas/User"
-          },
-          "categoryId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "category": {
-            "$ref": "#/components/schemas/Category"
-          },
-          "content": {
-            "type": "string",
-            "nullable": true
-          },
-          "status": {
-            "$ref": "#/components/schemas/CourseStatus"
-          },
-          "targetAudience": {
-            "$ref": "#/components/schemas/targetAudience"
-          },
-          "imageUrl": {
-            "type": "string",
-            "nullable": true
-          },
-          "price": {
-            "type": "number",
-            "format": "double",
-            "nullable": true
-          },
-          "discount": {
-            "type": "number",
-            "format": "double",
-            "nullable": true
-          },
-          "slug": {
-            "type": "string",
-            "nullable": true
-          },
-          "sessions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Session"
-            },
-            "nullable": true
-          },
-          "reviews": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Review"
-            },
-            "nullable": true
-          },
-          "carts": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Cart"
-            },
-            "nullable": true
-          },
-          "transactions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Transaction"
-            },
-            "nullable": true
-          },
-          "lessons": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Lesson"
-            },
-            "nullable": true
-          },
-          "orderDetails": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/OrderDetail"
-            },
-            "nullable": true
           }
         },
         "additionalProperties": false
@@ -2628,80 +2251,6 @@
         },
         "additionalProperties": false
       },
-      "Lesson": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "isDeleted": {
-            "type": "boolean"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "sessionId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "session": {
-            "$ref": "#/components/schemas/Session"
-          },
-          "courseId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "course": {
-            "$ref": "#/components/schemas/Course"
-          },
-          "userId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "user": {
-            "$ref": "#/components/schemas/User"
-          },
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "content": {
-            "type": "string",
-            "nullable": true
-          },
-          "lessonType": {
-            "$ref": "#/components/schemas/LessonType"
-          },
-          "videoUrl": {
-            "type": "string",
-            "nullable": true
-          },
-          "imageUrl": {
-            "type": "string",
-            "nullable": true
-          },
-          "fullTime": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "positionOrder": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "LessonType": {
         "enum": [
           "Video",
@@ -2721,240 +2270,6 @@
           },
           "password": {
             "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "Order": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "totalAmount": {
-            "type": "number",
-            "format": "double"
-          },
-          "orderDate": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "status": {
-            "$ref": "#/components/schemas/OrderStatus"
-          },
-          "cartId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "cart": {
-            "$ref": "#/components/schemas/Cart"
-          },
-          "userId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "user": {
-            "$ref": "#/components/schemas/User"
-          },
-          "orderDetails": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/OrderDetail"
-            },
-            "nullable": true
-          },
-          "orderLogs": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/OrderLog"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "OrderDetail": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "isDeleted": {
-            "type": "boolean"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "orderId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "order": {
-            "$ref": "#/components/schemas/Order"
-          },
-          "serviceType": {
-            "$ref": "#/components/schemas/ServiceType"
-          },
-          "amount": {
-            "type": "number",
-            "format": "double",
-            "nullable": true
-          },
-          "transactionId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "transaction": {
-            "$ref": "#/components/schemas/Transaction"
-          },
-          "course": {
-            "$ref": "#/components/schemas/Course"
-          },
-          "courseId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "OrderLog": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "isDeleted": {
-            "type": "boolean"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "orderId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "order": {
-            "$ref": "#/components/schemas/Order"
-          },
-          "cartId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "cart": {
-            "$ref": "#/components/schemas/Cart"
-          },
-          "action": {
-            "type": "string",
-            "nullable": true
-          },
-          "oldStatus": {
-            "type": "string",
-            "nullable": true
-          },
-          "newStatus": {
-            "type": "string",
-            "nullable": true
-          },
-          "note": {
-            "type": "string",
-            "nullable": true
-          },
-          "userId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "user": {
-            "$ref": "#/components/schemas/User"
-          }
-        },
-        "additionalProperties": false
-      },
-      "OrderStatus": {
-        "enum": [
-          "Pending",
-          "Paid",
-          "Failed"
-        ],
-        "type": "string"
-      },
-      "Payment": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "isDeleted": {
-            "type": "boolean"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "paymentNo": {
-            "type": "string",
-            "nullable": true
-          },
-          "status": {
-            "$ref": "#/components/schemas/paymentStatus"
-          },
-          "userId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "user": {
-            "$ref": "#/components/schemas/User"
-          },
-          "amount": {
-            "type": "number",
-            "format": "double",
-            "nullable": true
-          },
-          "paymentMethod": {
-            "$ref": "#/components/schemas/paymentMethod"
-          },
-          "organizationShare": {
-            "type": "number",
-            "format": "double",
-            "nullable": true
-          },
-          "consultantShare": {
-            "type": "number",
-            "format": "double",
-            "nullable": true
-          },
-          "transactions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Transaction"
-            },
             "nullable": true
           }
         },
@@ -2995,69 +2310,6 @@
         ],
         "type": "string"
       },
-      "Question": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "isDeleted": {
-            "type": "boolean"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "surveyId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "survey": {
-            "$ref": "#/components/schemas/Survey"
-          },
-          "questionContent": {
-            "type": "string",
-            "nullable": true
-          },
-          "questionType": {
-            "$ref": "#/components/schemas/QuestionType"
-          },
-          "positionOrder": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "answerOptions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AnswerOption"
-            },
-            "nullable": true
-          },
-          "userAnswerLogs": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UserAnswerLog"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "QuestionType": {
-        "enum": [
-          "SingleChoice",
-          "MultipleChoice",
-          "Text"
-        ],
-        "type": "string"
-      },
       "ResendTokenRequest": {
         "type": "object",
         "properties": {
@@ -3082,137 +2334,6 @@
           "newPassword": {
             "type": "string",
             "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "Review": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "isDeleted": {
-            "type": "boolean"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "courseId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "course": {
-            "$ref": "#/components/schemas/Course"
-          },
-          "userId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "user": {
-            "$ref": "#/components/schemas/User"
-          },
-          "rating": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "comment": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "RiskLevel": {
-        "enum": [
-          "None",
-          "Low",
-          "Moderate",
-          "High",
-          "Severe"
-        ],
-        "type": "string"
-      },
-      "Role": {
-        "enum": [
-          "Customer",
-          "Manager",
-          "Staff",
-          "Consultant",
-          "Admin"
-        ],
-        "type": "string"
-      },
-      "ServiceType": {
-        "enum": [
-          "CourseSale"
-        ],
-        "type": "string"
-      },
-      "Session": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "isDeleted": {
-            "type": "boolean"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "courseId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "userId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "user": {
-            "$ref": "#/components/schemas/User"
-          },
-          "slug": {
-            "type": "string",
-            "nullable": true
-          },
-          "content": {
-            "type": "string",
-            "nullable": true
-          },
-          "positionOrder": {
-            "type": "string",
-            "nullable": true
-          },
-          "lessons": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Lesson"
-            },
-            "nullable": true
-          },
-          "course": {
-            "$ref": "#/components/schemas/Course"
           }
         },
         "additionalProperties": false
@@ -3269,204 +2390,6 @@
           }
         },
         "additionalProperties": false
-      },
-      "Survey": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "isDeleted": {
-            "type": "boolean"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "type": {
-            "$ref": "#/components/schemas/SurveyType"
-          },
-          "questions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Question"
-            },
-            "nullable": true
-          },
-          "surveyResults": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SurveyResult"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "SurveyResult": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "isDeleted": {
-            "type": "boolean"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "userId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "user": {
-            "$ref": "#/components/schemas/User"
-          },
-          "surveyId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "survey": {
-            "$ref": "#/components/schemas/Survey"
-          },
-          "totalScore": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "riskLevel": {
-            "$ref": "#/components/schemas/RiskLevel"
-          },
-          "completedAt": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "programId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "program": {
-            "$ref": "#/components/schemas/CommunityProgram"
-          },
-          "userAnswerLogs": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UserAnswerLog"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "SurveyType": {
-        "enum": [
-          "RiskAssessment",
-          "Evaluation",
-          "Feedback"
-        ],
-        "type": "string"
-      },
-      "Transaction": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "isDeleted": {
-            "type": "boolean"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "consultantId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "consultant": {
-            "$ref": "#/components/schemas/User"
-          },
-          "amount": {
-            "type": "number",
-            "format": "double",
-            "nullable": true
-          },
-          "status": {
-            "$ref": "#/components/schemas/TransactionStatus"
-          },
-          "serviceType": {
-            "$ref": "#/components/schemas/ServiceType"
-          },
-          "paymentId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "payment": {
-            "$ref": "#/components/schemas/Payment"
-          },
-          "courseId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "course": {
-            "$ref": "#/components/schemas/Course"
-          },
-          "programId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "program": {
-            "$ref": "#/components/schemas/CommunityProgram"
-          },
-          "orderDetails": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/OrderDetail"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "TransactionStatus": {
-        "enum": [
-          "Pending",
-          "Approved",
-          "Rejected"
-        ],
-        "type": "string"
       },
       "UpdateBlogRequest": {
         "type": "object",
@@ -3536,226 +2459,6 @@
           },
           "comment": {
             "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "User": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "firstName": {
-            "type": "string",
-            "nullable": true
-          },
-          "lastName": {
-            "type": "string",
-            "nullable": true
-          },
-          "email": {
-            "type": "string",
-            "nullable": true
-          },
-          "password": {
-            "type": "string",
-            "nullable": true
-          },
-          "phoneNumber": {
-            "type": "string",
-            "nullable": true
-          },
-          "address": {
-            "type": "string",
-            "nullable": true
-          },
-          "gender": {
-            "type": "string",
-            "nullable": true
-          },
-          "dob": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "role": {
-            "$ref": "#/components/schemas/Role"
-          },
-          "ageGroup": {
-            "$ref": "#/components/schemas/AgeGroup"
-          },
-          "isVerified": {
-            "type": "boolean"
-          },
-          "verificationToken": {
-            "type": "string",
-            "nullable": true
-          },
-          "verificationTokenExpires": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "isDeleted": {
-            "type": "boolean"
-          },
-          "passwordResetToken": {
-            "type": "string",
-            "nullable": true
-          },
-          "resetTokenExpires": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "profilePicUrl": {
-            "type": "string",
-            "nullable": true
-          },
-          "blogs": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Blog"
-            },
-            "nullable": true
-          },
-          "carts": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Cart"
-            },
-            "nullable": true
-          },
-          "createdCourses": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Course"
-            },
-            "nullable": true
-          },
-          "createdLessons": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Lesson"
-            },
-            "nullable": true
-          },
-          "payments": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Payment"
-            },
-            "nullable": true
-          },
-          "reviews": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Review"
-            },
-            "nullable": true
-          },
-          "createdSessions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Session"
-            },
-            "nullable": true
-          },
-          "surveyResults": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SurveyResult"
-            },
-            "nullable": true
-          },
-          "consultantProfiles": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Consultants"
-            },
-            "nullable": true
-          },
-          "transactions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Transaction"
-            },
-            "nullable": true
-          },
-          "orders": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Order"
-            },
-            "nullable": true
-          },
-          "orderLogs": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/OrderLog"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "UserAnswerLog": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "surveyResultId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "surveyResult": {
-            "$ref": "#/components/schemas/SurveyResult"
-          },
-          "questionId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "question": {
-            "$ref": "#/components/schemas/Question"
-          },
-          "answerOptionId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "answerOption": {
-            "$ref": "#/components/schemas/AnswerOption"
-          },
-          "programId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "program": {
-            "$ref": "#/components/schemas/CommunityProgram"
-          },
-          "answerValue": {
-            "type": "string",
-            "nullable": true
-          },
-          "score": {
-            "type": "integer",
-            "format": "int32",
             "nullable": true
           }
         },
@@ -3900,20 +2603,6 @@
           }
         },
         "additionalProperties": false
-      },
-      "paymentMethod": {
-        "enum": [
-          "Cash",
-          "BankTransfer"
-        ],
-        "type": "string"
-      },
-      "paymentStatus": {
-        "enum": [
-          "Invalid",
-          "Valid"
-        ],
-        "type": "string"
       },
       "targetAudience": {
         "enum": [

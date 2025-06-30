@@ -1,7 +1,7 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.Data;
 using DrugPreventionSystemBE.DrugPreventionSystem.Entity;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CommunityProgramReqModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CommunityProgramResModel;
-using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -45,15 +45,21 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
                     Id = p.Id,
                     Name = p.Name,
                     Description = p.Description,
+                    Location = p.Location,
+                    Type = p.Type,
                     StartDate = p.StartDate,
                     EndDate = p.EndDate,
+                    ProgramImgUrl = p.ProgramImgUrl,
                     CreatedAt = p.CreatedAt,
-                    UpdatedAt = p.UpdatedAt
+                    UpdatedAt = p.UpdatedAt,
+                    Success = true,
+                    Message = ""
                 }).ToList();
 
                 return new OkObjectResult(new GetProgramsByPageResponse
                 {
                     Success = true,
+                    Message = "Lấy danh sách thành công.",
                     Data = programDtos,
                     TotalCount = totalCount,
                     PageNumber = currentPage,
@@ -63,7 +69,12 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
             }
             catch (Exception)
             {
-                return new ObjectResult("Lỗi khi truy xuất danh sách chương trình.") { StatusCode = 500 };
+                return new ObjectResult(new GetProgramsByPageResponse
+                {
+                    Success = false,
+                    Message = "Lỗi khi truy xuất danh sách chương trình."
+                })
+                { StatusCode = 500 };
             }
         }
 
@@ -76,7 +87,11 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
 
                 if (program == null)
                 {
-                    return new NotFoundObjectResult("Không tìm thấy chương trình.");
+                    return new NotFoundObjectResult(new CommunityProgramResponseModel
+                    {
+                        Success = false,
+                        Message = "Không tìm thấy chương trình."
+                    });
                 }
 
                 var response = new CommunityProgramResponseModel
@@ -84,48 +99,82 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
                     Id = program.Id,
                     Name = program.Name,
                     Description = program.Description,
+                    Location = program.Location,
+                    Type = program.Type,
                     StartDate = program.StartDate,
                     EndDate = program.EndDate,
+                    ProgramImgUrl = program.ProgramImgUrl,
                     CreatedAt = program.CreatedAt,
-                    UpdatedAt = program.UpdatedAt
+                    UpdatedAt = program.UpdatedAt,
+                    Success = true,
+                    Message = "Lấy chương trình thành công."
                 };
 
-                return new OkObjectResult(new SingleCommunityProgramResponse
-                {
-                    Success = true,
-                    Data = response
-                });
+                return new OkObjectResult(response);
             }
             catch (Exception)
             {
-                return new ObjectResult("Lỗi khi truy xuất chương trình.") { StatusCode = 500 };
+                return new ObjectResult(new CommunityProgramResponseModel
+                {
+                    Success = false,
+                    Message = "Lỗi khi truy xuất chương trình."
+                })
+                { StatusCode = 500 };
             }
         }
 
-        public async Task<IActionResult> CreateCommunityProgramAsync(CommunityProgram program)
+        public async Task<IActionResult> CreateCommunityProgramAsync(CommunityProgramCreateRequest request)
         {
             try
             {
-                program.Id = Guid.NewGuid();
-                program.CreatedAt = DateTime.UtcNow;
+                var program = new CommunityProgram
+                {
+                    Id = Guid.NewGuid(),
+                    Name = request.Name,
+                    Description = request.Description,
+                    Location = request.Location,
+                    Type = request.Type,
+                    StartDate = request.StartDate,
+                    EndDate = request.EndDate,
+                    ProgramImgUrl = request.ProgramImgUrl,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow,
+                    IsDeleted = false
+                };
 
                 _context.Programs.Add(program);
                 await _context.SaveChangesAsync();
 
-                return new OkObjectResult(new
+                var response = new CommunityProgramResponseModel
                 {
+                    Id = program.Id,
+                    Name = program.Name,
+                    Description = program.Description,
+                    Location = program.Location,
+                    Type = program.Type,
+                    StartDate = program.StartDate,
+                    EndDate = program.EndDate,
+                    ProgramImgUrl = program.ProgramImgUrl,
+                    CreatedAt = program.CreatedAt,
+                    UpdatedAt = program.UpdatedAt,
                     Success = true,
-                    Message = "Tạo chương trình thành công.",
-                    Data = program
-                });
+                    Message = "Tạo chương trình thành công."
+                };
+
+                return new OkObjectResult(response);
             }
             catch (Exception)
             {
-                return new ObjectResult("Lỗi khi tạo chương trình.") { StatusCode = 500 };
+                return new ObjectResult(new CommunityProgramResponseModel
+                {
+                    Success = false,
+                    Message = "Lỗi khi tạo chương trình."
+                })
+                { StatusCode = 500 };
             }
         }
 
-        public async Task<IActionResult> UpdateCommunityProgramAsync(Guid id, CommunityProgram updated)
+        public async Task<IActionResult> UpdateCommunityProgramAsync(Guid id, CommunityProgramUpdateRequest request)
         {
             try
             {
@@ -134,25 +183,38 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
 
                 if (program == null)
                 {
-                    return new NotFoundObjectResult("Không tìm thấy chương trình.");
+                    return new NotFoundObjectResult(new CommunityProgramResponseModel
+                    {
+                        Success = false,
+                        Message = "Không tìm thấy chương trình."
+                    });
                 }
 
-                program.Name = updated.Name;
-                program.Description = updated.Description;
-                program.Location = updated.Location;
-                program.Type = updated.Type;
-                program.StartDate = updated.StartDate;
-                program.EndDate = updated.EndDate;
-                program.ProgramImgUrl = updated.ProgramImgUrl;
+                program.Name = request.Name;
+                program.Description = request.Description;
+                program.Location = request.Location;
+                program.Type = request.Type;
+                program.StartDate = request.StartDate;
+                program.EndDate = request.EndDate;
+                program.ProgramImgUrl = request.ProgramImgUrl;
                 program.UpdatedAt = DateTime.UtcNow;
 
                 await _context.SaveChangesAsync();
 
-                return new OkObjectResult("Cập nhật chương trình thành công.");
+                return new OkObjectResult(new CommunityProgramResponseModel
+                {
+                    Success = true,
+                    Message = "Cập nhật chương trình thành công."
+                });
             }
             catch (Exception)
             {
-                return new ObjectResult("Lỗi khi cập nhật chương trình.") { StatusCode = 500 };
+                return new ObjectResult(new CommunityProgramResponseModel
+                {
+                    Success = false,
+                    Message = "Lỗi khi cập nhật chương trình."
+                })
+                { StatusCode = 500 };
             }
         }
 
@@ -165,7 +227,11 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
 
                 if (program == null)
                 {
-                    return new NotFoundObjectResult("Chương trình không tồn tại hoặc đã bị xóa.");
+                    return new NotFoundObjectResult(new CommunityProgramResponseModel
+                    {
+                        Success = false,
+                        Message = "Chương trình không tồn tại hoặc đã bị xóa."
+                    });
                 }
 
                 program.IsDeleted = true;
@@ -173,11 +239,20 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
 
                 await _context.SaveChangesAsync();
 
-                return new OkObjectResult("Xóa mềm chương trình thành công.");
+                return new OkObjectResult(new CommunityProgramResponseModel
+                {
+                    Success = true,
+                    Message = "Xóa mềm chương trình thành công."
+                });
             }
             catch (Exception)
             {
-                return new ObjectResult("Lỗi khi xóa chương trình.") { StatusCode = 500 };
+                return new ObjectResult(new CommunityProgramResponseModel
+                {
+                    Success = false,
+                    Message = "Lỗi khi xóa chương trình."
+                })
+                { StatusCode = 500 };
             }
         }
     }

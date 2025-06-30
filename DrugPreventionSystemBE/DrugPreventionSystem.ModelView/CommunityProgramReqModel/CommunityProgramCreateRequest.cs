@@ -1,0 +1,15 @@
+﻿using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
+
+namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CommunityProgramReqModel
+{
+    public class CommunityProgramCreateRequest
+    {
+        public string Name { get; set; } = default!;
+        public string Description { get; set; } = default!;
+        public string Location { get; set; } = default!;
+        public Programtype Type { get; set; } = default!;
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public string ProgramImgUrl { get; set; } = default!;
+    }
+}
