@@ -48,35 +48,44 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 return new BadRequestObjectResult(new BaseResponse { Success = false, Message = "Người dùng không tồn tại." });
             }
 
-            // Lấy Cart, chỉ cần Include Course vì chỉ có dịch vụ CourseSale
-            var cart = await _context.Carts
-                .Include(c => c.Course)          // Load Course
-                .FirstOrDefaultAsync(c => c.UserId == userId && c.Status == CartStatus.Pending && !c.IsDeleted);
+            var cartItems = await _context.Carts
+                .Include(c => c.Course)
+                .Where(c => c.UserId == userId && c.Status == CartStatus.Pending && !c.IsDeleted)
+                .ToListAsync();
 
-            if (cart == null)
+            if (!cartItems.Any()) // Kiểm tra nếu không có mục nào trong giỏ hàng
             {
                 return new NotFoundObjectResult(new BaseResponse { Success = false, Message = "Không tìm thấy giỏ hàng hoạt động hoặc giỏ hàng trống." });
             }
 
-            // Xác định thông tin của mục trong giỏ hàng (chỉ Course)
-            bool hasValidItem = false;
-            decimal itemPrice = 0;
-            string itemName = string.Empty;
-            Guid? itemId = null;
-            ServiceType? serviceType = null; // Sẽ luôn là CourseSale
+            decimal totalOrderAmount = 0;
+            var orderDetails = new List<OrderDetail>();
 
-            // Chỉ xử lý nếu ServiceType là CourseSale
-            if (cart.CourseId.HasValue && cart.Course != null)
+            foreach (var cartItem in cartItems)
             {
-                hasValidItem = true;
-                itemPrice = (decimal)(cart.Course.Price - cart.Course.Discount);
-                itemName = cart.Course.Name;
-                itemId = cart.CourseId;
-                serviceType = DrugPreventionSystemBE.DrugPreventionSystem.Enum.ServiceType.CourseSale;
-            }
-            
+                if (cartItem.CourseId.HasValue && cartItem.Course != null)
+                {
+                    decimal itemPrice = (decimal)(cartItem.Course.Price - cartItem.Course.Discount);
+                    totalOrderAmount += itemPrice; // Cộng dồn tổng tiền
 
-            if (!hasValidItem)
+                    var orderDetailId = _idServices.GenerateNextId();
+                    var orderDetail = new OrderDetail
+                    {
+                        Id = orderDetailId,
+                        ServiceType = DrugPreventionSystemBE.DrugPreventionSystem.Enum.ServiceType.CourseSale,
+                        CourseId = cartItem.CourseId,
+                        Amount = itemPrice,
+                        CreatedAt = DateTime.UtcNow,
+                        UpdatedAt = DateTime.UtcNow
+                    };
+                    orderDetails.Add(orderDetail);
+
+                    cartItem.Status = CartStatus.Completed; 
+                    cartItem.UpdatedAt = DateTime.UtcNow;
+                }
+            }
+
+            if (!orderDetails.Any())
             {
                 return new BadRequestObjectResult(new BaseResponse { Success = false, Message = "Giỏ hàng không chứa khóa học hợp lệ để tạo đơn hàng." });
             }
@@ -87,36 +96,25 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             {
                 Id = newOrderId,
                 UserId = userId,
-                CartId = cart.Id,
+                CartId = null, 
                 OrderDate = DateTime.UtcNow,
-                Status = OrderStatus.Pending, // Đơn hàng mới tạo đang chờ thanh toán
-                TotalAmount = itemPrice, // Tổng tiền là giá của khóa học
+                Status = OrderStatus.Pending,
+                TotalAmount = totalOrderAmount, 
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
-                OrderDetails = new List<OrderDetail>() // Khởi tạo danh sách OrderDetails
+                OrderDetails = orderDetails // GÁN DANH SÁCH OrderDetails ĐÃ TẠO
             };
 
-            // Tạo OrderDetail duy nhất cho khóa học
-            var orderDetailId = _idServices.GenerateNextId();
-            var orderDetail = new OrderDetail
+            // Gán OrderId cho từng OrderDetail
+            foreach (var detail in order.OrderDetails)
             {
-                Id = orderDetailId,
-                OrderId = newOrderId,
-                ServiceType = serviceType, // Sẽ là CourseSale
-                CourseId = itemId,         // Chỉ gán CourseId
-                Amount = itemPrice,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
-            };
-            order.OrderDetails.Add(orderDetail);
-
-            // Đặt giỏ hàng về trạng thái Inactive sau khi tạo đơn hàng
-            cart.Status = CartStatus.Pending;
-            cart.UpdatedAt = DateTime.UtcNow;
+                detail.OrderId = order.Id;
+            }
 
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
 
+            // Chuẩn bị OrderResponse để trả về
             var orderResponse = new OrderResponse
             {
                 OrderId = order.Id,
@@ -125,18 +123,19 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 TotalAmount = order.TotalAmount,
                 OrderDate = order.OrderDate,
                 OrderStatus = order.Status,
+                PaymentStatus = null, // Đơn hàng mới tạo chưa có thanh toán
+                PaymentId = null,
                 OrderDetails = order.OrderDetails.Select(od => new OrderDetailResponse
                 {
                     OrderDetailId = od.Id,
                     CourseId = od.CourseId,
-                    CourseName = itemName, // Sử dụng itemName đã tính toán từ giỏ hàng (tên khóa học)
+                    CourseName = cartItems.FirstOrDefault(ci => ci.CourseId == od.CourseId)?.Course?.Name, 
                     Amount = od.Amount
                 }).ToList()
             };
 
             return new OkObjectResult(new BaseResponse { Success = true, Message = "Đơn hàng khóa học đã được tạo thành công từ giỏ hàng.", Data = orderResponse });
         }
-
         public async Task<IActionResult> GetOrderByIdAsync(Guid orderId)
         {
             var currentUserId = GetCurrentUserId();
