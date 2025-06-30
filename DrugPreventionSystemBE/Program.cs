@@ -89,6 +89,7 @@ namespace DrugPreventionSystemBE
             builder.Services.AddScoped<ICartService, CartService>();
             builder.Services.AddScoped<ISessionService, SessionService>();
             builder.Services.AddScoped<ILessonService, LessonService>();
+            builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 
             Env.Load();
 

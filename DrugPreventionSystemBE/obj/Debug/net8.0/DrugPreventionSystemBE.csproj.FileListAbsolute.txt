@@ -359,7 +359,6 @@ D:\SWP\SWP391_BE_API\DrugPreventionSystemBE\obj\Debug\net8.0\staticwebassets.bui
 D:\SWP\SWP391_BE_API\DrugPreventionSystemBE\obj\Debug\net8.0\staticwebassets.build.json.cache
 D:\SWP\SWP391_BE_API\DrugPreventionSystemBE\obj\Debug\net8.0\staticwebassets.development.json
 D:\SWP\SWP391_BE_API\DrugPreventionSystemBE\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-D:\SWP\SWP391_BE_API\DrugPreventionSystemBE\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 D:\SWP\SWP391_BE_API\DrugPreventionSystemBE\obj\Debug\net8.0\DrugPrev.8E31C71A.Up2Date
 D:\SWP\SWP391_BE_API\DrugPreventionSystemBE\obj\Debug\net8.0\DrugPreventionSystemBE.dll
 D:\SWP\SWP391_BE_API\DrugPreventionSystemBE\obj\Debug\net8.0\refint\DrugPreventionSystemBE.dll
