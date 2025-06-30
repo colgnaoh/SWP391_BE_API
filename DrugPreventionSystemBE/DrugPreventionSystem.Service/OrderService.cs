@@ -1,10 +1,14 @@
-﻿using DrugPreventionSystemBE.DrugPreventionSystem.Data;
+﻿using CloudinaryDotNet.Actions;
+using DrugPreventionSystemBE.DrugPreventionSystem.Data;
 using DrugPreventionSystemBE.DrugPreventionSystem.Entity;
+using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ApiResponse;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using Role = DrugPreventionSystemBE.DrugPreventionSystem.Enum.Role;
 
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 {
@@ -31,114 +35,269 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             throw new UnauthorizedAccessException("User ID not found in token.");
         }
 
+        private string GetCurrentUserRole()
+        {
+            return _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Role)?.Value;
+        }
+
         public async Task<IActionResult> CreateOrderFromCartAsync(Guid userId)
         {
-            var cartItems = await _context.Carts
-                .Where(c => c.UserId == userId && !c.IsDeleted && c.Status == Enum.CartStatus.Pending)
-                .Include(c => c.Course)
-                .ToListAsync();
-
-            if (!cartItems.Any())
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId && !u.IsDeleted);
+            if (user == null)
             {
-                return new BadRequestObjectResult("Giỏ hàng của bạn trống. Không thể tạo đơn hàng.");
+                return new BadRequestObjectResult(new BaseResponse { Success = false, Message = "Người dùng không tồn tại." });
             }
 
-            var totalAmount = cartItems.Sum(c => c.Price - c.Discount);
+            // Lấy Cart, chỉ cần Include Course vì chỉ có dịch vụ CourseSale
+            var cart = await _context.Carts
+                .Include(c => c.Course)          // Load Course
+                .FirstOrDefaultAsync(c => c.UserId == userId && c.Status == CartStatus.Pending && !c.IsDeleted);
 
-            var newOrder = new Order
+            if (cart == null)
             {
-                Id = _idServices.GenerateNextId(),
-                CartId = cartItems.First().Id, // Lưu ID của một cart item bất kỳ (hoặc có thể tạo một bảng cart header riêng)
-                TotalAmount = totalAmount,
+                return new NotFoundObjectResult(new BaseResponse { Success = false, Message = "Không tìm thấy giỏ hàng hoạt động hoặc giỏ hàng trống." });
+            }
+
+            // Xác định thông tin của mục trong giỏ hàng (chỉ Course)
+            bool hasValidItem = false;
+            decimal itemPrice = 0;
+            string itemName = string.Empty;
+            Guid? itemId = null;
+            ServiceType? serviceType = null; // Sẽ luôn là CourseSale
+
+            // Chỉ xử lý nếu ServiceType là CourseSale
+            if (cart.CourseId.HasValue && cart.Course != null)
+            {
+                hasValidItem = true;
+                itemPrice = cart.Course.Price - cart.Course.Discount;
+                itemName = cart.Course.Name;
+                itemId = cart.CourseId;
+                serviceType = DrugPreventionSystemBE.DrugPreventionSystem.Enum.ServiceType.CourseSale;
+            }
+            
+
+            if (!hasValidItem)
+            {
+                return new BadRequestObjectResult(new BaseResponse { Success = false, Message = "Giỏ hàng không chứa khóa học hợp lệ để tạo đơn hàng." });
+            }
+
+            // Tạo Order mới
+            var newOrderId = _idServices.GenerateNextId();
+            var order = new Order
+            {
+                Id = newOrderId,
+                UserId = userId,
+                CartId = cart.Id,
                 OrderDate = DateTime.UtcNow,
-                Status = Enum.OrderStatus.Pending, // Đơn hàng đang chờ thanh toán
+                Status = OrderStatus.Pending, // Đơn hàng mới tạo đang chờ thanh toán
+                TotalAmount = itemPrice, // Tổng tiền là giá của khóa học
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
+                OrderDetails = new List<OrderDetail>() // Khởi tạo danh sách OrderDetails
             };
 
-            _context.Orders.Add(newOrder);
-
-            foreach (var item in cartItems)
+            // Tạo OrderDetail duy nhất cho khóa học
+            var orderDetailId = _idServices.GenerateNextId();
+            var orderDetail = new OrderDetail
             {
-                var orderDetail = new OrderDetail
-                {
-                    Id = _idServices.GenerateNextId(),
-                    OrderId = newOrder.Id,
-                    ServiceType = Enum.ServiceType.CourseSale,
-                    Amount = item.Price - item.Discount,
-                    // TransactionId sẽ được điền sau khi thanh toán thành công
-                    UpdatedAt = DateTime.UtcNow,
-                    IsDeleted = false
-                };
-                _context.OrderDetails.Add(orderDetail);
+                Id = orderDetailId,
+                OrderId = newOrderId,
+                ServiceType = serviceType, // Sẽ là CourseSale
+                CourseId = itemId,         // Chỉ gán CourseId
+                Amount = itemPrice,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+            order.OrderDetails.Add(orderDetail);
 
-                // Đánh dấu các mục trong giỏ hàng là đã được chuyển đổi thành đơn hàng
-                item.Status = Enum.CartStatus.Completed;
-                item.UpdatedAt = DateTime.UtcNow;
-            }
+            // Đặt giỏ hàng về trạng thái Inactive sau khi tạo đơn hàng
+            cart.Status = CartStatus.Pending;
+            cart.UpdatedAt = DateTime.UtcNow;
 
+            _context.Orders.Add(order);
             await _context.SaveChangesAsync();
 
-            return new OkObjectResult(new { Message = "Đơn hàng đã được tạo thành công.", OrderId = newOrder.Id });
+            var orderResponse = new OrderResponse
+            {
+                OrderId = order.Id,
+                UserId = order.UserId,
+                UserName = $"{user.LastName} {user.FirstName}".Trim(),
+                TotalAmount = order.TotalAmount,
+                OrderDate = order.OrderDate,
+                Status = order.Status.ToString(),
+                OrderDetails = order.OrderDetails.Select(od => new OrderDetailResponse
+                {
+                    OrderDetailId = od.Id,
+                    CourseId = od.CourseId,
+                    CourseName = itemName, // Sử dụng itemName đã tính toán từ giỏ hàng (tên khóa học)
+                    Amount = od.Amount
+                }).ToList()
+            };
+
+            return new OkObjectResult(new BaseResponse { Success = true, Message = "Đơn hàng khóa học đã được tạo thành công từ giỏ hàng.", Data = orderResponse });
+        }
+
+        public async Task<IActionResult> GetOrderByIdAsync(Guid orderId)
+        {
+            var currentUserId = GetCurrentUserId();
+            var currentUserRole = GetCurrentUserRole();
+
+            var order = await _context.Orders
+                .Include(o => o.User)
+                .Include(o => o.OrderDetails)
+                    .ThenInclude(od => od.Course) // Chỉ cần Include Course
+                .Include(o => o.Payment)
+                .FirstOrDefaultAsync(o => o.Id == orderId && !o.IsDeleted);
+
+            if (order == null)
+            {
+                return new NotFoundObjectResult(new BaseResponse { Success = false, Message = "Không tìm thấy đơn hàng." });
+            }
+
+            // Admin có thể xem tất cả, người dùng chỉ xem đơn hàng của mình
+            if (currentUserRole != Role.Admin.ToString() && order.UserId != currentUserId)
+            {
+                return new UnauthorizedObjectResult(new BaseResponse { Success = false, Message = "Bạn không có quyền truy cập đơn hàng này." });
+            }
+
+            var orderResponse = new OrderResponse
+            {
+                OrderId = order.Id,
+                UserId = order.UserId,
+                UserName = $"{order.User.LastName} {order.User.FirstName}".Trim(),
+                TotalAmount = order.TotalAmount,
+                OrderDate = order.OrderDate,
+                Status = order.Status.ToString(),
+                PaymentStatus = order.Payment.Status,
+                PaymentId = order.Payment?.Id,
+                OrderDetails = order.OrderDetails.Select(od => new OrderDetailResponse
+                {
+                    OrderDetailId = od.Id,
+                    CourseId = od.CourseId,
+                    CourseName = od.Course.Name,
+                    Amount = od.Amount
+                }).ToList()
+            };
+
+            return new OkObjectResult(new BaseResponse { Success = true, Data = orderResponse });
         }
 
         public async Task<IActionResult> GetUserOrdersAsync(Guid userId)
         {
+            var currentUserId = GetCurrentUserId();
+            var currentUserRole = GetCurrentUserRole();
+
+            // Đảm bảo người dùng chỉ có thể lấy order của chính họ trừ khi là Admin
+            if (currentUserRole != Role.Admin.ToString() && userId != currentUserId)
+            {
+                return new UnauthorizedObjectResult(new BaseResponse { Success = false, Message = "Bạn không có quyền truy cập đơn hàng của người dùng này." });
+            }
+
             var orders = await _context.Orders
-                .Where(o => o.Cart.UserId == userId) // Giả định CartId trong Order liên kết với userId
-                .Include(o => o.OrderDetails) // Kéo theo chi tiết đơn hàng
-                .ThenInclude(od => od.Transaction) // Kéo theo giao dịch nếu có
+                .Where(o => o.UserId == userId && !o.IsDeleted)
+                .Include(o => o.User)
+                .Include(o => o.OrderDetails)
+                    .ThenInclude(od => od.Course) 
+                .Include(o => o.Payment)
+                .OrderByDescending(o => o.OrderDate)
                 .Select(o => new OrderResponse
                 {
-                    OrderId = o.Id ?? Guid.Empty, // Explicitly handle nullable Guid
+                    OrderId = o.Id,
+                    UserId = o.UserId,
+                    UserName = $"{o.User.LastName} {o.User.FirstName}".Trim(),
                     TotalAmount = o.TotalAmount,
-                    OrderDate = o.OrderDate ?? DateTime.MinValue, // Handle nullable DateTime
+                    OrderDate = o.OrderDate,
                     Status = o.Status.ToString(),
-                    Items = o.OrderDetails.Select(od => new OrderDetailResponse
+                    PaymentStatus = o.Payment.Status,
+                    PaymentId = o.Payment.Id,
+                    OrderDetails = o.OrderDetails.Select(od => new OrderDetailResponse
                     {
                         OrderDetailId = od.Id,
-                        ServiceType = od.ServiceType.ToString(),
-                        ServiceName = od.ServiceType.ToString(), 
-                        Amount = od.Amount ?? 0 // Handle nullable decimal
+                        CourseId = od.CourseId,
+                        CourseName = od.Course != null ? od.Course.Name : null,
+                        Amount = od.Amount
                     }).ToList()
                 })
                 .ToListAsync();
 
             if (!orders.Any())
             {
-                return new NotFoundObjectResult("Bạn chưa có đơn hàng nào.");
+                return new NotFoundObjectResult(new BaseResponse { Success = false, Message = "Không tìm thấy đơn hàng nào cho người dùng này." });
             }
 
-            return new OkObjectResult(orders);
+            return new OkObjectResult(new BaseResponse { Success = true, Data = orders });
         }
 
-        public async Task<IActionResult> GetOrderDetailAsync(Guid orderId)
+        public async Task<IActionResult> GetAllOrdersAsync()
         {
-            var order = await _context.Orders
-                .Where(o => o.Id == orderId)
-                .Include(o => o.OrderDetails)
-                .ThenInclude(od => od.Transaction)
-                .FirstOrDefaultAsync();
+            var currentUserRole = GetCurrentUserRole();
+            if (currentUserRole != Role.Admin.ToString())
+            {
+                return new UnauthorizedObjectResult(new BaseResponse { Success = false, Message = "Bạn không có quyền truy cập tất cả đơn hàng." });
+            }
 
+            var orders = await _context.Orders
+                .Where(o => !o.IsDeleted)
+                .Include(o => o.User)
+                .Include(o => o.OrderDetails)
+                    .ThenInclude(od => od.Course)
+                .Include(o => o.Payment)
+                .OrderByDescending(o => o.OrderDate)
+                .Select(o => new OrderResponse
+                {
+                    OrderId = o.Id,
+                    UserId = o.UserId,
+                    UserName = $"{o.User.LastName} {o.User.FirstName}".Trim(),
+                    TotalAmount = o.TotalAmount,
+                    OrderDate = o.OrderDate,
+                    Status = o.Status.Value.ToString(),
+                    PaymentStatus = o.Payment.Status,
+                    PaymentId = o.Payment != null ? o.Payment.Id : null,
+                    OrderDetails = o.OrderDetails.Select(od => new OrderDetailResponse
+                    {
+                        OrderDetailId = od.Id,
+                        CourseId = od.CourseId,
+                        CourseName = od.Course.Name,
+                        Amount = od.Amount
+                    }).ToList()
+                })
+                .ToListAsync();
+
+            if (!orders.Any())
+            {
+                return new NotFoundObjectResult(new BaseResponse { Success = false, Message = "Không tìm thấy đơn hàng nào." });
+            }
+
+            return new OkObjectResult(new BaseResponse { Success = true, Data = orders });
+        }
+
+        public async Task<IActionResult> UpdateOrderStatusAsync(Guid orderId, OrderStatus newStatus)
+        {
+            var currentUserRole = GetCurrentUserRole();
+            if (currentUserRole != Role.Admin.ToString()) // Chỉ admin mới được cập nhật trạng thái Order
+            {
+                return new UnauthorizedObjectResult(new BaseResponse { Success = false, Message = "Bạn không có quyền cập nhật trạng thái đơn hàng." });
+            }
+
+            var order = await _context.Orders.FirstOrDefaultAsync(o => o.Id == orderId && !o.IsDeleted);
             if (order == null)
             {
-                return new NotFoundObjectResult("Không tìm thấy đơn hàng.");
+                return new NotFoundObjectResult(new BaseResponse { Success = false, Message = "Không tìm thấy đơn hàng." });
             }
 
-            var orderResponse = new OrderResponse
+            // Logic kiểm tra chuyển trạng thái hợp lệ
+            if (order.Status == OrderStatus.Paid)
             {
-                OrderId = order.Id ?? Guid.Empty, // Explicitly handle nullable Guid
-                TotalAmount = order.TotalAmount,
-                OrderDate = order.OrderDate ?? DateTime.MinValue, // Handle nullable DateTime
-                Status = order.Status.ToString(),
-                Items = order.OrderDetails.Select(od => new OrderDetailResponse
-                {
-                    OrderDetailId = od.Id,
-                    ServiceType = od.ServiceType.ToString(),
-                    ServiceName = od.Transaction?.Course?.Name ?? od.ServiceType.ToString(),
-                    Amount = od.Amount ?? 0 // Handle nullable decimal
-                }).ToList()
-            };
+                return new BadRequestObjectResult(new BaseResponse { Success = false, Message = $"Đơn hàng đã ở trạng thái '{order.Status}', không thể cập nhật." });
+            }
 
-            return new OkObjectResult(orderResponse);
+            order.Status = newStatus;
+            order.UpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+
+            return new OkObjectResult(new BaseResponse { Success = true, Message = $"Trạng thái đơn hàng '{order.Id}' đã được cập nhật thành '{newStatus}'." });
         }
+
     }
 }

@@ -1,12 +1,11 @@
-﻿using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
+﻿using DrugPreventionSystemBE.DrugPreventionSystem.Core;
+using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
 using System.ComponentModel.DataAnnotations;
 
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Entity
 {
-    public class Order
+    public class Order : BaseEnity
     {
-        [Key]
-        public Guid? Id { get; set; }
         public decimal TotalAmount { get; set; }
         public DateTime? OrderDate { get; set; }
         public OrderStatus? Status { get; set; }
@@ -14,6 +13,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Entity
         public Cart? Cart { get; set; }
         public Guid UserId { get; set; }
         public User? User { get; set; }
+        public Payment Payment { get; set; }
         public ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
         public ICollection<OrderLog> OrderLogs { get; set; } = new List<OrderLog>();
 

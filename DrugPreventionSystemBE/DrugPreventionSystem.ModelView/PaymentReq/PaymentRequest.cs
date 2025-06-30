@@ -5,6 +5,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView.PaymentReq
     public class PaymentRequest
     {
         public Guid OrderId { get; set; }
-        public paymentMethod PaymentMethod { get; set; } 
+        public PaymentMethod PaymentMethod { get; set; } 
     }
 }

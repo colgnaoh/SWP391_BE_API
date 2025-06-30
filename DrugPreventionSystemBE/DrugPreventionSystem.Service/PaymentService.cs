@@ -1,6 +1,9 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.Data;
 using DrugPreventionSystemBE.DrugPreventionSystem.Entity;
+using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ApiResponse;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.PaymentReq;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -33,96 +36,240 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             throw new UnauthorizedAccessException("User ID not found in token.");
         }
 
-        public async Task<IActionResult> ProcessPaymentAsync(Guid userId, PaymentRequest request)
+        private string GetCurrentUserRole()
         {
-            var order = await _context.Orders
-                .Include(o => o.Cart) // Đảm bảo rằng Cart được load để truy cập UserId
-                .Include(o => o.OrderDetails)
-                .FirstOrDefaultAsync(o => o.Id == request.OrderId && o.Status == Enum.OrderStatus.Pending);
+            return _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Role)?.Value;
+        }
 
+        public async Task<IActionResult> CreatePaymentForOrderAsync(CreatePaymentRequest request)
+        {
+            var order = await _context.Orders.Include(o => o.User).FirstOrDefaultAsync(o => o.Id == request.OrderId);
             if (order == null)
             {
-                return new NotFoundObjectResult("Đơn hàng không tồn tại hoặc đã được thanh toán.");
+                return new BadRequestObjectResult(new BaseResponse { Success = false, Message = "Đơn hàng không tồn tại." });
             }
 
-            // Kiểm tra xem đơn hàng có thuộc về người dùng hiện tại không (bảo mật)
-            if (order.Cart?.UserId != userId)
+            if (order.UserId != request.UserId)
             {
-                return new ForbidResult(); // Người dùng không có quyền truy cập đơn hàng này
+                return new UnauthorizedObjectResult(new BaseResponse { Success = false, Message = "Người dùng không có quyền tạo thanh toán cho đơn hàng này." });
             }
 
-            // Bước 1: Giả lập quá trình thanh toán (thực tế sẽ gọi đến cổng thanh toán bên thứ ba)
-            // ... (Logic tích hợp cổng thanh toán như Stripe, PayPal, VNPay, MoMo,...)
-            // Sau khi cổng thanh toán phản hồi thành công, ta mới tạo các bản ghi dưới đây.
-            bool paymentSuccessful = true; // Giả lập thanh toán thành công
-
-            if (!paymentSuccessful)
+            if (order.TotalAmount != request.Amount)
             {
-                return new BadRequestObjectResult("Thanh toán thất bại. Vui lòng thử lại.");
+                return new BadRequestObjectResult(new BaseResponse { Success = false, Message = "Số tiền thanh toán không khớp với tổng giá trị đơn hàng." });
             }
 
-            // Bước 2: Cập nhật trạng thái đơn hàng và tạo bản ghi Payment/Transaction
-            order.Status = Enum.OrderStatus.Paid;
-            order.OrderDate = DateTime.UtcNow; // Cập nhật thời gian hoàn thành đơn hàng
-
-            var newPayment = new Payment
+            var existingSuccessPayment = await _context.Payments.AnyAsync(p => p.OrderId == request.OrderId && p.Status == PaymentStatus.Success && !p.IsDeleted);
+            if (existingSuccessPayment)
             {
-                Id = _idServices.GenerateNextId(),
-                PaymentNo = $"PAY-{Guid.NewGuid().ToString().Substring(0, 8).ToUpper()}",
-                Status = Enum.paymentStatus.Valid,
-                UserId = userId,
-                Amount = order.TotalAmount,
+                return new ConflictObjectResult(new BaseResponse { Success = false, Message = "Đơn hàng này đã được thanh toán thành công." });
+            }
+
+            // Kiểm tra xem đơn hàng có đang ở trạng thái cho phép thanh toán không (ví dụ: Pending)
+            if (order.Status != OrderStatus.Pending)
+            {
+                return new BadRequestObjectResult(new BaseResponse { Success = false, Message = $"Đơn hàng đang ở trạng thái '{order.Status}', không thể thanh toán." });
+            }
+
+            order.Status = OrderStatus.Paid; 
+            order.UpdatedAt = DateTime.UtcNow;
+
+            var nextPaymentId = _idServices.GenerateNextId();
+
+            var payment = new Payment
+            {
+                Id = nextPaymentId,
+                PaymentNo = $"PAY-{Guid.NewGuid().ToString().Substring(0, 8).ToUpper()}", // Tạo mã thanh toán
+                UserId = request.UserId,
+                OrderId = request.OrderId,
+                Amount = request.Amount,
                 PaymentMethod = request.PaymentMethod,
-                OrganizationShare = order.TotalAmount * 0.7m, // Ví dụ: Tổ chức giữ 70%
-                ConsultantShare = order.TotalAmount * 0.3m, // Ví dụ: Tư vấn viên nhận 30%
+                Status = PaymentStatus.Success, // Giả định thanh toán luôn thành công khi tạo thủ công/giả lập
                 CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
-                IsDeleted = false
+                UpdatedAt = DateTime.UtcNow
             };
-            _context.Payments.Add(newPayment);
 
-            foreach (var orderDetail in order.OrderDetails)
+            _context.Payments.Add(payment);
+            await _context.SaveChangesAsync();
+
+            return new OkObjectResult(new BaseResponse
             {
-                // Giả định Transaction liên kết trực tiếp với Course (từ OrderDetail)
-                // Cần lấy CourseId từ Cart ban đầu hoặc từ OrderDetail nếu có.
-                // Với DB hiện tại, OrderDetail không có CourseId, nên việc này phức tạp hơn.
-                // Để đơn giản, giả sử CourseId được truyền qua một cách nào đó, hoặc ta sẽ tìm lại từ Cart.
-                // Cách tốt nhất là OrderDetail cũng nên lưu CourseId hoặc có cách map rõ ràng.
-
-                // Tìm CourseId từ Cart ban đầu (nếu CartId trong OrderDetails là CartItem Id)
-                // Hoặc tìm CourseId dựa vào orderDetails.ServiceType và tìm khóa học tương ứng
-                var cartItemForOrderDetail = await _context.Carts
-                    .FirstOrDefaultAsync(c => c.Id == order.CartId && c.Status == Enum.CartStatus.Completed); // Tìm cartItem đã được chuyển sang order
-
-                Guid? courseId = cartItemForOrderDetail?.CourseId; // Lấy CourseId từ cartItem
-
-                // Lấy ConsultantId từ Course (giả định mỗi khóa học có một người tạo/tư vấn viên)
-                var course = await _context.Courses.FirstOrDefaultAsync(c => c.Id == courseId);
-                Guid? consultantId = course?.UserId; // UserId của người tạo khóa học có thể là Consultant
-
-                var newTransaction = new Transaction
+                Success = true,
+                Message = "Thanh toán đã được ghi nhận thành công cho đơn hàng.",
+                Data = new PaymentResponse
                 {
-                    Id = _idServices.GenerateNextId(),
-                    ConsultantId = consultantId, // Sẽ cần logic để xác định consultantId
-                    Amount = orderDetail.Amount,
-                    Status = Enum.TransactionStatus.Approved,
-                    ServiceType = orderDetail.ServiceType,
-                    PaymentId = newPayment.Id,
-                    CourseId = courseId, // Gán CourseId
-                    ProgramId = null, // Nếu đây là thanh toán khóa học
-                    CreatedAt = DateTime.UtcNow,
-                    UpdatedAt = DateTime.UtcNow,
-                    IsDeleted = false
-                };
-                _context.Transactions.Add(newTransaction);
+                    PaymentId = payment.Id,
+                    PaymentNo = payment.PaymentNo,
+                    UserId = payment.UserId,
+                    UserName = order.User?.LastName, // Lấy tên user từ order
+                    OrderId = payment.OrderId,
+                    Amount = payment.Amount,
+                    PaymentMethod = payment.PaymentMethod,
+                    Status = payment.Status,
+                    CreatedAt = payment.CreatedAt
+                }
+            });
+        }
 
-                orderDetail.TransactionId = newTransaction.Id; // Cập nhật liên kết transaction cho orderDetail
-                orderDetail.UpdatedAt = DateTime.UtcNow;
+        public async Task<IActionResult> GetPaymentByIdAsync(Guid paymentId)
+        {
+            var currentUserId = GetCurrentUserId();
+            var currentUserRole = GetCurrentUserRole();
+
+            var payment = await _context.Payments
+                .Include(p => p.User)
+                .Include(p => p.Order)
+                .FirstOrDefaultAsync(p => p.Id == paymentId && !p.IsDeleted);
+
+            if (payment == null)
+            {
+                return new NotFoundObjectResult(new BaseResponse { Success = false, Message = "Không tìm thấy thanh toán." });
             }
+
+            if (currentUserRole != Role.Admin.ToString() && payment.UserId != currentUserId)
+            {
+                return new UnauthorizedObjectResult(new BaseResponse { Success = false, Message = "Bạn không có quyền truy cập thanh toán này." });
+            }
+
+            var response = new PaymentResponse
+            {
+                PaymentId = payment.Id,
+                PaymentNo = payment.PaymentNo,
+                UserId = payment.UserId,
+                UserName = payment.User?.LastName,
+                OrderId = payment.OrderId,
+                Amount = payment.Amount,
+                PaymentMethod = payment.PaymentMethod,
+                Status = payment.Status,
+                CreatedAt = payment.CreatedAt
+            };
+
+            return new OkObjectResult(new BaseResponse { Success = true, Data = response });
+        }
+
+        public async Task<IActionResult> GetAllPaymentsAsync()
+        {
+            var currentUserRole = GetCurrentUserRole();
+            if (currentUserRole != Role.Admin.ToString())
+            {
+                return new UnauthorizedObjectResult(new BaseResponse { Success = false, Message = "Bạn không có quyền truy cập tất cả các thanh toán." });
+            }
+
+            var payments = await _context.Payments
+                .Where(p => !p.IsDeleted)
+                .Include(p => p.User)
+                .Include(p => p.Order)
+                .OrderByDescending(p => p.CreatedAt)
+                .Select(p => new PaymentResponse
+                {
+                    PaymentId = p.Id,
+                    PaymentNo = p.PaymentNo,
+                    UserId = p.UserId,
+                    UserName = p.User.LastName,
+                    OrderId = p.OrderId,
+                    Amount = p.Amount,
+                    PaymentMethod = p.PaymentMethod,
+                    Status = p.Status,
+                    CreatedAt = p.CreatedAt
+                })
+                .ToListAsync();
+
+            if (!payments.Any())
+            {
+                return new NotFoundObjectResult(new BaseResponse { Success = false, Message = "Không tìm thấy thanh toán nào." });
+            }
+
+            return new OkObjectResult(new BaseResponse
+            {
+                Success = true,
+                Data = payments
+            });
+        }
+
+        public async Task<IActionResult> GetPaymentsByUserIdAsync(Guid userId)
+        {
+            var currentUserId = GetCurrentUserId();
+            var currentUserRole = GetCurrentUserRole();
+
+            if (currentUserRole != Role.Admin.ToString() && userId != currentUserId)
+            {
+                return new UnauthorizedObjectResult(new BaseResponse { Success = false, Message = "Bạn không có quyền xem thanh toán của người dùng này." });
+            }
+
+            var payments = await _context.Payments
+                .Where(p => !p.IsDeleted && p.UserId == userId)
+                .Include(p => p.User)
+                .Include(p => p.Order)
+                .OrderByDescending(p => p.CreatedAt)
+                .Select(p => new PaymentResponse
+                {
+                    PaymentId = p.Id,
+                    PaymentNo = p.PaymentNo,
+                    UserId = p.UserId,
+                    UserName = p.User.LastName,
+                    OrderId = p.OrderId,
+                    Amount = p.Amount,
+                    PaymentMethod = p.PaymentMethod,
+                    Status = p.Status,
+                    CreatedAt = p.CreatedAt
+                })
+                .ToListAsync();
+
+            if (!payments.Any())
+            {
+                return new NotFoundObjectResult(new BaseResponse { Success = false, Message = $"Không tìm thấy thanh toán nào cho người dùng có ID '{userId}'." });
+            }
+
+            return new OkObjectResult(new BaseResponse
+            {
+                Success = true,
+                Data = payments
+            });
+        }
+
+        public async Task<IActionResult> UpdatePaymentStatusAsync(Guid paymentId, PaymentStatus newStatus)
+        {
+            var currentUserRole = GetCurrentUserRole();
+            if (currentUserRole != Role.Admin.ToString())
+            {
+                return new UnauthorizedObjectResult(new BaseResponse { Success = false, Message = "Bạn không có quyền cập nhật trạng thái thanh toán." });
+            }
+
+            var payment = await _context.Payments.FirstOrDefaultAsync(p => p.Id == paymentId && !p.IsDeleted);
+            if (payment == null)
+            {
+                return new NotFoundObjectResult(new BaseResponse { Success = false, Message = "Không tìm thấy thanh toán." });
+            }
+                        
+            if (payment.Status == PaymentStatus.Failed && newStatus != PaymentStatus.Success)
+            {
+                return new BadRequestObjectResult(new BaseResponse { Success = false, Message = "Thanh toán đã thất bại, chỉ có thể chuyển về trạng thái 'Pending' để thử lại." });
+            }
+
+            payment.Status = newStatus;
+            payment.UpdatedAt = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
 
-            return new OkObjectResult("Thanh toán thành công. Đơn hàng của bạn đã được xác nhận.");
+            // Cập nhật trạng thái Order tương ứng nếu Payment là Success/Failed/Refunded
+            if (payment.OrderId.HasValue)
+            {
+                var order = await _context.Orders.FirstOrDefaultAsync(o => o.Id == payment.OrderId);
+                if (order != null)
+                {
+                    if (newStatus == PaymentStatus.Success)
+                    {
+                        order.Status = OrderStatus.Paid; 
+                    }
+                    else if (newStatus == PaymentStatus.Failed)
+                    {
+                        order.Status = OrderStatus.Failed;
+                    }
+                    await _context.SaveChangesAsync();
+                }
+            }
+
+            return new OkObjectResult(new BaseResponse { Success = true, Message = $"Trạng thái thanh toán '{payment.PaymentNo}' đã được cập nhật thành '{newStatus}'." });
         }
     }
 }

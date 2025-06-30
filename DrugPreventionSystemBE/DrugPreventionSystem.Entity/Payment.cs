@@ -10,14 +10,15 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Entity
     public class Payment : BaseEnity
     {
         public string? PaymentNo { get; set; }
-        public paymentStatus? Status { get; set; }
+        public PaymentStatus Status { get; set; }
         //foreign key to user
         public Guid? UserId { get; set; }
         public User? User { get; set; }
-
+        public Guid? OrderId { get; set; } // Foreign key to Order
+        public Order? Order { get; set; }
         [Column(TypeName = "decimal(10,2)")]
         public decimal? Amount { get; set; }
-        public paymentMethod? PaymentMethod { get; set; }
+        public PaymentMethod PaymentMethod { get; set; }
         [Column(TypeName = "decimal(10,2)")]
         public decimal? OrganizationShare { get; set; }
         [Column(TypeName = "decimal(10,2)")]

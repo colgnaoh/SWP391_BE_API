@@ -67,6 +67,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Data
             modelBuilder.Entity<SurveyResult>().Property(sr => sr.RiskLevel).HasConversion<string>();
             modelBuilder.Entity<Payment>().Property(p => p.Status).HasConversion<string>();
             modelBuilder.Entity<Payment>().Property(p => p.PaymentMethod).HasConversion<string>();
+            modelBuilder.Entity<Payment>().Property(p => p.PaymentMethod).HasConversion<string>();
             modelBuilder.Entity<Transaction>().Property(t => t.Status).HasConversion<string>();
             modelBuilder.Entity<Transaction>().Property(t => t.ServiceType).HasConversion<string>();
             modelBuilder.Entity<Cart>().Property(c => c.Discount).HasPrecision(10, 2);

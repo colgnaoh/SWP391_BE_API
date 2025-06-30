@@ -58,8 +58,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 CourseId = request.CourseId,
                 CartNo = $"CART-{Guid.NewGuid().ToString().Substring(0, 8).ToUpper()}", // Mã giỏ hàng đơn giản
                 Status = Enum.CartStatus.Pending, // Có thể là "Pending", "Active"
-                Price = course.Price ?? 0m, // Default to 0 if Price is null
-                Discount = course.Discount ?? 0m, // Default to 0 if Discount is null
+                Price = course.Price, // Default to 0 if Price is null
+                Discount = course.Discount, // Default to 0 if Discount is null
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
                 IsDeleted = false

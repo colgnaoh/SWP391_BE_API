@@ -1,20 +1,31 @@
-﻿namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel
+﻿using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ApiResponse;
+
+namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel
 {
     public class OrderResponse
     {
-        public Guid OrderId { get; set; }
-        public string OrderNumber { get; set; } 
+        public Guid? OrderId { get; set; }
+        public Guid UserId { get; set; }
+        public string? UserName { get; set; }
         public decimal TotalAmount { get; set; }
-        public DateTime OrderDate { get; set; }
-        public string Status { get; set; } 
-        public List<OrderDetailResponse> Items { get; set; }
+        public DateTime? OrderDate { get; set; }
+        public string? Status { get; set; }
+        public PaymentStatus PaymentStatus { get; set; }
+        public Guid? PaymentId { get; set; }
+        public List<OrderDetailResponse> OrderDetails { get; set; } = new List<OrderDetailResponse>();
     }
-
     public class OrderDetailResponse
     {
-        public Guid OrderDetailId { get; set; }
-        public string ServiceType { get; set; } // "Course"
-        public string ServiceName { get; set; } // Tên khóa học
-        public decimal Amount { get; set; }
+        public Guid? OrderDetailId { get; set; }
+        public Guid? CourseId { get; set; }
+        public string? CourseName { get; set; }
+        public decimal? Amount { get; set; }
     }
+
+    public class OrderListResponse : BaseResponse
+    {
+        public List<OrderResponse> Data { get; set; }
+    }
+
 }

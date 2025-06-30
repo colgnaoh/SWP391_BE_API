@@ -171,8 +171,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     Status = CourseCreateRequest.Status,
                     TargetAudience = CourseCreateRequest.TargetAudience,
                     ImageUrl = CourseCreateRequest.ImageUrl,
-                    Price = CourseCreateRequest.Price,
-                    Discount = CourseCreateRequest.Discount,
+                    Price = (decimal)CourseCreateRequest.Price,
+                    Discount = (decimal)CourseCreateRequest.Discount,
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow,
                     IsDeleted = false
@@ -279,13 +279,13 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 // Price: decimal?
                 if (model.Price != null)
                 {
-                    course.Price = model.Price;
+                    course.Price = (decimal)model.Price;
                 }
 
                 // Discount: decimal?
                 if (model.Discount != null)
                 {
-                    course.Discount = model.Discount;
+                    course.Discount = (decimal)model.Discount;
                 }
 
                 course.UpdatedAt = DateTime.UtcNow; // Luôn cập nhật thời gian thay đổi
