@@ -69,6 +69,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
         public async Task<IActionResult> GetAllAsync()
         {
             var sessions = await _context.Sessions
+                .Include(s => s.Course)
                 .Where(s => !s.IsDeleted)
                 .AsNoTracking()
                 .Select(s => new SessionViewModel
@@ -79,7 +80,15 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     UserId = s.UserId,
                     Slug = s.Slug,
                     Content = s.Content,
-                    PositionOrder = s.PositionOrder
+                    PositionOrder = s.PositionOrder,
+                    Course = new Course
+                    {
+                        Id = s.Course.Id,
+                        Name = s.Course.Name,
+                        Slug = s.Course.Slug,
+                        CreatedAt = s.Course.CreatedAt,
+                        UpdatedAt = s.Course.UpdatedAt
+                    }
                 })
                 .ToListAsync();
 

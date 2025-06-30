@@ -75,6 +75,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 
             var totalCount = await query.CountAsync();
             var lessons = await query
+                .Include(l => l.Course)
+                .Include(l => l.Session)
                 .OrderBy(l => l.PositionOrder)
                 .Skip((safePageNumber - 1) * safePageSize)
                 .Take(safePageSize)
@@ -97,7 +99,9 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     UpdatedAt = l.UpdatedAt,
                     UserId = l.UserId,
                     FullName = $"{l.User?.LastName} {l.User?.FirstName}".Trim(),
-                    UserAvatar = l.User?.ProfilePicUrl
+                    UserAvatar = l.User?.ProfilePicUrl,
+                    CourseId = l.Course.Id,
+                    SessionId = l.Session.Id
                 }).ToList(),
                 TotalCount = totalCount,
                 PageNumber = safePageNumber,

@@ -1,4 +1,6 @@
-﻿namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel
+﻿using DrugPreventionSystemBE.DrugPreventionSystem.Entity;
+
+namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel
 {
     public class SessionViewModel
     {
@@ -9,6 +11,7 @@
         public string? Slug { get; set; }
         public string? Content { get; set; }
         public string? PositionOrder { get; set; }
+        public Course Course { get; set; } 
     }
 
 }
