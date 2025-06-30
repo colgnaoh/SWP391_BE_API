@@ -182,35 +182,48 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             });
         }
 
-        public async Task<IActionResult> UpdateLessonAsync(Guid lessonId, UpdateLessonRequest request)
+        public async Task<IActionResult> UpdateLessonAsync(Guid id, UpdateLessonRequest request)
         {
-            var userPrincipal = _httpContextAccessor.HttpContext?.User;
-            if (userPrincipal == null)
-                return new UnauthorizedResult();
-
-            var userIdClaim = userPrincipal.FindFirst(ClaimTypes.NameIdentifier);
-            if (userIdClaim == null || !Guid.TryParse(userIdClaim.Value, out Guid userId))
-                return new BadRequestObjectResult("Không tìm thấy ID người dùng.");
-
-            var lesson = await _context.Lessons.FindAsync(lessonId);
-            if (lesson == null || lesson.IsDeleted)
+            var lesson = await _context.Lessons.FirstOrDefaultAsync(l => l.Id == id && !l.IsDeleted);
+            if (lesson == null)
                 return new NotFoundObjectResult("Không tìm thấy bài học.");
 
-            if (lesson.UserId != userId)
-                return new ForbidResult();
+            // Validate and update CourseId
+            if (request.CourseId.HasValue && request.CourseId != lesson.CourseId)
+            {
+                var course = await _context.Courses.FirstOrDefaultAsync(c => c.Id == request.CourseId.Value && !c.IsDeleted);
+                if (course == null)
+                    return new BadRequestObjectResult("Khóa học không tồn tại.");
 
-            lesson.Name = request.Name;
-            lesson.Content = request.Content;
-            lesson.LessonType = request.LessonType;
-            lesson.VideoUrl = request.VideoUrl;
-            lesson.ImageUrl = request.ImageUrl;
-            lesson.FullTime = request.FullTime;
-            lesson.PositionOrder = request.PositionOrder;
+                lesson.CourseId = request.CourseId.Value;
+            }
+
+            // Validate and update SessionId
+            if (request.SessionId.HasValue && request.SessionId != lesson.SessionId)
+            {
+                var session = await _context.Sessions.FirstOrDefaultAsync(s => s.Id == request.SessionId.Value && !s.IsDeleted);
+                if (session == null)
+                    return new BadRequestObjectResult("Buổi học không tồn tại.");
+
+                lesson.SessionId = request.SessionId.Value;
+            }
+
+            // Update other fields
+            lesson.Name = request.Name ?? lesson.Name;
+            lesson.Content = request.Content ?? lesson.Content;
+            lesson.LessonType = request.LessonType ?? lesson.LessonType;
+            lesson.VideoUrl = request.VideoUrl ?? lesson.VideoUrl;
+            lesson.ImageUrl = request.ImageUrl ?? lesson.ImageUrl;
+            lesson.FullTime = request.FullTime ?? lesson.FullTime;
+            lesson.PositionOrder = request.PositionOrder ?? lesson.PositionOrder;
             lesson.UpdatedAt = DateTime.UtcNow;
 
+            _context.Lessons.Update(lesson);
             await _context.SaveChangesAsync();
+
             return new OkObjectResult("Cập nhật bài học thành công.");
         }
+
 
         public async Task<IActionResult> SoftDeleteLessonAsync(Guid lessonId)
         {
