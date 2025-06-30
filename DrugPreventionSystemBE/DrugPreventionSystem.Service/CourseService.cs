@@ -333,6 +333,27 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 course.IsDeleted = true;
                 course.UpdatedAt = DateTime.UtcNow;
 
+                //Get all sessions related to the course
+                var sessions = await _context.Sessions
+                    .Where(s => s.CourseId == CourseId && !s.IsDeleted )
+                    .ToListAsync();
+
+                foreach (var session in sessions)
+                {
+                    session.IsDeleted = true;
+                    session.UpdatedAt = DateTime.UtcNow;
+
+                    //delete lessons related to sessions
+                    var lessons = await _context.Lessons
+                        .Where(l => l.SessionId == session.Id && !l.IsDeleted)
+                        .ToListAsync();
+                    foreach (var  lesson in lessons)
+                    {
+                        lesson.IsDeleted = true;
+                        lesson.UpdatedAt = DateTime.UtcNow;
+                    }
+                }
+
                 await _context.SaveChangesAsync();
                 return new OkObjectResult("Khóa học đã được xóa mềm.");
             }
