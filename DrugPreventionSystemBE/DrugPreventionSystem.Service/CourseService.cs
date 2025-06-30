@@ -119,6 +119,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                         {
                             Id = l.Id,
                             Name = l.Name,
+                            Content = l.Content,
                             LessonType = l.LessonType, // Chuyển Enum sang string
                             PositionOrder = l.PositionOrder,
                             FullTime = l.FullTime
