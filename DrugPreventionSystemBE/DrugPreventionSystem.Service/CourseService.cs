@@ -172,16 +172,10 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     Content = CourseCreateRequest.Content,
                     Status = CourseCreateRequest.Status,
                     TargetAudience = CourseCreateRequest.TargetAudience,
-<<<<<<< HEAD
-                    ImageUrl = CourseCreateRequest.ImageUrl,
-                    Price = (decimal)CourseCreateRequest.Price,
-                    Discount = (decimal)CourseCreateRequest.Discount,
-=======
                     ImageUrls = CourseCreateRequest.ImageUrls,
                     VideoUrls = CourseCreateRequest.VideoUrls, 
                     Price = CourseCreateRequest.Price,
                     Discount = CourseCreateRequest.Discount,
->>>>>>> d04397ab2bcfc8d09e2b0784ee5804d4a2476fd2
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow,
                     IsDeleted = false

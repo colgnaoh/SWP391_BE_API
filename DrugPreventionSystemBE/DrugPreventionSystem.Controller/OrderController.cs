@@ -19,8 +19,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
             _orderService = orderService;
         }
 
-        [Authorize] // Chỉ học viên mới tạo Order
-        [HttpPost("from-cart")]
+        [Authorize] 
+        [HttpPost("createOrderFromCart")]
         public async Task<IActionResult> CreateOrderFromCart()
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

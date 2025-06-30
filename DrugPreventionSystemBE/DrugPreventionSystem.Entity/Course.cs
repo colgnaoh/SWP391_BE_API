@@ -16,16 +16,10 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Entity
         public string? Content { get; set; }
         public CourseStatus? Status { get; set; }
         public targetAudience? TargetAudience { get; set; }
-<<<<<<< HEAD
-        public string? ImageUrl { get; set; }
-        public decimal Price { get; set; }
-        public decimal Discount { get; set; }
-=======
         public string ImageUrlsJson { get; set; }  // Cột lưu JSON trong DB
         public string VideoUrlsJson { get; set; }  // Cột lưu JSON trong DB
         public decimal? Price { get; set; }
         public decimal? Discount { get; set; }
->>>>>>> d04397ab2bcfc8d09e2b0784ee5804d4a2476fd2
         public string? Slug { get; set; }
 
         public ICollection<Session> Sessions { get; set; }

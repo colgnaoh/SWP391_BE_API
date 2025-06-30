@@ -1,5 +1,69 @@
 [
   {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.AppointmentController",
+    "Method": "AssignConsultant",
+    "RelativePath": "api/appointments/assign",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.BookingReqModel.AssignConsultantRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.AppointmentController",
+    "Method": "BookWithSchedule",
+    "RelativePath": "api/appointments/booking-direct",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.BookingReqModel.BookingDirectRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.AppointmentController",
+    "Method": "BookWithoutSchedule",
+    "RelativePath": "api/appointments/booking-withoutTime",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.BookingReqModel.BookingRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.AppointmentController",
+    "Method": "MarkAsCompleted",
+    "RelativePath": "api/appointments/complete/{appointmentId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "appointmentId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.AuthController",
     "Method": "Login",
     "RelativePath": "api/auth",
@@ -622,7 +686,7 @@
   {
     "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.OrderController",
     "Method": "CreateOrderFromCart",
-    "RelativePath": "api/order/from-cart",
+    "RelativePath": "api/order/createOrr",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,

@@ -10,9 +10,9 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel
         public string? UserName { get; set; }
         public decimal TotalAmount { get; set; }
         public DateTime? OrderDate { get; set; }
-        public string? Status { get; set; }
-        public PaymentStatus PaymentStatus { get; set; }
+        public PaymentStatus? PaymentStatus { get; set; }
         public Guid? PaymentId { get; set; }
+        public OrderStatus? OrderStatus { get; set; }
         public List<OrderDetailResponse> OrderDetails { get; set; } = new List<OrderDetailResponse>();
     }
     public class OrderDetailResponse

@@ -89,13 +89,11 @@ namespace DrugPreventionSystemBE
             builder.Services.AddScoped<ICartService, CartService>();
             builder.Services.AddScoped<ISessionService, SessionService>();
             builder.Services.AddScoped<ILessonService, LessonService>();
-<<<<<<< HEAD
             builder.Services.AddScoped<IOrderService, OrderService>();
             builder.Services.AddScoped<IPaymentService, PaymentService>();
             builder.Services.AddHttpContextAccessor();
-=======
+
             builder.Services.AddScoped<IAppointmentService, AppointmentService>();
->>>>>>> d04397ab2bcfc8d09e2b0784ee5804d4a2476fd2
 
             Env.Load();
 

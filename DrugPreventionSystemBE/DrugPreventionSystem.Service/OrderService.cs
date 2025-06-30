@@ -69,7 +69,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             if (cart.CourseId.HasValue && cart.Course != null)
             {
                 hasValidItem = true;
-                itemPrice = cart.Course.Price - cart.Course.Discount;
+                itemPrice = (decimal)(cart.Course.Price - cart.Course.Discount);
                 itemName = cart.Course.Name;
                 itemId = cart.CourseId;
                 serviceType = DrugPreventionSystemBE.DrugPreventionSystem.Enum.ServiceType.CourseSale;
@@ -124,7 +124,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 UserName = $"{user.LastName} {user.FirstName}".Trim(),
                 TotalAmount = order.TotalAmount,
                 OrderDate = order.OrderDate,
-                Status = order.Status.ToString(),
+                OrderStatus = order.Status,
                 OrderDetails = order.OrderDetails.Select(od => new OrderDetailResponse
                 {
                     OrderDetailId = od.Id,
@@ -145,7 +145,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             var order = await _context.Orders
                 .Include(o => o.User)
                 .Include(o => o.OrderDetails)
-                    .ThenInclude(od => od.Course) // Chỉ cần Include Course
+                    .ThenInclude(od => od.Course) 
                 .Include(o => o.Payment)
                 .FirstOrDefaultAsync(o => o.Id == orderId && !o.IsDeleted);
 
@@ -167,14 +167,14 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 UserName = $"{order.User.LastName} {order.User.FirstName}".Trim(),
                 TotalAmount = order.TotalAmount,
                 OrderDate = order.OrderDate,
-                Status = order.Status.ToString(),
-                PaymentStatus = order.Payment.Status,
+                OrderStatus = order.Status,
+                PaymentStatus = order.Payment?.Status,
                 PaymentId = order.Payment?.Id,
                 OrderDetails = order.OrderDetails.Select(od => new OrderDetailResponse
                 {
                     OrderDetailId = od.Id,
                     CourseId = od.CourseId,
-                    CourseName = od.Course.Name,
+                    CourseName = od.Course?.Name,
                     Amount = od.Amount
                 }).ToList()
             };
@@ -207,8 +207,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     UserName = $"{o.User.LastName} {o.User.FirstName}".Trim(),
                     TotalAmount = o.TotalAmount,
                     OrderDate = o.OrderDate,
-                    Status = o.Status.ToString(),
-                    PaymentStatus = o.Payment.Status,
+                    OrderStatus = o.Status,
+                    PaymentStatus = (PaymentStatus)(o.Payment != null ? o.Payment.Status : (PaymentStatus?)null),
                     PaymentId = o.Payment.Id,
                     OrderDetails = o.OrderDetails.Select(od => new OrderDetailResponse
                     {
@@ -250,8 +250,9 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     UserName = $"{o.User.LastName} {o.User.FirstName}".Trim(),
                     TotalAmount = o.TotalAmount,
                     OrderDate = o.OrderDate,
-                    Status = o.Status.Value.ToString(),
-                    PaymentStatus = o.Payment.Status,
+                    OrderStatus = o.Status,
+                    //PaymentStatus = o.Payment.Status,
+                    PaymentStatus = (PaymentStatus)(o.Payment != null ? o.Payment.Status : (PaymentStatus?)null),
                     PaymentId = o.Payment != null ? o.Payment.Id : null,
                     OrderDetails = o.OrderDetails.Select(od => new OrderDetailResponse
                     {
