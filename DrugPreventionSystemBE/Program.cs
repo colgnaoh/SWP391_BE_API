@@ -7,21 +7,25 @@ using DrugPreventionSystemBE.DrugPreventionSystem.Data;
 using DrugPreventionSystemBE.DrugPreventionSystem.Filter;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
+using DrugPreventionSystemBE.DrugPreventionSystem.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Facebook;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
+using Net.payOS; 
+using Net.payOS.Constants;
+using Net.payOS.Types;
 using Swashbuckle.AspNetCore.SwaggerGen; 
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using DrugPreventionSystemBE.DrugPreventionSystem.Services;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.PayOS;
 
 namespace DrugPreventionSystemBE
 {
@@ -77,6 +81,21 @@ namespace DrugPreventionSystemBE
                 c.SchemaFilter<EnumSchemaFilter>();
             });
 
+            builder.Services.AddHttpClient("PayOSClient", client =>
+            {
+                var payOsBaseUrl = builder.Configuration["PayOS:BaseUrl"];
+                if (string.IsNullOrEmpty(payOsBaseUrl))
+                {
+                    throw new InvalidOperationException("PayOS BaseUrl is not configured in appsettings.json.");
+                }
+                client.BaseAddress = new Uri(payOsBaseUrl);
+
+                client.DefaultRequestHeaders.Add("x-client-id", builder.Configuration["PayOS:ClientId"]);
+                client.DefaultRequestHeaders.Add("x-api-key", builder.Configuration["PayOS:ApiKey"]);
+
+            });
+
+
             builder.Services.AddScoped<IEmailService, EmailService>();
             builder.Services.AddScoped<IdServices>();
             builder.Services.AddScoped<IBlogService, BlogService>();
@@ -92,10 +111,23 @@ namespace DrugPreventionSystemBE
             builder.Services.AddScoped<IOrderService, OrderService>();
             builder.Services.AddScoped<IPaymentService, PaymentService>();
             builder.Services.AddHttpContextAccessor();
-
+            builder.Services.AddScoped<IPayOSSignatureService, PayOSSignatureService>();
             builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 
             Env.Load();
+
+            var payOSConfig = builder.Configuration.GetSection("PayOS").Get<DrugPreventionSystem.ModelView.PayOS.PayOSConfig>();
+
+            if (payOSConfig == null)
+            {
+                throw new InvalidOperationException("PayOS configuration section 'PayOS' is missing or invalid in appsettings.json.");
+            }
+            builder.Services.AddSingleton<PayOS>(new PayOS(
+               payOSConfig.ClientId,
+               payOSConfig.ApiKey,
+               payOSConfig.ChecksumKey,
+               payOSConfig.BaseUrl // BaseUrl là tham số tùy chọn, nếu bạn không có, có thể bỏ qua hoặc để null
+           ));
 
             // Kiểm tra cấu hình Facebook
             //if (string.IsNullOrEmpty(builder.Configuration["Authentication:Facebook:AppId"]) || string.IsNullOrEmpty(builder.Configuration["Authentication:Facebook:AppSecret"]))

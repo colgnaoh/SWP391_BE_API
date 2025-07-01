@@ -5,7 +5,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface
 {
     public interface IOrderService
     {
-        Task<IActionResult> CreateOrderFromCartAsync(Guid userId);
+        Task<IActionResult> CreateOrderFromCartAsync();
 
         Task<IActionResult> GetOrderByIdAsync(Guid orderId);
 

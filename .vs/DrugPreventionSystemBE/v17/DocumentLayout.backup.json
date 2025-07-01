@@ -1,11 +1,62 @@
 {
   "Version": 1,
-<<<<<<< HEAD
   "WorkspaceRootPath": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|d:\\drugpreventionsystem\\drugpreventionsystembe\\drugpreventionsystembe\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|d:\\drugpreventionsystem\\drugpreventionsystembe\\drugpreventionsystembe\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|d:\\drugpreventionsystem\\drugpreventionsystembe\\drugpreventionsystembe\\drugpreventionsystem.service\\paymentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\drugpreventionsystem.service\\paymentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|d:\\drugpreventionsystem\\drugpreventionsystembe\\drugpreventionsystembe\\drugpreventionsystem.entity\\payment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\drugpreventionsystem.entity\\payment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|d:\\drugpreventionsystem\\drugpreventionsystembe\\drugpreventionsystembe\\drugpreventionsystem.service\\orderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\drugpreventionsystem.service\\orderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|d:\\drugpreventionsystem\\drugpreventionsystembe\\drugpreventionsystembe\\drugpreventionsystem.controller\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\drugpreventionsystem.controller\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|d:\\drugpreventionsystem\\drugpreventionsystembe\\drugpreventionsystembe\\drugpreventionsystem.service\\cartservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\drugpreventionsystem.service\\cartservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|d:\\drugpreventionsystem\\drugpreventionsystembe\\drugpreventionsystembe\\drugpreventionsystem.data\\drugpreventiondbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\drugpreventionsystem.data\\drugpreventiondbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|d:\\drugpreventionsystem\\drugpreventionsystembe\\drugpreventionsystembe\\drugpreventionsystem.modelview\\payos\\payoswebhookmodels.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\drugpreventionsystem.modelview\\payos\\payoswebhookmodels.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|d:\\drugpreventionsystem\\drugpreventionsystembe\\drugpreventionsystembe\\drugpreventionsystem.controller\\payoswebhookcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\drugpreventionsystem.controller\\payoswebhookcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|d:\\drugpreventionsystem\\drugpreventionsystembe\\drugpreventionsystembe\\drugpreventionsystem.service\\payossignatureservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\drugpreventionsystem.service\\payossignatureservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|d:\\drugpreventionsystem\\drugpreventionsystembe\\drugpreventionsystembe\\drugpreventionsystem.controller\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\drugpreventionsystem.controller\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|d:\\drugpreventionsystem\\drugpreventionsystembe\\drugpreventionsystembe\\dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|d:\\drugpreventionsystem\\drugpreventionsystembe\\drugpreventionsystembe\\drugpreventionsystem.service\\interface\\iorderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\drugpreventionsystem.service\\interface\\iorderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|d:\\drugpreventionsystem\\drugpreventionsystembe\\drugpreventionsystembe\\drugpreventionsystem.controller\\paymentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -30,56 +81,16 @@
     {
       "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|d:\\drugpreventionsystem\\drugpreventionsystembe\\drugpreventionsystembe\\drugpreventionsystem.modelview\\paymentreq\\payosrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\drugpreventionsystem.modelview\\paymentreq\\payosrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-=======
-  "WorkspaceRootPath": "D:\\SWP\\SWP391_BE_API\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|d:\\swp\\swp391_be_api\\drugpreventionsystembe\\drugpreventionsystem.service\\interface\\iappointmentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\drugpreventionsystem.service\\interface\\iappointmentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|d:\\swp\\swp391_be_api\\drugpreventionsystembe\\drugpreventionsystem.service\\appointmentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\drugpreventionsystem.service\\appointmentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|d:\\swp\\swp391_be_api\\drugpreventionsystembe\\drugpreventionsystem.controller\\appointmentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\drugpreventionsystem.controller\\appointmentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|d:\\swp\\swp391_be_api\\drugpreventionsystembe\\drugpreventionsystem.modelview\\responsemodel\\appointmentresponsemodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\drugpreventionsystem.modelview\\responsemodel\\appointmentresponsemodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|d:\\swp\\swp391_be_api\\drugpreventionsystembe\\drugpreventionsystem.modelview\\responsemodel\\getappointmentsbyuserresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\drugpreventionsystem.modelview\\responsemodel\\getappointmentsbyuserresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|d:\\swp\\swp391_be_api\\drugpreventionsystembe\\drugpreventionsystem.modelview\\consultantmodel\\consultantresponsemodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\drugpreventionsystem.modelview\\consultantmodel\\consultantresponsemodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|d:\\swp\\swp391_be_api\\drugpreventionsystembe\\drugpreventionsystem.entity\\appointment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\drugpreventionsystem.entity\\appointment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|d:\\swp\\swp391_be_api\\drugpreventionsystembe\\drugpreventionsystem.modelview\\bookingreqmodel\\bookingdirectrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\drugpreventionsystem.modelview\\bookingreqmodel\\bookingdirectrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|d:\\swp\\swp391_be_api\\drugpreventionsystembe\\drugpreventionsystem.data\\drugpreventiondbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\drugpreventionsystem.data\\drugpreventiondbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
->>>>>>> 7d07423db5befeeda63091d034b95da995ac6589
     }
   ],
   "DocumentGroupContainers": [
     {
-<<<<<<< HEAD
       "Orientation": 1,
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
           "DockedHeight": 200,
-          "SelectedChildIndex": 9,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -87,17 +98,6 @@
             },
             {
               "$type": "Bookmark",
-=======
-      "Orientation": 0,
-      "VerticalTabListWidth": 256,
-      "DocumentGroups": [
-        {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 6,
-          "Children": [
-            {
-              "$type": "Bookmark",
->>>>>>> 7d07423db5befeeda63091d034b95da995ac6589
               "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
             },
             {
@@ -105,9 +105,164 @@
               "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
             },
             {
-<<<<<<< HEAD
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 7,
+              "Title": "DrugPreventionDbContext.cs",
+              "DocumentMoniker": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\DrugPreventionSystem.Data\\DrugPreventionDbContext.cs",
+              "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.Data\\DrugPreventionDbContext.cs",
+              "ToolTip": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\DrugPreventionSystem.Data\\DrugPreventionDbContext.cs",
+              "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.Data\\DrugPreventionDbContext.cs",
+              "ViewState": "AgIAAM8AAAAAAAAAAAAgwO8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-01T16:12:58.87Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "CartController.cs",
+              "DocumentMoniker": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\DrugPreventionSystem.Controller\\CartController.cs",
+              "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.Controller\\CartController.cs",
+              "ToolTip": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\DrugPreventionSystem.Controller\\CartController.cs",
+              "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.Controller\\CartController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAC8AAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-01T16:12:13.389Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "PayOSWebhookModels.cs",
+              "DocumentMoniker": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\DrugPreventionSystem.ModelView\\PayOS\\PayOSWebhookModels.cs",
+              "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.ModelView\\PayOS\\PayOSWebhookModels.cs",
+              "ToolTip": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\DrugPreventionSystem.ModelView\\PayOS\\PayOSWebhookModels.cs",
+              "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.ModelView\\PayOS\\PayOSWebhookModels.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-01T16:02:20.072Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "CartService.cs",
+              "DocumentMoniker": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\DrugPreventionSystem.Service\\CartService.cs",
+              "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.Service\\CartService.cs",
+              "ToolTip": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\DrugPreventionSystem.Service\\CartService.cs",
+              "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.Service\\CartService.cs",
+              "ViewState": "AgIAAG8AAAAAAAAAAAAowFcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-01T15:52:52.484Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\appsettings.json",
+              "RelativeDocumentMoniker": "DrugPreventionSystemBE\\appsettings.json",
+              "ToolTip": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\appsettings.json",
+              "RelativeToolTip": "DrugPreventionSystemBE\\appsettings.json",
+              "ViewState": "AgIAABoAAAAAAAAAAAAYwCUAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-07-01T15:50:23.802Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Dockerfile",
+              "DocumentMoniker": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\Dockerfile",
+              "RelativeDocumentMoniker": "DrugPreventionSystemBE\\Dockerfile",
+              "ToolTip": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\Dockerfile",
+              "RelativeToolTip": "DrugPreventionSystemBE\\Dockerfile",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACEAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-07-01T15:47:08.68Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "OrderController.cs",
+              "DocumentMoniker": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\DrugPreventionSystem.Controller\\OrderController.cs",
+              "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.Controller\\OrderController.cs",
+              "ToolTip": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\DrugPreventionSystem.Controller\\OrderController.cs",
+              "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.Controller\\OrderController.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABkAAABGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-01T15:44:41.846Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "IOrderService.cs",
+              "DocumentMoniker": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\DrugPreventionSystem.Service\\Interface\\IOrderService.cs",
+              "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.Service\\Interface\\IOrderService.cs",
+              "ToolTip": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\DrugPreventionSystem.Service\\Interface\\IOrderService.cs",
+              "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.Service\\Interface\\IOrderService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAA1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-01T15:44:10.636Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\Program.cs",
+              "RelativeDocumentMoniker": "DrugPreventionSystemBE\\Program.cs",
+              "ToolTip": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\Program.cs",
+              "RelativeToolTip": "DrugPreventionSystemBE\\Program.cs",
+              "ViewState": "AgIAAMEAAAAAAAAAAAAuwOMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-01T15:38:01.217Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "PayOSSignatureService.cs",
+              "DocumentMoniker": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\DrugPreventionSystem.Service\\PayOSSignatureService.cs",
+              "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.Service\\PayOSSignatureService.cs",
+              "ToolTip": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\DrugPreventionSystem.Service\\PayOSSignatureService.cs",
+              "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.Service\\PayOSSignatureService.cs",
+              "ViewState": "AgIAAGoAAAAAAAAAAAAcwH8AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-01T15:35:50.687Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "PayOSWebhookController.cs",
+              "DocumentMoniker": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\DrugPreventionSystem.Controller\\PayOSWebhookController.cs",
+              "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.Controller\\PayOSWebhookController.cs",
+              "ToolTip": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\DrugPreventionSystem.Controller\\PayOSWebhookController.cs",
+              "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.Controller\\PayOSWebhookController.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAAAzwCMAAABPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-01T15:29:40.42Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Payment.cs",
+              "DocumentMoniker": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\Payment.cs",
+              "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\Payment.cs",
+              "ToolTip": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\Payment.cs",
+              "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\Payment.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwBEAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-01T15:22:12.222Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
               "Title": "PaymentRequest.cs",
               "DocumentMoniker": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\DrugPreventionSystem.ModelView\\PaymentReq\\PaymentRequest.cs",
               "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.ModelView\\PaymentReq\\PaymentRequest.cs",
@@ -120,7 +275,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 17,
               "Title": "CreatePaymentRequest.cs",
               "DocumentMoniker": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\DrugPreventionSystem.ModelView\\PaymentReq\\CreatePaymentRequest.cs",
               "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.ModelView\\PaymentReq\\CreatePaymentRequest.cs",
@@ -133,7 +288,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 4,
+              "Title": "OrderService.cs",
+              "DocumentMoniker": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\DrugPreventionSystem.Service\\OrderService.cs",
+              "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.Service\\OrderService.cs",
+              "ToolTip": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\DrugPreventionSystem.Service\\OrderService.cs",
+              "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.Service\\OrderService.cs",
+              "ViewState": "AgIAAHEAAAAAAAAAAAAmwCABAAA9AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-01T15:42:06.357Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
               "Title": "PayOSRequest.cs",
               "DocumentMoniker": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\DrugPreventionSystem.ModelView\\PaymentReq\\PayOSRequest.cs",
               "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.ModelView\\PaymentReq\\PayOSRequest.cs",
@@ -143,15 +311,10 @@
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-01T06:28:20.055Z",
               "EditorCaption": ""
-=======
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{0ad07096-bba9-4900-a651-0598d26f6d24}"
->>>>>>> 7d07423db5befeeda63091d034b95da995ac6589
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-<<<<<<< HEAD
+              "DocumentIndex": 18,
               "Title": "PayOSResponseModels.cs",
               "DocumentMoniker": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\DrugPreventionSystem.ModelView\\PayOS\\PayOSResponseModels.cs",
               "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.ModelView\\PayOS\\PayOSResponseModels.cs",
@@ -161,33 +324,10 @@
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-01T06:20:51.831Z",
               "EditorCaption": ""
-=======
-              "Title": "ConsultantResponseModel.cs",
-              "DocumentMoniker": "D:\\SWP\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.ModelView\\ConsultantModel\\ConsultantResponseModel.cs",
-              "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.ModelView\\ConsultantModel\\ConsultantResponseModel.cs",
-              "ToolTip": "D:\\SWP\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.ModelView\\ConsultantModel\\ConsultantResponseModel.cs",
-              "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.ModelView\\ConsultantModel\\ConsultantResponseModel.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAA4AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-01T06:57:06.718Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "GetAppointmentsByUserResponse.cs",
-              "DocumentMoniker": "D:\\SWP\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.ModelView\\ResponseModel\\GetAppointmentsByUserResponse.cs",
-              "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.ModelView\\ResponseModel\\GetAppointmentsByUserResponse.cs",
-              "ToolTip": "D:\\SWP\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.ModelView\\ResponseModel\\GetAppointmentsByUserResponse.cs",
-              "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.ModelView\\ResponseModel\\GetAppointmentsByUserResponse.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAArAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-01T06:55:57.007Z"
->>>>>>> 7d07423db5befeeda63091d034b95da995ac6589
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-<<<<<<< HEAD
+              "DocumentIndex": 16,
               "Title": "PaymentStatus.cs",
               "DocumentMoniker": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\DrugPreventionSystem.Enum\\PaymentStatus.cs",
               "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.Enum\\PaymentStatus.cs",
@@ -196,136 +336,33 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAALAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-01T05:38:17.312Z",
-=======
-              "Title": "AppointmentResponseModel.cs",
-              "DocumentMoniker": "D:\\SWP\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.ModelView\\ResponseModel\\AppointmentResponseModel.cs",
-              "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.ModelView\\ResponseModel\\AppointmentResponseModel.cs",
-              "ToolTip": "D:\\SWP\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.ModelView\\ResponseModel\\AppointmentResponseModel.cs",
-              "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.ModelView\\ResponseModel\\AppointmentResponseModel.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-01T06:54:46.016Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "IAppointmentService.cs",
-              "DocumentMoniker": "D:\\SWP\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Service\\Interface\\IAppointmentService.cs",
-              "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.Service\\Interface\\IAppointmentService.cs",
-              "ToolTip": "D:\\SWP\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Service\\Interface\\IAppointmentService.cs",
-              "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.Service\\Interface\\IAppointmentService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAtAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-01T05:47:00.606Z",
->>>>>>> 7d07423db5befeeda63091d034b95da995ac6589
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-<<<<<<< HEAD
+              "DocumentIndex": 14,
               "Title": "PaymentsController.cs",
               "DocumentMoniker": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\DrugPreventionSystem.Controller\\PaymentsController.cs",
               "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.Controller\\PaymentsController.cs",
               "ToolTip": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\DrugPreventionSystem.Controller\\PaymentsController.cs",
               "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.Controller\\PaymentsController.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAkwB8AAAA9AAAAAAAAAA==",
+              "ViewState": "AgIAAAwAAAAAAAAAAAA5wB8AAAA9AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-01T06:03:17.939Z",
-=======
-              "Title": "AppointmentService.cs",
-              "DocumentMoniker": "D:\\SWP\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Service\\AppointmentService.cs",
-              "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.Service\\AppointmentService.cs",
-              "ToolTip": "D:\\SWP\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Service\\AppointmentService.cs",
-              "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.Service\\AppointmentService.cs",
-              "ViewState": "AgIAAG4AAAAAAAAAAAAwwIMAAAAwAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-01T05:13:56.804Z",
->>>>>>> 7d07423db5befeeda63091d034b95da995ac6589
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-<<<<<<< HEAD
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "PaymentService.cs",
               "DocumentMoniker": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\DrugPreventionSystem.Service\\PaymentService.cs",
               "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.Service\\PaymentService.cs",
               "ToolTip": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\DrugPreventionSystem.Service\\PaymentService.cs",
               "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.Service\\PaymentService.cs",
-              "ViewState": "AgIAAMUAAAAAAAAAAAAswOsAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAKgAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-01T05:16:30.777Z",
               "EditorCaption": ""
-=======
-              "DocumentIndex": 2,
-              "Title": "AppointmentController.cs",
-              "DocumentMoniker": "D:\\SWP\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Controller\\AppointmentController.cs",
-              "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.Controller\\AppointmentController.cs",
-              "ToolTip": "D:\\SWP\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Controller\\AppointmentController.cs",
-              "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.Controller\\AppointmentController.cs",
-              "ViewState": "AgIAACkAAAAAAAAAAAAwwD0AAAApAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-01T05:17:29.061Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "DrugPreventionDbContext.cs",
-              "DocumentMoniker": "D:\\SWP\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Data\\DrugPreventionDbContext.cs",
-              "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.Data\\DrugPreventionDbContext.cs",
-              "ToolTip": "D:\\SWP\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Data\\DrugPreventionDbContext.cs",
-              "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.Data\\DrugPreventionDbContext.cs",
-              "ViewState": "AgIAAMUAAAAAAAAAAAAmwOMAAAAzAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-01T05:29:38.465Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Appointment.cs",
-              "DocumentMoniker": "D:\\SWP\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\Appointment.cs",
-              "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\Appointment.cs",
-              "ToolTip": "D:\\SWP\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\Appointment.cs",
-              "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\Appointment.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAsAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-01T05:26:11.804Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "BookingDirectRequest.cs",
-              "DocumentMoniker": "D:\\SWP\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.ModelView\\BookingReqModel\\BookingDirectRequest.cs",
-              "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.ModelView\\BookingReqModel\\BookingDirectRequest.cs",
-              "ToolTip": "D:\\SWP\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.ModelView\\BookingReqModel\\BookingDirectRequest.cs",
-              "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.ModelView\\BookingReqModel\\BookingDirectRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-01T05:15:53.426Z"
->>>>>>> 7d07423db5befeeda63091d034b95da995ac6589
-            }
-          ]
-        },
-        {
-<<<<<<< HEAD
-          "DockedHeight": 200,
-=======
-          "DockedWidth": 200,
->>>>>>> 7d07423db5befeeda63091d034b95da995ac6589
-          "SelectedChildIndex": -1,
-          "Children": [
-            {
-              "$type": "Bookmark",
-<<<<<<< HEAD
-=======
-              "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
-            },
-            {
-              "$type": "Bookmark",
->>>>>>> 7d07423db5befeeda63091d034b95da995ac6589
-              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
             }
           ]
         }

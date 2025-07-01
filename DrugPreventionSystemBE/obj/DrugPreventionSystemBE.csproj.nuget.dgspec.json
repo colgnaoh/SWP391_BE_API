@@ -104,6 +104,10 @@
             "dotenv.net": {
               "target": "Package",
               "version": "[3.2.1, )"
+            },
+            "payOS": {
+              "target": "Package",
+              "version": "[1.0.9, )"
             }
           },
           "imports": [

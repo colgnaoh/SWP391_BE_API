@@ -1,5 +1,7 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.Data;
 using DrugPreventionSystemBE.DrugPreventionSystem.Entity;
+using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ApiResponse;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CourseReqModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
@@ -37,28 +39,27 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             var course = await _context.Courses.FirstOrDefaultAsync(c => c.Id == request.CourseId && !c.IsDeleted);
             if (course == null)
             {
-                return new NotFoundObjectResult("Id khóa học không tồn tại.");
+                return new NotFoundObjectResult(new BaseResponse { Success = false, Message = "Id khóa học không tồn tại." });
             }
 
-            // Kiểm tra xem khóa học đã có trong giỏ hàng của người dùng chưa
             var existingCartItem = await _context.Carts
-                .FirstOrDefaultAsync(c => c.UserId == userId && c.CourseId == request.CourseId && !c.IsDeleted);
+                .FirstOrDefaultAsync(c => c.UserId == userId && c.CourseId == request.CourseId && !c.IsDeleted && c.Status == CartStatus.Pending);
 
             if (existingCartItem != null)
             {
-                return new BadRequestObjectResult("Khóa học này đã có trong giỏ hàng của bạn.");
+                return new BadRequestObjectResult(new BaseResponse { Success = false, Message = "Khóa học này đã có trong giỏ hàng của bạn." });
             }
 
-            var nextCartId = _idServices.GenerateNextId(); // Sử dụng IdServices để tạo ID
+            var nextCartId = _idServices.GenerateNextId();
 
             var cartItem = new Cart
             {
                 Id = nextCartId,
                 UserId = userId,
                 CourseId = request.CourseId,
-                CartNo = $"CART-{Guid.NewGuid().ToString().Substring(0, 8).ToUpper()}", // Mã giỏ hàng đơn giản
-                Status = Enum.CartStatus.Pending,
-                Price = (decimal)course.Price, 
+                CartNo = $"CART-{Guid.NewGuid().ToString().Substring(0, 8).ToUpper()}",
+                Status = CartStatus.Pending,
+                Price = (decimal)course.Price,
                 Discount = (decimal)course.Discount,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
@@ -68,18 +69,18 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             _context.Carts.Add(cartItem);
             await _context.SaveChangesAsync();
 
-            return new OkObjectResult("Khóa học đã được thêm vào giỏ hàng thành công.");
+            return new OkObjectResult(new BaseResponse { Success = true, Message = "Khóa học đã được thêm vào giỏ hàng thành công." });
         }
 
         public async Task<IActionResult> GetUserCartAsync(Guid userId)
         {
             var cartItems = await _context.Carts
-                .Where(c => c.UserId == userId && !c.IsDeleted && c.Status == Enum.CartStatus.Pending) // Chỉ lấy các mục đang hoạt động
-                .Include(c => c.Course) // Kéo theo thông tin khóa học
+                .Where(c => c.UserId == userId && !c.IsDeleted && c.Status == CartStatus.Pending)
+                .Include(c => c.Course)
                 .Select(c => new CartItemResponse
                 {
                     CartId = c.Id,
-                    CourseId = c.CourseId ?? Guid.Empty, 
+                    CourseId = c.CourseId ?? Guid.Empty,
                     CourseName = c.Course.Name,
                     CourseImageUrl = c.Course.ImageUrls != null && c.Course.ImageUrls.Any()
                         ? c.Course.ImageUrls.First()
@@ -94,43 +95,44 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 
             if (!cartItems.Any())
             {
-                return new NotFoundObjectResult("Giỏ hàng của bạn trống.");
+                return new NotFoundObjectResult(new BaseResponse { Success = false, Message = "Giỏ hàng của bạn trống." });
             }
 
-            return new OkObjectResult(new CartListResponse
+            return new OkObjectResult(new BaseResponse
             {
                 Success = true,
                 Data = cartItems,
+                Message = "Lấy thông tin giỏ hàng thành công."
             });
         }
 
         public async Task<IActionResult> RemoveCartItemAsync(Guid userId, Guid cartItemId)
         {
             var cartItem = await _context.Carts
-                .FirstOrDefaultAsync(c => c.Id == cartItemId && c.UserId == userId && !c.IsDeleted);
+                .FirstOrDefaultAsync(c => c.Id == cartItemId && c.UserId == userId && !c.IsDeleted && c.Status == CartStatus.Pending);
 
             if (cartItem == null)
             {
-                return new NotFoundObjectResult("Mục giỏ hàng không tồn tại hoặc không thuộc về bạn.");
+                return new NotFoundObjectResult(new BaseResponse { Success = false, Message = "Mục giỏ hàng không tồn tại hoặc không thuộc về bạn." });
             }
 
-            cartItem.IsDeleted = true; // Đánh dấu xóa mềm
+            cartItem.IsDeleted = true;
             cartItem.UpdatedAt = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
 
-            return new OkObjectResult("Mục giỏ hàng đã được xóa thành công.");
+            return new OkObjectResult(new BaseResponse { Success = true, Message = "Mục giỏ hàng đã được xóa thành công." });
         }
 
         public async Task<IActionResult> ClearUserCartAsync(Guid userId)
         {
             var cartItems = await _context.Carts
-                .Where(c => c.UserId == userId && !c.IsDeleted && c.Status == Enum.CartStatus.Pending)
+                .Where(c => c.UserId == userId && !c.IsDeleted && c.Status == CartStatus.Pending)
                 .ToListAsync();
 
             if (!cartItems.Any())
             {
-                return new OkObjectResult("Giỏ hàng của bạn đã trống.");
+                return new OkObjectResult(new BaseResponse { Success = true, Message = "Giỏ hàng của bạn đã trống." });
             }
 
             foreach (var item in cartItems)
@@ -141,7 +143,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 
             await _context.SaveChangesAsync();
 
-            return new OkObjectResult("Giỏ hàng của bạn đã được xóa sạch.");
+            return new OkObjectResult(new BaseResponse { Success = true, Message = "Giỏ hàng của bạn đã được xóa sạch." });
         }
     }
 }

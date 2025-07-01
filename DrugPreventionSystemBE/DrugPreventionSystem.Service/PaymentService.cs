@@ -1,87 +1,88 @@
-﻿    using CloudinaryDotNet.Actions;
-    using DrugPreventionSystemBE.DrugPreventionSystem.Data;
-    using DrugPreventionSystemBE.DrugPreventionSystem.Entity;
-    using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
-    using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ApiResponse;
-    using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.PaymentReq;
-    using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.PayOS;
-    using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel;
-    using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.EntityFrameworkCore;
-    using System.Security.Claims;
-using static DrugPreventionSystemBE.DrugPreventionSystem.ModelView.PayOS.PayOSTransactionDetail;
-
-
-    namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
+﻿using CloudinaryDotNet.Actions;
+using DrugPreventionSystemBE.DrugPreventionSystem.Data;
+using DrugPreventionSystemBE.DrugPreventionSystem.Entity;
+using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ApiResponse;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.PaymentReq;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel;
+using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Net.payOS;
+using Net.payOS.Types;
+using System.Net.Http.Json;
+using System.Security.Claims;
+namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
+{
+    public class PaymentService : IPaymentService
     {
-        public class PaymentService : IPaymentService
-        {
-            private readonly DrugPreventionDbContext _context;
-            private readonly IdServices _idServices;
-            private readonly IConfiguration _configuration;
-            private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly DrugPreventionDbContext _context;
+        private readonly IdServices _idServices;
+        private readonly IConfiguration _configuration;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly PayOS _payOS;
 
-            public PaymentService(DrugPreventionDbContext context, IdServices idServices, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
-            {
-                _context = context;
-                _idServices = idServices;
-                _configuration = configuration;
-                _httpContextAccessor = httpContextAccessor;
-            }
+        public PaymentService(DrugPreventionDbContext context, IdServices idServices, IConfiguration configuration, IHttpContextAccessor httpContextAccessor, PayOS payOS) 
+        {
+            _context = context;
+            _idServices = idServices;
+            _configuration = configuration;
+            _httpContextAccessor = httpContextAccessor;
+            _payOS = payOS;
+        }
 
         private async Task<string> CreatePayOSPaymentAsync(Payment payment)
         {
-            using var client = new HttpClient();
+            ItemData item = new ItemData("Thanh toan don hang DPC", 1, (int)payment.Amount);
+            List<ItemData> items = new List<ItemData> { item };
 
-            var payOSRequest = new PayOSRequest
+            // Tạo một orderCode duy nhất bằng cách kết hợp timestamp và một số ngẫu nhiên nhỏ
+            long timestampMs = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            int randomSuffix = new Random().Next(0, 999);
+            // Tạo một số int từ timestampMs, sau đó thêm randomSuffix
+            // Điều này đảm bảo orderCode là duy nhất và nằm trong giới hạn của int
+            int payOSOrderCode = (int)(timestampMs % 1_000_000_000) * 1000 + randomSuffix;
+
+            PaymentData paymentData = new PaymentData(
+                orderCode: payOSOrderCode, 
+                amount: (int)payment.Amount,
+                description: $"Thanh toán đơn hàng {payment.OrderId}",
+                items: items,
+                cancelUrl: _configuration["PayOS:CancelUrl"],
+                returnUrl: _configuration["PayOS:ReturnUrl"]
+            );
+
+            CreatePaymentResult createPayment = await _payOS.createPaymentLink(paymentData);
+
+            if (createPayment?.checkoutUrl != null)
             {
-                orderCode = payment.PaymentNo,
-                amount = (int)(payment.Amount), // Đảm bảo PayOS chấp nhận giá trị này
-                description = $"Thanh toán đơn hàng {payment.OrderId}",
-                returnUrl = _configuration["PayOS:ReturnUrl"],
-                cancelUrl = _configuration["PayOS:CancelUrl"]
-            };
-
-            client.DefaultRequestHeaders.Add("x-client-id", _configuration["PayOS:ClientId"]);
-            client.DefaultRequestHeaders.Add("x-api-key", _configuration["PayOS:ApiKey"]);
-            client.DefaultRequestHeaders.Add("x-checksum-key", _configuration["PayOS:ChecksumKey"]);
-
-            var response = await client.PostAsJsonAsync("https://api.payos.vn/v1/invoices", payOSRequest);
-
-            if (!response.IsSuccessStatusCode)
-            {
-                var errorContent = await response.Content.ReadAsStringAsync();
-                throw new Exception($"Không thể tạo liên kết thanh toán PayOS. Lỗi: {errorContent}");
+                payment.ExternalTransactionId = createPayment.orderCode.ToString();
+                payment.PayOSCheckoutUrl = createPayment.checkoutUrl;
+                return createPayment.checkoutUrl;
             }
-
-            var payOSResponse = await response.Content.ReadFromJsonAsync<PayOSResponse>();
-
-            if (payOSResponse?.data?.orderCode != null)
+            else
             {
-                payment.ExternalTransactionId = payOSResponse.data.orderCode.ToString();
+                throw new Exception("Không nhận được đường dẫn thanh toán từ PayOS.");
             }
-
-            payment.PayOSCheckoutUrl = payOSResponse?.data?.checkoutUrl;
-
-            return payOSResponse?.data?.checkoutUrl ?? throw new Exception("Không nhận được đường dẫn thanh toán.");
         }
+
         private Guid GetCurrentUserId()
+        {
+            var userIdClaim = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (Guid.TryParse(userIdClaim, out Guid userId))
             {
-                var userIdClaim = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                if (Guid.TryParse(userIdClaim, out Guid userId))
-                {
-                    return userId;
-                }
-                throw new UnauthorizedAccessException("User ID not found in token.");
+                return userId;
             }
+            throw new UnauthorizedAccessException("User ID not found in token.");
+        }
 
         private string GetCurrentUserRole()
         {
             return _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Role)?.Value;
         }
 
-public async Task<IActionResult> CreatePaymentForOrderAsync(CreatePaymentRequest request)
+        public async Task<IActionResult> CreatePaymentForOrderAsync(CreatePaymentRequest request)
         {
             var order = await _context.Orders.Include(o => o.User).FirstOrDefaultAsync(o => o.Id == request.OrderId);
             if (order == null)
@@ -116,12 +117,12 @@ public async Task<IActionResult> CreatePaymentForOrderAsync(CreatePaymentRequest
                     {
                         payUrlToReturn = existingPayment.PayOSCheckoutUrl;
                     }
-                    else 
+                    else
                     {
                         try
                         {
                             payUrlToReturn = await CreatePayOSPaymentAsync(existingPayment);
-                            await _context.SaveChangesAsync(); 
+                            await _context.SaveChangesAsync();
                         }
                         catch (Exception ex)
                         {
@@ -187,11 +188,11 @@ public async Task<IActionResult> CreatePaymentForOrderAsync(CreatePaymentRequest
             {
                 payment.Status = PaymentStatus.Pending;
                 _context.Payments.Add(payment);
-                await _context.SaveChangesAsync(); 
-                
+                await _context.SaveChangesAsync();
+
                 generatedPayUrl = await CreatePayOSPaymentAsync(payment);
-                
-                await _context.SaveChangesAsync(); 
+
+                await _context.SaveChangesAsync();
             }
             else
             {
@@ -218,7 +219,7 @@ public async Task<IActionResult> CreatePaymentForOrderAsync(CreatePaymentRequest
                     }
                 });
             }
-            else 
+            else
             {
                 return new OkObjectResult(new BaseResponse
                 {
@@ -228,11 +229,13 @@ public async Task<IActionResult> CreatePaymentForOrderAsync(CreatePaymentRequest
                     {
                         PaymentId = payment.Id,
                         PaymentNo = payment.PaymentNo,
-                        PayUrl = generatedPayUrl 
+                        PayUrl = generatedPayUrl
                     }
                 });
             }
-        }        public async Task<IActionResult> GetPaymentByIdAsync(Guid paymentId)
+        }
+
+        public async Task<IActionResult> GetPaymentByIdAsync(Guid paymentId)
         {
             var currentUserId = GetCurrentUserId();
             var currentUserRole = GetCurrentUserRole();
@@ -349,47 +352,47 @@ public async Task<IActionResult> CreatePaymentForOrderAsync(CreatePaymentRequest
         }
 
         public async Task<IActionResult> UpdatePaymentStatusAsync(Guid paymentId, PaymentStatus newStatus)
+        {
+            var currentUserRole = GetCurrentUserRole();
+            if (currentUserRole != Enum.Role.Admin.ToString())
             {
-                var currentUserRole = GetCurrentUserRole();
-                if (currentUserRole != Enum.Role.Admin.ToString())
-                {
-                    return new UnauthorizedObjectResult(new BaseResponse { Success = false, Message = "Bạn không có quyền cập nhật trạng thái thanh toán." });
-                }
-
-                var payment = await _context.Payments.FirstOrDefaultAsync(p => p.Id == paymentId && !p.IsDeleted);
-                if (payment == null)
-                {
-                    return new NotFoundObjectResult(new BaseResponse { Success = false, Message = "Không tìm thấy thanh toán." });
-                }
-                        
-                if (payment.Status == PaymentStatus.Failed && newStatus != PaymentStatus.Success)
-                {
-                    return new BadRequestObjectResult(new BaseResponse { Success = false, Message = "Thanh toán đã thất bại, chỉ có thể chuyển về trạng thái 'Pending' để thử lại." });
-                }
-
-                payment.Status = newStatus;
-                payment.UpdatedAt = DateTime.UtcNow;
-
-                await _context.SaveChangesAsync();
-
-                if (payment.OrderId.HasValue)
-                {
-                    var order = await _context.Orders.FirstOrDefaultAsync(o => o.Id == payment.OrderId);
-                    if (order != null)
-                    {
-                        if (newStatus == PaymentStatus.Success)
-                        {
-                            order.Status = OrderStatus.Paid; 
-                        }
-                        else if (newStatus == PaymentStatus.Failed)
-                        {
-                            order.Status = OrderStatus.Failed;
-                        }
-                        await _context.SaveChangesAsync();
-                    }
-                }
-
-                return new OkObjectResult(new BaseResponse { Success = true, Message = $"Trạng thái thanh toán '{payment.PaymentNo}' đã được cập nhật thành '{newStatus}'." });
+                return new UnauthorizedObjectResult(new BaseResponse { Success = false, Message = "Bạn không có quyền cập nhật trạng thái thanh toán." });
             }
+
+            var payment = await _context.Payments.FirstOrDefaultAsync(p => p.Id == paymentId && !p.IsDeleted);
+            if (payment == null)
+            {
+                return new NotFoundObjectResult(new BaseResponse { Success = false, Message = "Không tìm thấy thanh toán." });
+            }
+
+            if (payment.Status == PaymentStatus.Failed && newStatus != PaymentStatus.Success)
+            {
+                return new BadRequestObjectResult(new BaseResponse { Success = false, Message = "Thanh toán đã thất bại, chỉ có thể chuyển về trạng thái 'Pending' để thử lại." });
+            }
+
+            payment.Status = newStatus;
+            payment.UpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+
+            if (payment.OrderId.HasValue)
+            {
+                var order = await _context.Orders.FirstOrDefaultAsync(o => o.Id == payment.OrderId);
+                if (order != null)
+                {
+                    if (newStatus == PaymentStatus.Success)
+                    {
+                        order.Status = OrderStatus.Paid;
+                    }
+                    else if (newStatus == PaymentStatus.Failed)
+                    {
+                        order.Status = OrderStatus.Failed;
+                    }
+                    await _context.SaveChangesAsync();
+                }
+            }
+
+            return new OkObjectResult(new BaseResponse { Success = true, Message = $"Trạng thái thanh toán '{payment.PaymentNo}' đã được cập nhật thành '{newStatus}'." });
         }
     }
+}

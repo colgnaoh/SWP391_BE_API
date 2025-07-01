@@ -40,8 +40,10 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             return _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Role)?.Value;
         }
 
-        public async Task<IActionResult> CreateOrderFromCartAsync(Guid userId)
+        public async Task<IActionResult> CreateOrderFromCartAsync()
         {
+            var userId = GetCurrentUserId(); // Lấy userId từ token
+
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId && !u.IsDeleted);
             if (user == null)
             {
@@ -53,7 +55,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 .Where(c => c.UserId == userId && c.Status == CartStatus.Pending && !c.IsDeleted)
                 .ToListAsync();
 
-            if (!cartItems.Any()) // Kiểm tra nếu không có mục nào trong giỏ hàng
+            if (!cartItems.Any())
             {
                 return new NotFoundObjectResult(new BaseResponse { Success = false, Message = "Không tìm thấy giỏ hàng hoạt động hoặc giỏ hàng trống." });
             }
@@ -61,12 +63,18 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             decimal totalOrderAmount = 0;
             var orderDetails = new List<OrderDetail>();
 
+            // Tạo dictionary để ánh xạ CourseId với CourseName, tránh lặp lại truy vấn
+            var courseNamesMap = cartItems
+                .Where(ci => ci.CourseId.HasValue && ci.Course != null)
+                .ToDictionary(ci => ci.CourseId.Value, ci => ci.Course.Name);
+
+
             foreach (var cartItem in cartItems)
             {
                 if (cartItem.CourseId.HasValue && cartItem.Course != null)
                 {
                     decimal itemPrice = (decimal)(cartItem.Course.Price - cartItem.Course.Discount);
-                    totalOrderAmount += itemPrice; // Cộng dồn tổng tiền
+                    totalOrderAmount += itemPrice;
 
                     var orderDetailId = _idServices.GenerateNextId();
                     var orderDetail = new OrderDetail
@@ -80,7 +88,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     };
                     orderDetails.Add(orderDetail);
 
-                    cartItem.Status = CartStatus.Completed; 
+                    cartItem.Status = CartStatus.Completed;
                     cartItem.UpdatedAt = DateTime.UtcNow;
                 }
             }
@@ -90,22 +98,20 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 return new BadRequestObjectResult(new BaseResponse { Success = false, Message = "Giỏ hàng không chứa khóa học hợp lệ để tạo đơn hàng." });
             }
 
-            // Tạo Order mới
             var newOrderId = _idServices.GenerateNextId();
             var order = new Order
             {
                 Id = newOrderId,
                 UserId = userId,
-                CartId = null, 
+                CartId = null,
                 OrderDate = DateTime.UtcNow,
                 Status = OrderStatus.Pending,
-                TotalAmount = totalOrderAmount, 
+                TotalAmount = totalOrderAmount,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
-                OrderDetails = orderDetails 
+                OrderDetails = orderDetails
             };
 
-            // Gán OrderId cho từng OrderDetail
             foreach (var detail in order.OrderDetails)
             {
                 detail.OrderId = order.Id;
@@ -114,7 +120,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
 
-            // Chuẩn bị OrderResponse để trả về
             var orderResponse = new OrderResponse
             {
                 OrderId = order.Id,
@@ -123,13 +128,13 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 TotalAmount = order.TotalAmount,
                 OrderDate = order.OrderDate,
                 OrderStatus = order.Status,
-                PaymentStatus = null, // Đơn hàng mới tạo chưa có thanh toán
+                PaymentStatus = null,
                 PaymentId = null,
                 OrderDetails = order.OrderDetails.Select(od => new OrderDetailResponse
                 {
                     OrderDetailId = od.Id,
                     CourseId = od.CourseId,
-                    CourseName = cartItems.FirstOrDefault(ci => ci.CourseId == od.CourseId)?.Course?.Name, 
+                    CourseName = od.CourseId.HasValue && courseNamesMap.ContainsKey(od.CourseId.Value) ? courseNamesMap[od.CourseId.Value] : null,
                     Amount = od.Amount
                 }).ToList()
             };

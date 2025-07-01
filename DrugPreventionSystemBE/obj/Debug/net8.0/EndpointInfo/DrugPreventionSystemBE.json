@@ -5,7 +5,7 @@
     "version": "v1"
   },
   "paths": {
-    "/api/appointments/booking-direct": {
+    "/api/appointments/book": {
       "post": {
         "tags": [
           "Appointment"
@@ -42,7 +42,7 @@
       }
     },
     "/api/appointments/assign": {
-      "put": {
+      "post": {
         "tags": [
           "Appointment"
         ],
@@ -77,7 +77,7 @@
         ]
       }
     },
-    "/api/appointments/complete/{appointmentId}": {
+    "/api/appointments/status": {
       "put": {
         "tags": [
           "Appointment"
@@ -85,11 +85,17 @@
         "parameters": [
           {
             "name": "appointmentId",
-            "in": "path",
-            "required": true,
+            "in": "query",
             "schema": {
               "type": "string",
               "format": "uuid"
+            }
+          },
+          {
+            "name": "newStatus",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/AppointmentStatus"
             }
           }
         ],
@@ -105,10 +111,53 @@
         ]
       }
     },
-    "/api/appointments/my-appointments": {
+    "/api/appointments/user": {
       "get": {
         "tags": [
           "Appointment"
+        ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/AppointmentStatus"
+            }
+          },
+          {
+            "name": "fromDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "toDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 12
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -547,15 +596,50 @@
         "tags": [
           "Cart"
         ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      }
+    },
+    "/api/cart/remove/{cartItemId}": {
+      "delete": {
+        "tags": [
+          "Cart"
+        ],
         "parameters": [
           {
-            "name": "userId",
-            "in": "query",
+            "name": "cartItemId",
+            "in": "path",
+            "required": true,
             "schema": {
               "type": "string",
               "format": "uuid"
             }
           }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      }
+    },
+    "/api/cart/clear": {
+      "delete": {
+        "tags": [
+          "Cart"
         ],
         "responses": {
           "200": {
@@ -1549,13 +1633,19 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": { }
+              "schema": {
+                "$ref": "#/components/schemas/PayOSWebhookPayload"
+              }
             },
             "text/json": {
-              "schema": { }
+              "schema": {
+                "$ref": "#/components/schemas/PayOSWebhookPayload"
+              }
             },
             "application/*+json": {
-              "schema": { }
+              "schema": {
+                "$ref": "#/components/schemas/PayOSWebhookPayload"
+              }
             }
           }
         },
@@ -2140,6 +2230,15 @@
         },
         "additionalProperties": false
       },
+      "AppointmentStatus": {
+        "enum": [
+          "Pending",
+          "Confirmed",
+          "Assigned",
+          "Completed"
+        ],
+        "type": "string"
+      },
       "AssignConsultantRequest": {
         "type": "object",
         "properties": {
@@ -2176,27 +2275,12 @@
           "name": {
             "type": "string",
             "nullable": true
-<<<<<<< HEAD
-          }
-        },
-        "additionalProperties": false
-      },
-      "BookingRequest": {
-        "type": "object",
-        "properties": {
-          "note": {
-=======
           },
           "phone": {
             "type": "string",
             "nullable": true
           },
           "address": {
->>>>>>> 7d07423db5befeeda63091d034b95da995ac6589
-            "type": "string",
-            "nullable": true
-          },
-          "name": {
             "type": "string",
             "nullable": true
           }
@@ -2707,6 +2791,27 @@
         ],
         "type": "string"
       },
+      "PayOSWebhookPayload": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "desc": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/WebhookData"
+          },
+          "signature": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "PaymentMethod": {
         "enum": [
           "Cash",
@@ -3044,6 +3149,44 @@
           },
           "isDescending": {
             "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "WebhookData": {
+        "type": "object",
+        "properties": {
+          "orderCode": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "amount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "transactionId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "paymentLinkId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "checkoutUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "qrCode": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

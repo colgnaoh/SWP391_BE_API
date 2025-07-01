@@ -30,9 +30,26 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
 
         [Authorize]
         [HttpGet("myCart")]
-        public async Task<IActionResult> GetUserCartAsync([FromQuery] Guid userId)
+        public async Task<IActionResult> GetUserCartAsync() // 
         {
+            var userId = _cartService.GetCurrentUserId(); 
             return await _cartService.GetUserCartAsync(userId);
+        }
+
+        [Authorize]
+        [HttpDelete("remove/{cartItemId}")] // Sử dụng Delete và truyền ID qua route
+        public async Task<IActionResult> RemoveCartItemAsync(Guid cartItemId)
+        {
+            var userId = _cartService.GetCurrentUserId();
+            return await _cartService.RemoveCartItemAsync(userId, cartItemId);
+        }
+
+        [Authorize]
+        [HttpDelete("clear")] // Endpoint để xóa toàn bộ giỏ hàng
+        public async Task<IActionResult> ClearUserCartAsync()
+        {
+            var userId = _cartService.GetCurrentUserId();
+            return await _cartService.ClearUserCartAsync(userId);
         }
     }
 }

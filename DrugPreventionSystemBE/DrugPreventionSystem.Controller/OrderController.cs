@@ -23,13 +23,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
         [HttpPost("createOrderFromCart")]
         public async Task<IActionResult> CreateOrderFromCart()
         {
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (!Guid.TryParse(userIdClaim, out Guid userId))
-            {
-                return Unauthorized(new BaseResponse { Success = false, Message = "Không tìm thấy User ID trong token." });
-            }
-
-            var result = await _orderService.CreateOrderFromCartAsync(userId);
+            var result = await _orderService.CreateOrderFromCartAsync();
             return result;
         }
 
