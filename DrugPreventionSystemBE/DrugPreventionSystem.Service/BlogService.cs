@@ -95,7 +95,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     FullName = $"{b.User?.LastName} {b.User?.FirstName}".Trim(),
                     UserAvatar = b.User?.ProfilePicUrl ?? b.User?.ProfilePicUrl
                 }).ToList(),
-                TotalCount = totalCount,
+                TotalCount = totalCount,    
                 PageNumber = safePageNumber,
                 PageSize = safePageSize,
                 TotalPages = totalPages

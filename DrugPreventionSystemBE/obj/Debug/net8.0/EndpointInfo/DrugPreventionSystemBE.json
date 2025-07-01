@@ -41,42 +41,6 @@
         ]
       }
     },
-    "/api/appointments/booking-withoutTime": {
-      "post": {
-        "tags": [
-          "Appointment"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BookingRequest"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BookingRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/BookingRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        },
-        "security": [
-          {
-            "Bearer": [ ]
-          }
-        ]
-      }
-    },
     "/api/appointments/assign": {
       "put": {
         "tags": [
@@ -128,6 +92,23 @@
               "format": "uuid"
             }
           }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      }
+    },
+    "/api/appointments/my-appointments": {
+      "get": {
+        "tags": [
+          "Appointment"
         ],
         "responses": {
           "200": {
@@ -2180,7 +2161,7 @@
       "BookingDirectRequest": {
         "type": "object",
         "properties": {
-          "consultantUserId": {
+          "consultantId": {
             "type": "string",
             "format": "uuid"
           },
@@ -2195,6 +2176,7 @@
           "name": {
             "type": "string",
             "nullable": true
+<<<<<<< HEAD
           }
         },
         "additionalProperties": false
@@ -2203,6 +2185,14 @@
         "type": "object",
         "properties": {
           "note": {
+=======
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true
+          },
+          "address": {
+>>>>>>> 7d07423db5befeeda63091d034b95da995ac6589
             "type": "string",
             "nullable": true
           },

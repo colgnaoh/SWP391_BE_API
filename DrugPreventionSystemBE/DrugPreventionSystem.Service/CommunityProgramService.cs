@@ -58,7 +58,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
 
                 return new OkObjectResult(new GetProgramsByPageResponse
                 {
-                    Success = true,
                     Message = "Lấy danh sách thành công.",
                     Data = programDtos,
                     TotalCount = totalCount,

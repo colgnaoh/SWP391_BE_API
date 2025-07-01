@@ -4,6 +4,7 @@ using DrugPreventionSystemBE.DrugPreventionSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DrugPreventionSystemBE.Migrations
 {
     [DbContext(typeof(DrugPreventionDbContext))]
-    partial class DrugPreventionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250701063416_AddPhoneAndAddressToAppointment")]
+    partial class AddPhoneAndAddressToAppointment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -544,9 +547,6 @@ namespace DrugPreventionSystemBE.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ExternalTransactionId")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -555,9 +555,6 @@ namespace DrugPreventionSystemBE.Migrations
 
                     b.Property<decimal?>("OrganizationShare")
                         .HasColumnType("decimal(10,2)");
-
-                    b.Property<string>("PayOSCheckoutUrl")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PaymentMethod")
                         .IsRequired()
