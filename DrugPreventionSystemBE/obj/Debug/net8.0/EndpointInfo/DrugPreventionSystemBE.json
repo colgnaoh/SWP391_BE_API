@@ -1381,7 +1381,7 @@
         ]
       }
     },
-    "/api/order/createOrr": {
+    "/api/order/createOrderFromCart": {
       "post": {
         "tags": [
           "Order"
@@ -1494,6 +1494,95 @@
             "Bearer": [ ]
           }
         ]
+      }
+    },
+    "/api/payment/createPaymentFromOrder": {
+      "post": {
+        "tags": [
+          "Payments"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePaymentRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePaymentRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePaymentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      }
+    },
+    "/api/payment/{paymentId}": {
+      "get": {
+        "tags": [
+          "Payments"
+        ],
+        "parameters": [
+          {
+            "name": "paymentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      }
+    },
+    "/api/payos/webhook": {
+      "post": {
+        "tags": [
+          "PayOSWebhook"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { }
+            },
+            "text/json": {
+              "schema": { }
+            },
+            "application/*+json": {
+              "schema": { }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
       }
     },
     "/api/review": {
@@ -2102,6 +2191,10 @@
           "note": {
             "type": "string",
             "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -2110,6 +2203,10 @@
         "type": "object",
         "properties": {
           "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
             "type": "string",
             "nullable": true
           }
@@ -2516,6 +2613,34 @@
         },
         "additionalProperties": false
       },
+      "CreatePaymentRequest": {
+        "required": [
+          "amount",
+          "orderId",
+          "paymentMethod",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "orderId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "amount": {
+            "minimum": 0.01,
+            "type": "number",
+            "format": "double"
+          },
+          "paymentMethod": {
+            "$ref": "#/components/schemas/PaymentMethod"
+          }
+        },
+        "additionalProperties": false
+      },
       "CreateReviewReqModel": {
         "type": "object",
         "properties": {
@@ -2589,6 +2714,13 @@
           "Pending",
           "Paid",
           "Failed"
+        ],
+        "type": "string"
+      },
+      "PaymentMethod": {
+        "enum": [
+          "Cash",
+          "BankTransfer"
         ],
         "type": "string"
       },
@@ -2689,6 +2821,11 @@
       "SessionUpdateModelView": {
         "type": "object",
         "properties": {
+          "courseId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
           "name": {
             "type": "string",
             "nullable": true

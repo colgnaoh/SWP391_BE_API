@@ -538,6 +538,9 @@ namespace DrugPreventionSystemBE.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("ExternalTransactionId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -546,6 +549,9 @@ namespace DrugPreventionSystemBE.Migrations
 
                     b.Property<decimal?>("OrganizationShare")
                         .HasColumnType("decimal(10,2)");
+
+                    b.Property<string>("PayOSCheckoutUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PaymentMethod")
                         .IsRequired()

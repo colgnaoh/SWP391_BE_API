@@ -686,7 +686,7 @@
   {
     "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.OrderController",
     "Method": "CreateOrderFromCart",
-    "RelativePath": "api/order/createOrr",
+    "RelativePath": "api/order/createOrderFromCart",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -719,6 +719,54 @@
       {
         "Name": "newStatus",
         "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.PaymentsController",
+    "Method": "GetPaymentByIdAsync",
+    "RelativePath": "api/payment/{paymentId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "paymentId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.PaymentsController",
+    "Method": "CreatePaymentFromOrder",
+    "RelativePath": "api/payment/createPaymentFromOrder",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.PaymentReq.CreatePaymentRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.PayOSWebhookController",
+    "Method": "Webhook",
+    "RelativePath": "api/payos/webhook",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "payload",
+        "Type": "System.Object",
         "IsRequired": true
       }
     ],

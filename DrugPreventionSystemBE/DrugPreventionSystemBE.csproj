@@ -11,9 +11,13 @@
 </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DrugPreventionSystem.Repositories\**" />
     <Compile Remove="ResponeFormat\**" />
+    <Content Remove="DrugPreventionSystem.Repositories\**" />
     <Content Remove="ResponeFormat\**" />
+    <EmbeddedResource Remove="DrugPreventionSystem.Repositories\**" />
     <EmbeddedResource Remove="ResponeFormat\**" />
+    <None Remove="DrugPreventionSystem.Repositories\**" />
     <None Remove="ResponeFormat\**" />
   </ItemGroup>
 
@@ -35,10 +39,6 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.4" />
     <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="8.1.4" />
     <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="DrugPreventionSystem.Repositories\" />
   </ItemGroup>
 
   <ItemGroup>

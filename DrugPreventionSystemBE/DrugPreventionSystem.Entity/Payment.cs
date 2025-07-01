@@ -11,10 +11,9 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Entity
     {
         public string? PaymentNo { get; set; }
         public PaymentStatus Status { get; set; }
-        //foreign key to user
         public Guid? UserId { get; set; }
         public User? User { get; set; }
-        public Guid? OrderId { get; set; } // Foreign key to Order
+        public Guid? OrderId { get; set; } 
         public Order? Order { get; set; }
         [Column(TypeName = "decimal(10,2)")]
         public decimal? Amount { get; set; }
@@ -24,5 +23,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Entity
         [Column(TypeName = "decimal(10,2)")]
         public decimal? ConsultantShare { get; set; }
         public ICollection<Transaction> Transactions { get; set; }
+        public string? ExternalTransactionId { get; set; }
+        public string? PayOSCheckoutUrl { get; set; }
     }
 }

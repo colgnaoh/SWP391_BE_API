@@ -102,7 +102,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 TotalAmount = totalOrderAmount, 
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
-                OrderDetails = orderDetails // GÁN DANH SÁCH OrderDetails ĐÃ TẠO
+                OrderDetails = orderDetails 
             };
 
             // Gán OrderId cho từng OrderDetail
@@ -186,7 +186,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             var currentUserId = GetCurrentUserId();
             var currentUserRole = GetCurrentUserRole();
 
-            // Đảm bảo người dùng chỉ có thể lấy order của chính họ trừ khi là Admin
             if (currentUserRole != Role.Admin.ToString() && userId != currentUserId)
             {
                 return new UnauthorizedObjectResult(new BaseResponse { Success = false, Message = "Bạn không có quyền truy cập đơn hàng của người dùng này." });
@@ -274,7 +273,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
         public async Task<IActionResult> UpdateOrderStatusAsync(Guid orderId, OrderStatus newStatus)
         {
             var currentUserRole = GetCurrentUserRole();
-            if (currentUserRole != Role.Admin.ToString()) // Chỉ admin mới được cập nhật trạng thái Order
+            if (currentUserRole != Role.Admin.ToString()) 
             {
                 return new UnauthorizedObjectResult(new BaseResponse { Success = false, Message = "Bạn không có quyền cập nhật trạng thái đơn hàng." });
             }

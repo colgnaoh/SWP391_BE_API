@@ -18,6 +18,5 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView.PaymentReq
         [Required(ErrorMessage = "Phương thức thanh toán là bắt buộc.")]
         public PaymentMethod PaymentMethod { get; set; } 
 
-        public string? ExternalTransactionId { get; set; }
     }
 }
