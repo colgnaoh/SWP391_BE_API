@@ -30,10 +30,11 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
         /// Lấy tất cả buổi học (không phân trang, lọc)
         /// </summary>
         [HttpGet("all")]
-        public async Task<IActionResult> GetAllSessions()
+        public async Task<IActionResult> GetAll([FromQuery] string? name, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 12)
         {
-            return await _sessionService.GetAllAsync();
+            return await _sessionService.GetAllAsync(name, pageNumber, pageSize);
         }
+
 
         /// <summary>
         /// Lấy thông tin 1 buổi học theo Id

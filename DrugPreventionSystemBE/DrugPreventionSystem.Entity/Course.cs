@@ -14,7 +14,9 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Entity
         public Guid? CategoryId { get; set; }
         public Category? Category { get; set; } // Assuming a Category model exists
         public string? Content { get; set; }
+        public RiskLevel RiskLevel { get; set; }
         public CourseStatus? Status { get; set; }
+        
         public targetAudience? TargetAudience { get; set; }
         public string ImageUrlsJson { get; set; }  // Cột lưu JSON trong DB
         public string VideoUrlsJson { get; set; }  // Cột lưu JSON trong DB

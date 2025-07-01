@@ -13,6 +13,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Entity
         public string? Phone { get; set; }
         public string? Address { get; set; }
 
+
         public AppointmentStatus Status { get; set; } = AppointmentStatus.Pending;
 
         //navigation

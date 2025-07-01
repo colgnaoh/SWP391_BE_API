@@ -4,6 +4,7 @@ using DrugPreventionSystemBE.DrugPreventionSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DrugPreventionSystemBE.Migrations
 {
     [DbContext(typeof(DrugPreventionDbContext))]
-    partial class DrugPreventionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250701142404_RemoveIsDeletedFromAppointments")]
+    partial class RemoveIsDeletedFromAppointments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -228,7 +231,6 @@ namespace DrugPreventionSystemBE.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RiskLevel")
-                        .HasPrecision(10, 2)
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("StartDate")
@@ -323,7 +325,6 @@ namespace DrugPreventionSystemBE.Migrations
                         .HasColumnType("decimal(10,2)");
 
                     b.Property<int>("RiskLevel")
-                        .HasPrecision(10, 2)
                         .HasColumnType("int");
 
                     b.Property<string>("Slug")

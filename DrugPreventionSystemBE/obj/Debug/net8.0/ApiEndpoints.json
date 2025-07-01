@@ -33,8 +33,13 @@
   },
   {
     "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.AppointmentController",
+<<<<<<< HEAD
     "Method": "ChangeStatus",
     "RelativePath": "api/appointments/status",
+=======
+    "Method": "Cancel",
+    "RelativePath": "api/appointments/cancel/{appointmentId}",
+>>>>>>> 89dd3c6759de079f33db84a435f8bf96f6639bcc
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
@@ -54,8 +59,13 @@
   },
   {
     "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.AppointmentController",
+<<<<<<< HEAD
     "Method": "GetAppointmentsByUser",
     "RelativePath": "api/appointments/user",
+=======
+    "Method": "GetAppointmentsByfilter",
+    "RelativePath": "api/appointments/search",
+>>>>>>> 89dd3c6759de079f33db84a435f8bf96f6639bcc
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -86,6 +96,30 @@
         "IsRequired": false
       }
     ],
+<<<<<<< HEAD
+=======
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.AppointmentController",
+    "Method": "ChangeStatus",
+    "RelativePath": "api/appointments/status",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "appointmentId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      },
+      {
+        "Name": "newStatus",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+>>>>>>> 89dd3c6759de079f33db84a435f8bf96f6639bcc
     "ReturnTypes": []
   },
   {
@@ -1062,12 +1096,28 @@
   },
   {
     "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.SessionController",
-    "Method": "GetAllSessions",
+    "Method": "GetAll",
     "RelativePath": "api/session/all",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "name",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageNumber",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
     "ReturnTypes": []
   },
   {

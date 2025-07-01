@@ -78,6 +78,8 @@
       }
     },
     "/api/appointments/status": {
+<<<<<<< HEAD
+=======
       "put": {
         "tags": [
           "Appointment"
@@ -103,6 +105,102 @@
           "200": {
             "description": "OK"
           }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      }
+    },
+    "/api/appointments/search": {
+      "get": {
+        "tags": [
+          "Appointment"
+        ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/AppointmentStatus"
+            }
+          },
+          {
+            "name": "fromDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "toDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 12
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      }
+    },
+    "/api/appointments/cancel/{appointmentId}": {
+>>>>>>> 89dd3c6759de079f33db84a435f8bf96f6639bcc
+      "put": {
+        "tags": [
+          "Appointment"
+        ],
+        "parameters": [
+          {
+            "name": "appointmentId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "newStatus",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/AppointmentStatus"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+<<<<<<< HEAD
         },
         "security": [
           {
@@ -169,6 +267,9 @@
             "Bearer": [ ]
           }
         ]
+=======
+        }
+>>>>>>> 89dd3c6759de079f33db84a435f8bf96f6639bcc
       }
     },
     "/api/auth/register": {
@@ -1849,6 +1950,33 @@
         "tags": [
           "Session"
         ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 12
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -2235,7 +2363,13 @@
           "Pending",
           "Confirmed",
           "Assigned",
+<<<<<<< HEAD
           "Completed"
+=======
+          "Processing",
+          "Completed",
+          "Canceled"
+>>>>>>> 89dd3c6759de079f33db84a435f8bf96f6639bcc
         ],
         "type": "string"
       },
@@ -2249,10 +2383,6 @@
           "consultantUserId": {
             "type": "string",
             "format": "uuid"
-          },
-          "appointmentTime": {
-            "type": "string",
-            "format": "date-time"
           }
         },
         "additionalProperties": false
@@ -2260,10 +2390,6 @@
       "BookingDirectRequest": {
         "type": "object",
         "properties": {
-          "consultantId": {
-            "type": "string",
-            "format": "uuid"
-          },
           "appointmentTime": {
             "type": "string",
             "format": "date-time"

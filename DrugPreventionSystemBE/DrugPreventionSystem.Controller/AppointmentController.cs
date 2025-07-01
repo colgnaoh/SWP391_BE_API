@@ -52,9 +52,9 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
             return await _appointmentService.ChangeAppointmentStatusAsync(appointmentId, newStatus);
         }
 
-        [HttpGet("user")]
+        [HttpGet("search")]
         [Authorize]
-        public async Task<IActionResult> GetAppointmentsByUser(
+        public async Task<IActionResult> GetAppointmentsByfilter(
             [FromQuery] AppointmentStatus? status,
             [FromQuery] DateTime? fromDate,
             [FromQuery] DateTime? toDate,
@@ -65,7 +65,14 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
             if (userIdClaim == null || !Guid.TryParse(userIdClaim.Value, out var userId))
                 return Unauthorized("Không xác thực được người dùng.");
 
-            return await _appointmentService.GetAppointmentsByUserIdAsync(userId, status, fromDate, toDate, pageNumber, pageSize);
+            return await _appointmentService.GetAppointmentsByFilterAsync( status, fromDate, toDate, pageNumber, pageSize);
         }
+
+        [HttpPut("cancel/{appointmentId}")]
+        public async Task<IActionResult> Cancel(Guid appointmentId)
+        {
+            return await _appointmentService.CancelAppointmentAsync(appointmentId);
+        }
+
     }
 }
