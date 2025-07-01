@@ -129,7 +129,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
     int pageSize = 12)
         {
             var safePageNumber = pageNumber < 1 ? 1 : pageNumber;
-            var safePageSize = pageSize < 1 ? 10 : pageSize;
+            var safePageSize = pageSize < 1 ? 12 : pageSize;
 
             var query = _context.Appointments
                 .Include(a => a.Consultant)
