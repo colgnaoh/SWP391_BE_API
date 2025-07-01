@@ -3,7 +3,7 @@
     "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.AppointmentController",
     "Method": "AssignConsultant",
     "RelativePath": "api/appointments/assign",
-    "HttpMethod": "PUT",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
@@ -18,7 +18,7 @@
   {
     "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.AppointmentController",
     "Method": "BookWithSchedule",
-    "RelativePath": "api/appointments/booking-direct",
+    "RelativePath": "api/appointments/book",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -33,8 +33,8 @@
   },
   {
     "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.AppointmentController",
-    "Method": "MarkAsCompleted",
-    "RelativePath": "api/appointments/complete/{appointmentId}",
+    "Method": "Cancel",
+    "RelativePath": "api/appointments/cancel/{appointmentId}",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
@@ -49,12 +49,59 @@
   },
   {
     "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.AppointmentController",
-    "Method": "GetMyAppointments",
-    "RelativePath": "api/appointments/my-appointments",
+    "Method": "GetAppointmentsByfilter",
+    "RelativePath": "api/appointments/search",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "status",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "fromDate",
+        "Type": "System.Nullable\u00601[[System.DateTime, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "toDate",
+        "Type": "System.Nullable\u00601[[System.DateTime, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageNumber",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.AppointmentController",
+    "Method": "ChangeStatus",
+    "RelativePath": "api/appointments/status",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "appointmentId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      },
+      {
+        "Name": "newStatus",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
     "ReturnTypes": []
   },
   {
@@ -1011,12 +1058,28 @@
   },
   {
     "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.SessionController",
-    "Method": "GetAllSessions",
+    "Method": "GetAll",
     "RelativePath": "api/session/all",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "name",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageNumber",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
     "ReturnTypes": []
   },
   {

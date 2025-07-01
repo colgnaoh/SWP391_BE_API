@@ -1,10 +1,10 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
 
-namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CommunityProgramResModel
+namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CommunityProgramsResModel
 {
-    public class CommunityProgramResponseModel
+    public class SingleProgramResponseModel
     {
-        //public bool Success { get; set; }
+        public bool Success { get; set; }
         public string? Message { get; set; }
         public Guid Id { get; set; }
         public string Name { get; set; }

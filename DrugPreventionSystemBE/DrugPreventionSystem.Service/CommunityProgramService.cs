@@ -2,6 +2,7 @@
 using DrugPreventionSystemBE.DrugPreventionSystem.Entity;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CommunityProgramReqModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CommunityProgramResModel;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CommunityProgramsResModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -52,19 +53,19 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
                     ProgramImgUrl = p.ProgramImgUrl,
                     CreatedAt = p.CreatedAt,
                     UpdatedAt = p.UpdatedAt,
-                    Success = true,
                     Message = ""
                 }).ToList();
 
                 return new OkObjectResult(new GetProgramsByPageResponse
                 {
+                    Success = true,
                     Message = "Lấy danh sách thành công.",
                     Data = programDtos,
                     TotalCount = totalCount,
                     PageNumber = currentPage,
                     PageSize = currentPageSize,
                     TotalPages = (int)Math.Ceiling((double)totalCount / currentPageSize)
-                });
+                }); ;
             }
             catch (Exception)
             {
@@ -86,7 +87,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
 
                 if (program == null)
                 {
-                    return new NotFoundObjectResult(new CommunityProgramResponseModel
+                    return new NotFoundObjectResult(new SingleProgramResponseModel
                     {
                         Success = false,
                         Message = "Không tìm thấy chương trình."
@@ -105,7 +106,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
                     ProgramImgUrl = program.ProgramImgUrl,
                     CreatedAt = program.CreatedAt,
                     UpdatedAt = program.UpdatedAt,
-                    Success = true,
                     Message = "Lấy chương trình thành công."
                 };
 
@@ -113,7 +113,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
             }
             catch (Exception)
             {
-                return new ObjectResult(new CommunityProgramResponseModel
+                return new ObjectResult(new SingleProgramResponseModel
                 {
                     Success = false,
                     Message = "Lỗi khi truy xuất chương trình."
@@ -156,7 +156,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
                     ProgramImgUrl = program.ProgramImgUrl,
                     CreatedAt = program.CreatedAt,
                     UpdatedAt = program.UpdatedAt,
-                    Success = true,
                     Message = "Tạo chương trình thành công."
                 };
 
@@ -164,7 +163,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
             }
             catch (Exception)
             {
-                return new ObjectResult(new CommunityProgramResponseModel
+                return new ObjectResult(new SingleProgramResponseModel
                 {
                     Success = false,
                     Message = "Lỗi khi tạo chương trình."
@@ -182,7 +181,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
 
                 if (program == null)
                 {
-                    return new NotFoundObjectResult(new CommunityProgramResponseModel
+                    return new NotFoundObjectResult(new SingleProgramResponseModel
                     {
                         Success = false,
                         Message = "Không tìm thấy chương trình."
@@ -200,7 +199,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
 
                 await _context.SaveChangesAsync();
 
-                return new OkObjectResult(new CommunityProgramResponseModel
+                return new OkObjectResult(new SingleProgramResponseModel
                 {
                     Success = true,
                     Message = "Cập nhật chương trình thành công."
@@ -208,7 +207,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
             }
             catch (Exception)
             {
-                return new ObjectResult(new CommunityProgramResponseModel
+                return new ObjectResult(new SingleProgramResponseModel
                 {
                     Success = false,
                     Message = "Lỗi khi cập nhật chương trình."
@@ -226,7 +225,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
 
                 if (program == null)
                 {
-                    return new NotFoundObjectResult(new CommunityProgramResponseModel
+                    return new NotFoundObjectResult(new SingleProgramResponseModel
                     {
                         Success = false,
                         Message = "Chương trình không tồn tại hoặc đã bị xóa."
@@ -238,7 +237,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
 
                 await _context.SaveChangesAsync();
 
-                return new OkObjectResult(new CommunityProgramResponseModel
+                return new OkObjectResult(new SingleProgramResponseModel
                 {
                     Success = true,
                     Message = "Xóa mềm chương trình thành công."
@@ -246,7 +245,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
             }
             catch (Exception)
             {
-                return new ObjectResult(new CommunityProgramResponseModel
+                return new ObjectResult(new SingleProgramResponseModel
                 {
                     Success = false,
                     Message = "Lỗi khi xóa chương trình."

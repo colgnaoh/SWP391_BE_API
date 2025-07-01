@@ -4,6 +4,6 @@
     {
         public Guid AppointmentId { get; set; }
         public Guid ConsultantUserId { get; set; }
-        public DateTime AppointmentTime { get; set; }
+
     }
 }

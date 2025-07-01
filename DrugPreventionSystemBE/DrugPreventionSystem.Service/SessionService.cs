@@ -66,12 +66,29 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             });
         }
 
-        public async Task<IActionResult> GetAllAsync()
+        public async Task<IActionResult> GetAllAsync(string? name = null, int pageNumber = 1, int pageSize = 12)
         {
-            var sessions = await _context.Sessions
+            var safePageNumber = pageNumber < 1 ? 1 : pageNumber;
+            var safePageSize = pageSize < 1 ? 12 : pageSize;
+
+            var query = _context.Sessions
                 .Include(s => s.Course)
                 .Where(s => !s.IsDeleted)
                 .AsNoTracking()
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                query = query.Where(s => s.Name.Contains(name)); // or use EF.Functions.Like for SQL-like search
+            }
+
+            var totalCount = await query.CountAsync();
+            var totalPages = (int)Math.Ceiling((double)totalCount / safePageSize);
+
+            var sessions = await query
+                .OrderBy(s => s.PositionOrder)
+                .Skip((safePageNumber - 1) * safePageSize)
+                .Take(safePageSize)
                 .Select(s => new SessionViewModel
                 {
                     Id = s.Id,
@@ -95,9 +112,14 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             return new OkObjectResult(new GetAllSessionResponse
             {
                 Success = true,
-                Data = sessions
+                Data = sessions,
+                TotalCount = totalCount,
+                PageNumber = safePageNumber,
+                PageSize = safePageSize,
+                TotalPages = totalPages
             });
         }
+
 
         public async Task<IActionResult> GetByIdAsync(Guid id)
         {

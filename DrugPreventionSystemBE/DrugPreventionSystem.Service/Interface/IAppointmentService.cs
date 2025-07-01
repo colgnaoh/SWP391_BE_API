@@ -14,12 +14,13 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface
 
         Task<IActionResult> ChangeAppointmentStatusAsync(Guid appointmentId, AppointmentStatus newStatus);
 
-        Task<IActionResult> GetAppointmentsByUserIdAsync(
-            Guid userId,
+        Task<IActionResult> GetAppointmentsByFilterAsync(
             AppointmentStatus? status = null,
             DateTime? fromDate = null,
             DateTime? toDate = null,
             int pageNumber = 1,
             int pageSize = 12);
+
+        Task<IActionResult> CancelAppointmentAsync(Guid appointmentId);
     }
 }

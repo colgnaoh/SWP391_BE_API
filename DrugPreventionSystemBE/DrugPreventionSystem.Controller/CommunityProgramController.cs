@@ -39,7 +39,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
 
         // POST: api/program/create
         [HttpPost("create")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Manager")]
         public async Task<IActionResult> CreateProgram([FromBody] CommunityProgramCreateRequest request)
         {
             if (!ModelState.IsValid)
@@ -50,7 +50,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
 
         // PUT: api/program/{id}
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Manager")]
         public async Task<IActionResult> UpdateProgram(Guid id, [FromBody] CommunityProgramUpdateRequest request)
         {
             if (!ModelState.IsValid)
@@ -61,7 +61,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
 
         // DELETE: api/program/{id}
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Manager")]
         public async Task<IActionResult> DeleteProgram(Guid id)
         {
             return await _programService.DeleteProgramAsync(id);

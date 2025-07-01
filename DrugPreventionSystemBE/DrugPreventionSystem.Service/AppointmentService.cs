@@ -23,30 +23,30 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 
         public async Task<IActionResult> BookWithScheduleAsync(Guid userId, BookingDirectRequest request)
         {
-            // Tìm consultant rảnh
-            var availableConsultant = await _context.consultants
-                .Where(c => !_context.Appointments.Any(a =>
-                    a.ConsultantId == c.Id &&
-                    a.AppointmentTime == request.AppointmentTime &&
-                    a.Status != AppointmentStatus.Completed))
-                .FirstOrDefaultAsync();
+            //// Tìm consultant rảnh
+            //var availableConsultant = await _context.consultants
+            //    .Where(c => !_context.Appointments.Any(a =>
+            //        a.ConsultantId == c.Id &&
+            //        a.AppointmentTime == request.AppointmentTime &&
+            //        a.Status != AppointmentStatus.Completed))
+            //    .FirstOrDefaultAsync();
 
-            if (availableConsultant == null)
-            {
-                return new BadRequestObjectResult("Không có chuyên viên nào sẵn sàng tại thời điểm này.");
-            }
+            //if (availableConsultant == null)
+            //{
+            //    return new BadRequestObjectResult("Không có chuyên viên nào sẵn sàng tại thời điểm này.");
+            //}
 
             var appointment = new Appointment
             {
                 Id = Guid.NewGuid(),
                 UserId = userId,
-                ConsultantId = availableConsultant.Id,
+                //ConsultantId = availableConsultant.Id,
                 AppointmentTime = request.AppointmentTime,
                 Note = request.Note,
                 Name = request.Name,
                 Phone = request.Phone,
                 Address = request.Address,
-                Status = AppointmentStatus.Confirmed
+                Status = AppointmentStatus.Pending
             };
 
             _context.Appointments.Add(appointment);
@@ -58,7 +58,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 Data = new
                 {
                     AppointmentId = appointment.Id,
-                    ConsultantId = availableConsultant.Id,
+                    //ConsultantId = availableConsultant.Id,
                     appointment.AppointmentTime,
                     appointment.Name,
                     appointment.Phone,
@@ -79,7 +79,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 return new NotFoundObjectResult("Không tìm thấy chuyên viên tư vấn.");
 
             appointment.ConsultantId = request.ConsultantUserId;
-            //appointment.Status = AppointmentStatus.Confirmed;
+            appointment.Status = AppointmentStatus.Assigned;
 
             await _context.SaveChangesAsync();
             return new OkObjectResult("Đã gán chuyên viên thành công.");
@@ -120,8 +120,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             });
         }
 
-        public async Task<IActionResult> GetAppointmentsByUserIdAsync(
-    Guid userId,
+        public async Task<IActionResult> GetAppointmentsByFilterAsync(
     AppointmentStatus? status = null,
     DateTime? fromDate = null,
     DateTime? toDate = null,
@@ -133,7 +132,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 
             var query = _context.Appointments
                 .Include(a => a.Consultant)
-                .Where(a => a.UserId == userId)
+                //.Where(a => a.UserId == userId)
                 .AsQueryable();
 
             if (status.HasValue)
@@ -180,6 +179,35 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             return new OkObjectResult(result);
         }
 
+        public async Task<IActionResult> CancelAppointmentAsync(Guid appointmentId)
+        {
+            var appointment = await _context.Appointments.FirstOrDefaultAsync(a => a.Id == appointmentId);
+
+            if (appointment == null)
+            {
+                return new NotFoundObjectResult("Cuộc hẹn không tồn tại.");
+            }
+
+            if (appointment.Status == AppointmentStatus.Canceled)
+            {
+                return new BadRequestObjectResult("Cuộc hẹn đã bị hủy trước đó.");
+            }
+
+            if (appointment.Status == AppointmentStatus.Completed)
+            {
+                return new BadRequestObjectResult("Cuộc hẹn đã hoàn thành và không thể hủy.");
+            }
+
+            appointment.Status = AppointmentStatus.Canceled;
+            //appointment.UpdatedAt = DateTime.UtcNow; // nếu có dùng thời gian cập nhật
+            await _context.SaveChangesAsync();
+
+            return new OkObjectResult(new
+            {
+                Success = true,
+                Message = "Hủy cuộc hẹn thành công."
+            });
+        }
 
     }
 }   

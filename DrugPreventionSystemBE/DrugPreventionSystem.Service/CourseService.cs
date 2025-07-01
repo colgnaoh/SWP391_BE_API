@@ -172,6 +172,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     Content = CourseCreateRequest.Content,
                     Status = CourseCreateRequest.Status,
                     TargetAudience = CourseCreateRequest.TargetAudience,
+                    RiskLevel = CourseCreateRequest.RiskLevel,
                     ImageUrls = CourseCreateRequest.ImageUrls,
                     VideoUrls = CourseCreateRequest.VideoUrls, 
                     Price = CourseCreateRequest.Price,
@@ -272,6 +273,12 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 if (model.TargetAudience != null)
                 {
                     course.TargetAudience = model.TargetAudience;
+                }
+
+
+                if(model.RiskLevel != null)
+{
+                    course.RiskLevel = model.RiskLevel.Value;
                 }
 
                 /// ImageUrls: List<string>?

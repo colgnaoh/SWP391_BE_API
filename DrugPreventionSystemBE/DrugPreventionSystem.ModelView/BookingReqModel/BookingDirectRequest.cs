@@ -2,7 +2,7 @@
 {
     public class BookingDirectRequest
     {
-        public Guid ConsultantId { get; set; }
+        //public Guid ConsultantId { get; set; }
         public DateTime AppointmentTime { get; set; }
         public string Note { get; set; }
         public string? Name { get; set; }
