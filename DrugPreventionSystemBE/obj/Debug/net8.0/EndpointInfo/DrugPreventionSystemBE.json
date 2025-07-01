@@ -41,42 +41,6 @@
         ]
       }
     },
-    "/api/appointments/booking-withoutTime": {
-      "post": {
-        "tags": [
-          "Appointment"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BookingRequest"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BookingRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/BookingRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        },
-        "security": [
-          {
-            "Bearer": [ ]
-          }
-        ]
-      }
-    },
     "/api/appointments/assign": {
       "put": {
         "tags": [
@@ -128,6 +92,23 @@
               "format": "uuid"
             }
           }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
+      }
+    },
+    "/api/appointments/my-appointments": {
+      "get": {
+        "tags": [
+          "Appointment"
         ],
         "responses": {
           "200": {
@@ -1381,7 +1362,7 @@
         ]
       }
     },
-    "/api/order/createOrr": {
+    "/api/order/createOrderFromCart": {
       "post": {
         "tags": [
           "Order"
@@ -2091,7 +2072,7 @@
       "BookingDirectRequest": {
         "type": "object",
         "properties": {
-          "consultantUserId": {
+          "consultantId": {
             "type": "string",
             "format": "uuid"
           },
@@ -2102,14 +2083,16 @@
           "note": {
             "type": "string",
             "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "BookingRequest": {
-        "type": "object",
-        "properties": {
-          "note": {
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true
+          },
+          "address": {
             "type": "string",
             "nullable": true
           }
@@ -2689,6 +2672,11 @@
       "SessionUpdateModelView": {
         "type": "object",
         "properties": {
+          "courseId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
           "name": {
             "type": "string",
             "nullable": true

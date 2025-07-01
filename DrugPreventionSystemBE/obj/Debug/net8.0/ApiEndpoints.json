@@ -33,22 +33,6 @@
   },
   {
     "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.AppointmentController",
-    "Method": "BookWithoutSchedule",
-    "RelativePath": "api/appointments/booking-withoutTime",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.BookingReqModel.BookingRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.AppointmentController",
     "Method": "MarkAsCompleted",
     "RelativePath": "api/appointments/complete/{appointmentId}",
     "HttpMethod": "PUT",
@@ -61,6 +45,16 @@
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.AppointmentController",
+    "Method": "GetMyAppointments",
+    "RelativePath": "api/appointments/my-appointments",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {
@@ -686,7 +680,7 @@
   {
     "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.OrderController",
     "Method": "CreateOrderFromCart",
-    "RelativePath": "api/order/createOrr",
+    "RelativePath": "api/order/createOrderFromCart",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,

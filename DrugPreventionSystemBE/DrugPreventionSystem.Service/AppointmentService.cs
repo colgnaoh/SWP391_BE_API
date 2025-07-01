@@ -2,6 +2,8 @@
 using DrugPreventionSystemBE.DrugPreventionSystem.Entity;
 using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.BookingReqModel;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ConsultantModel;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,22 +23,29 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 
         public async Task<IActionResult> BookWithScheduleAsync(Guid userId, BookingDirectRequest request)
         {
-            var isOccupied = await _context.Appointments
-                .AnyAsync(a => a.ConsultantId == request.ConsultantUserId &&
-                               a.AppointmentTime == request.AppointmentTime &&
-                               a.Status != AppointmentStatus.Completed);
+            // Tìm consultant rảnh
+            var availableConsultant = await _context.consultants
+                .Where(c => !_context.Appointments.Any(a =>
+                    a.ConsultantId == c.Id &&
+                    a.AppointmentTime == request.AppointmentTime &&
+                    a.Status != AppointmentStatus.Completed))
+                .FirstOrDefaultAsync();
 
-            if (isOccupied)
-                return new BadRequestObjectResult("Không thể đặt lịch. Có thể lịch này đã bị đặt bởi người khác.");
+            if (availableConsultant == null)
+            {
+                return new BadRequestObjectResult("Không có chuyên viên nào sẵn sàng tại thời điểm này.");
+            }
 
             var appointment = new Appointment
             {
                 Id = Guid.NewGuid(),
                 UserId = userId,
-                ConsultantId = request.ConsultantUserId,
+                ConsultantId = availableConsultant.Id,
                 AppointmentTime = request.AppointmentTime,
                 Note = request.Note,
                 Name = request.Name,
+                Phone = request.Phone,
+                Address = request.Address,
                 Status = AppointmentStatus.Confirmed
             };
 
@@ -46,31 +55,15 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             return new OkObjectResult(new
             {
                 Message = "Đặt lịch thành công.",
-                Data = new { request.ConsultantUserId, request.AppointmentTime, request.Name }
-            });
-        }
-
-        public async Task<IActionResult> BookWithoutScheduleAsync(Guid userId, BookingRequest request)
-        {
-            var appointment = new Appointment
-            {
-                Id = Guid.NewGuid(),
-                UserId = userId,
-                ConsultantId = null,
-                AppointmentTime = null,
-                Note = request.Note,
-                Name = request.Name,
-                Status = AppointmentStatus.Pending
-            };
-
-            _context.Appointments.Add(appointment);
-            await _context.SaveChangesAsync();
-
-            return new OkObjectResult(new
-            {
-                Message = "Tạo yêu cầu tư vấn thành công.",
-                AppointmentId = appointment.Id,
-                Name = appointment.Name
+                Data = new
+                {
+                    AppointmentId = appointment.Id,
+                    ConsultantId = availableConsultant.Id,
+                    appointment.AppointmentTime,
+                    appointment.Name,
+                    appointment.Phone,
+                    appointment.Address
+                }
             });
         }
 
@@ -80,51 +73,113 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             if (appointment == null || appointment.Status != AppointmentStatus.Pending)
                 return new NotFoundObjectResult("Cuộc hẹn không tồn tại hoặc đã được xử lý.");
 
+            // Kiểm tra consultant có tồn tại không
+            var consultantExists = await _context.consultants.AnyAsync(c => c.Id == request.ConsultantUserId);
+            if (!consultantExists)
+                return new NotFoundObjectResult("Không tìm thấy chuyên viên tư vấn.");
+
             appointment.ConsultantId = request.ConsultantUserId;
-            appointment.AppointmentTime = request.AppointmentTime;
-            appointment.Status = AppointmentStatus.Confirmed;
+            //appointment.Status = AppointmentStatus.Confirmed;
 
             await _context.SaveChangesAsync();
             return new OkObjectResult("Đã gán chuyên viên thành công.");
         }
 
-        public async Task<IActionResult> MarkAsCompletedAsync(Guid consultantId, Guid appointmentId)
-        {
-            var appointment = await _context.Appointments.FirstOrDefaultAsync(a =>
-                a.Id == appointmentId &&
-                a.ConsultantId == consultantId &&
-                a.Status == AppointmentStatus.Confirmed);
 
-            if (appointment == null)
-                return new NotFoundObjectResult("Không tìm thấy cuộc hẹn hoặc đã hoàn thành.");
-
-            appointment.Status = AppointmentStatus.Completed;
-            await _context.SaveChangesAsync();
-
-            return new OkObjectResult("Xác nhận hoàn thành cuộc hẹn thành công.");
-        }
-
-        //public async Task<IActionResult> AddReviewAsync(Guid userId, Guid appointmentId, AppointmentReviewRequest request)
+        //public async Task<IActionResult> MarkAsCompletedAsync(Guid consultantId, Guid appointmentId)
         //{
-        //    var appointment = await _context.Appointments
-        //        .Include(a => a.User)
-        //        .FirstOrDefaultAsync(a => a.Id == appointmentId && a.UserId == userId && a.Status == AppointmentStatus.Completed);
+        //    var appointment = await _context.Appointments.FirstOrDefaultAsync(a =>
+        //        a.Id == appointmentId &&
+        //        a.ConsultantId == consultantId &&
+        //        a.Status == AppointmentStatus.Confirmed);
 
         //    if (appointment == null)
-        //        return new NotFoundObjectResult("Không tìm thấy cuộc hẹn phù hợp để đánh giá.");
+        //        return new NotFoundObjectResult("Không tìm thấy cuộc hẹn hoặc đã hoàn thành.");
 
-        //    var review = new AppointmentReview
-        //    {
-        //        Id = Guid.NewGuid(),
-        //        AppointmentId = appointmentId,
-        //        Rating = request.Rating,
-        //        Comment = request.Comment,
-        //        CreatedAt = DateTime.UtcNow
-        //    };
-
-        //    _context.AppointmentReviews.Add(review);
+        //    appointment.Status = AppointmentStatus.Completed;
         //    await _context.SaveChangesAsync();
 
-        //    return new OkObjectResult("Đánh giá cuộc hẹn thành công.");
+        //    return new OkObjectResult("Xác nhận hoàn thành cuộc hẹn thành công.");
+        //}
+
+        public async Task<IActionResult> ChangeAppointmentStatusAsync(Guid appointmentId, AppointmentStatus newStatus)
+        {
+            var appointment = await _context.Appointments.FirstOrDefaultAsync(a => a.Id == appointmentId);
+
+            if (appointment == null)
+                return new NotFoundObjectResult("Không tìm thấy cuộc hẹn.");
+
+            appointment.Status = newStatus;
+            await _context.SaveChangesAsync();
+
+            return new OkObjectResult(new
+            {
+                Message = $"Đã cập nhật trạng thái cuộc hẹn thành công.",
+                AppointmentId = appointment.Id,
+                NewStatus = newStatus.ToString()
+            });
         }
-    }   
+
+        public async Task<IActionResult> GetAppointmentsByUserIdAsync(
+    Guid userId,
+    AppointmentStatus? status = null,
+    DateTime? fromDate = null,
+    DateTime? toDate = null,
+    int pageNumber = 1,
+    int pageSize = 12)
+        {
+            var safePageNumber = pageNumber < 1 ? 1 : pageNumber;
+            var safePageSize = pageSize < 1 ? 10 : pageSize;
+
+            var query = _context.Appointments
+                .Include(a => a.Consultant)
+                .Where(a => a.UserId == userId)
+                .AsQueryable();
+
+            if (status.HasValue)
+                query = query.Where(a => a.Status == status);
+
+            if (fromDate.HasValue)
+                query = query.Where(a => a.AppointmentTime >= fromDate);
+
+            if (toDate.HasValue)
+                query = query.Where(a => a.AppointmentTime <= toDate);
+
+            var totalCount = await query.CountAsync();
+            var totalPages = (int)Math.Ceiling((double)totalCount / safePageSize);
+
+            var appointments = await query
+                .OrderByDescending(a => a.AppointmentTime)
+                .Skip((safePageNumber - 1) * safePageSize)
+                .Take(safePageSize)
+                .ToListAsync();
+
+            var result = new GetAppointmentsByUserResponse
+            {
+                Success = true,
+                TotalCount = totalCount,
+                PageNumber = safePageNumber,
+                PageSize = safePageSize,
+                TotalPages = totalPages,
+                Data = appointments.Select(a => new AppointmentResponseModel
+                {
+                    Id = a.Id,
+                    AppointmentTime = a.AppointmentTime,
+                    Status = a.Status,
+                    Note = a.Note,
+                    Name = a.Name,
+                    Consultant = a.Consultant == null ? null : new ConsultantResponseModel
+                    {
+                        Id = a.Consultant.Id,
+                        FullName = a.Consultant.FullName,
+                        Qualifications = a.Consultant.Qualifications?.Split(',').Select(q => q.Trim()).ToList()
+                    }
+                }).ToList()
+            };
+
+            return new OkObjectResult(result);
+        }
+
+
+    }
+}   

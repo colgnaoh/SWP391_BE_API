@@ -1,4 +1,5 @@
-﻿using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.BookingReqModel;
+﻿using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.BookingReqModel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface
@@ -6,10 +7,19 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface
     public interface IAppointmentService
     {
         Task<IActionResult> BookWithScheduleAsync(Guid userId, BookingDirectRequest request);
-        Task<IActionResult> BookWithoutScheduleAsync(Guid userId, BookingRequest request);
-        Task<IActionResult> AssignConsultantAsync(AssignConsultantRequest request);
-        Task<IActionResult> MarkAsCompletedAsync(Guid consultantId, Guid appointmentId);
-        //Task<IActionResult> AddReviewAsync(Guid userId, Guid appointmentId, AppointmentReviewRequest request);
-    }
 
+        Task<IActionResult> AssignConsultantAsync(AssignConsultantRequest request);
+
+        //Task<IActionResult> MarkAsCompletedAsync(Guid consultantId, Guid appointmentId);
+
+        Task<IActionResult> ChangeAppointmentStatusAsync(Guid appointmentId, AppointmentStatus newStatus);
+
+        Task<IActionResult> GetAppointmentsByUserIdAsync(
+            Guid userId,
+            AppointmentStatus? status = null,
+            DateTime? fromDate = null,
+            DateTime? toDate = null,
+            int pageNumber = 1,
+            int pageSize = 12);
+    }
 }

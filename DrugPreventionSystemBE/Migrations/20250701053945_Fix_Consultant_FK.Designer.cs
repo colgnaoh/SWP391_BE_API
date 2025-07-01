@@ -4,6 +4,7 @@ using DrugPreventionSystemBE.DrugPreventionSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DrugPreventionSystemBE.Migrations
 {
     [DbContext(typeof(DrugPreventionDbContext))]
-    partial class DrugPreventionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250701053945_Fix_Consultant_FK")]
+    partial class Fix_Consultant_FK
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,9 +65,6 @@ namespace DrugPreventionSystemBE.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime?>("AppointmentTime")
                         .HasColumnType("datetime2");
 
@@ -76,9 +76,6 @@ namespace DrugPreventionSystemBE.Migrations
 
                     b.Property<string>("Note")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
