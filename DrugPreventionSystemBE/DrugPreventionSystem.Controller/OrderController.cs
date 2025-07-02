@@ -1,6 +1,7 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.Entity;
 using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ApiResponse;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CourseReqModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,9 +22,9 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
 
         [Authorize]
         [HttpPost("createOrderFromCart")]
-        public async Task<IActionResult> CreateOrderFromCart([FromBody] List<Guid> selectedCartItemIds)
+        public async Task<IActionResult> CreateOrderFromMyCart([FromBody] CreateOrderFromCartReq request)
         {
-            var result = await _orderService.CreateOrderFromCartAsync(selectedCartItemIds);
+            var result = await _orderService.CreateOrderFromCartAsync(request);
             return result;
         }
 
@@ -36,7 +37,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
         }
 
         [Authorize]
-        [HttpGet("my-orders")]
+        [HttpGet("myOrders")]
         public async Task<IActionResult> GetMyOrders()
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

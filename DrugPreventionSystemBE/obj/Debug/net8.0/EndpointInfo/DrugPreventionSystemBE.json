@@ -1478,29 +1478,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "format": "uuid"
-                }
+                "$ref": "#/components/schemas/CreateOrderFromCartReq"
               }
             },
             "text/json": {
               "schema": {
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "format": "uuid"
-                }
+                "$ref": "#/components/schemas/CreateOrderFromCartReq"
               }
             },
             "application/*+json": {
               "schema": {
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "format": "uuid"
-                }
+                "$ref": "#/components/schemas/CreateOrderFromCartReq"
               }
             }
           }
@@ -1545,7 +1533,7 @@
         ]
       }
     },
-    "/api/order/my-orders": {
+    "/api/order/myOrders": {
       "get": {
         "tags": [
           "Order"
@@ -2777,6 +2765,20 @@
           "courseId": {
             "type": "string",
             "format": "uuid",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateOrderFromCartReq": {
+        "type": "object",
+        "properties": {
+          "selectedCartItemIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
             "nullable": true
           }
         },

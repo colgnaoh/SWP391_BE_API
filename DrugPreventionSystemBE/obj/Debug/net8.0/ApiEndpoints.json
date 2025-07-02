@@ -746,15 +746,15 @@
   },
   {
     "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.OrderController",
-    "Method": "CreateOrderFromCart",
+    "Method": "CreateOrderFromMyCart",
     "RelativePath": "api/order/createOrderFromCart",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "selectedCartItemIds",
-        "Type": "System.Collections.Generic.List\u00601[[System.Guid, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "Name": "request",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CourseReqModel.CreateOrderFromCartReq",
         "IsRequired": true
       }
     ],
@@ -763,7 +763,7 @@
   {
     "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.OrderController",
     "Method": "GetMyOrders",
-    "RelativePath": "api/order/my-orders",
+    "RelativePath": "api/order/myOrders",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,

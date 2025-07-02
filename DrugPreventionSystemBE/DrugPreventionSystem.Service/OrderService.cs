@@ -3,6 +3,7 @@ using DrugPreventionSystemBE.DrugPreventionSystem.Data;
 using DrugPreventionSystemBE.DrugPreventionSystem.Entity;
 using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ApiResponse;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CourseReqModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
@@ -40,7 +41,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             return _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Role)?.Value;
         }
 
-        public async Task<IActionResult> CreateOrderFromCartAsync(List<Guid> selectedCartItemIds)
+        public async Task<IActionResult> CreateOrderFromCartAsync(CreateOrderFromCartReq selectedCartItemIds)
         {
             var userId = GetCurrentUserId(); // Lấy userId từ token
 
@@ -50,13 +51,16 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 return new BadRequestObjectResult(new BaseResponse { Success = false, Message = "Người dùng không tồn tại." });
             }
 
+            // Ensure selectedCartItemIds is not null and access its property correctly
+            var selectedCartItemIdList = selectedCartItemIds?.selectedCartItemIds ?? new List<Guid>();
+
             // Lọc chỉ những cartItem được chọn
             var cartItems = await _context.Carts
                 .Include(c => c.Course)
                 .Where(c => c.UserId == userId
                             && c.Status == CartStatus.Pending
                             && !c.IsDeleted
-                            && selectedCartItemIds.Contains(c.Id)) // Thêm điều kiện này
+                            && selectedCartItemIdList.Contains(c.Id)) 
                 .ToListAsync();
 
             if (!cartItems.Any())
@@ -90,7 +94,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     };
                     orderDetails.Add(orderDetail);
 
-                    // Đánh dấu các cartItem đã chọn là đã hoàn thành
                     cartItem.Status = CartStatus.Completed;
                     cartItem.UpdatedAt = DateTime.UtcNow;
                 }
@@ -106,7 +109,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             {
                 Id = newOrderId,
                 UserId = userId,
-                CartId = null, // Giỏ hàng có thể chứa nhiều mục, nên đặt null hoặc tham chiếu đến một giỏ hàng chính nếu có
+                CartId = null, 
                 OrderDate = DateTime.UtcNow,
                 Status = OrderStatus.Pending,
                 TotalAmount = totalOrderAmount,
