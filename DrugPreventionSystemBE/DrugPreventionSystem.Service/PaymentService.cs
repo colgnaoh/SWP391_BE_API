@@ -13,6 +13,7 @@ using Net.payOS;
 using Net.payOS.Types;
 using System.Net.Http.Json;
 using System.Security.Claims;
+using System.Text.Json;
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 {
     public class PaymentService : IPaymentService
@@ -34,36 +35,46 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 
         private async Task<string> CreatePayOSPaymentAsync(Payment payment)
         {
-            ItemData item = new ItemData("Thanh toan don hang DPC", 1, (int)payment.Amount);
-            List<ItemData> items = new List<ItemData> { item };
-
-            // Tạo một orderCode duy nhất bằng cách kết hợp timestamp và một số ngẫu nhiên nhỏ
-            long timestampMs = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-            int randomSuffix = new Random().Next(0, 999);
-            // Tạo một số int từ timestampMs, sau đó thêm randomSuffix
-            // Điều này đảm bảo orderCode là duy nhất và nằm trong giới hạn của int
-            int payOSOrderCode = (int)(timestampMs % 1_000_000_000) * 1000 + randomSuffix;
-
-            PaymentData paymentData = new PaymentData(
-                orderCode: payOSOrderCode, 
-                amount: (int)payment.Amount,
-                description: $"Thanh toán đơn hàng {payment.OrderId}",
-                items: items,
-                cancelUrl: _configuration["PayOS:CancelUrl"],
-                returnUrl: _configuration["PayOS:ReturnUrl"]
-            );
-
-            CreatePaymentResult createPayment = await _payOS.createPaymentLink(paymentData);
-
-            if (createPayment?.checkoutUrl != null)
+            try
             {
-                payment.ExternalTransactionId = createPayment.orderCode.ToString();
-                payment.PayOSCheckoutUrl = createPayment.checkoutUrl;
-                return createPayment.checkoutUrl;
+                ItemData item = new ItemData("Thanh toán đơn hàng DPC", 1, (int)payment.Amount);
+                List<ItemData> items = new List<ItemData> { item };
+
+                long timestampMs = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+                int randomSuffix = new Random().Next(0, 999);
+                int payOSOrderCode = (int)(timestampMs % 1_000_000_000) * 1000 + randomSuffix;
+
+                PaymentData paymentData = new PaymentData(
+                    orderCode: payOSOrderCode,
+                    amount: (int)payment.Amount,
+                    description: $"Thanh toán đơn hàng {payment.OrderId}",
+                    items: items,
+                    cancelUrl: _configuration["PayOS:CancelUrl"],
+                    returnUrl: _configuration["PayOS:ReturnUrl"]
+                );
+
+                Console.WriteLine("===== CALLING PAYOS createPaymentLink() =====");
+                Console.WriteLine(JsonSerializer.Serialize(paymentData));
+
+                CreatePaymentResult createPayment = await _payOS.createPaymentLink(paymentData);
+
+                if (createPayment?.checkoutUrl != null)
+                {
+                    payment.ExternalTransactionId = createPayment.orderCode.ToString();
+                    payment.PayOSCheckoutUrl = createPayment.checkoutUrl;
+                    return createPayment.checkoutUrl;
+                }
+                else
+                {
+                    throw new Exception("Không nhận được đường dẫn thanh toán từ PayOS.");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                throw new Exception("Không nhận được đường dẫn thanh toán từ PayOS.");
+                Console.WriteLine("====== PAYOS ERROR ======");
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+                throw;
             }
         }
 

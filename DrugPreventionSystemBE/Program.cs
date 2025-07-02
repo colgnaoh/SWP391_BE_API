@@ -122,6 +122,10 @@ namespace DrugPreventionSystemBE
             {
                 throw new InvalidOperationException("PayOS configuration section 'PayOS' is missing or invalid in appsettings.json.");
             }
+            Console.WriteLine($"DEBUG: PayOS ClientId from config: {payOSConfig.ClientId}");
+            Console.WriteLine($"DEBUG: PayOS ApiKey from config: {payOSConfig.ApiKey}");
+            Console.WriteLine($"DEBUG: PayOS ChecksumKey from config: {payOSConfig.ChecksumKey}");
+            Console.WriteLine($"DEBUG: PayOS BaseUrl from config: {payOSConfig.BaseUrl}");
             builder.Services.AddSingleton<PayOS>(new PayOS(
                payOSConfig.ClientId,
                payOSConfig.ApiKey,

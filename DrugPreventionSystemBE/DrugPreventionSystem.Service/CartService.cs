@@ -95,7 +95,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 
             if (!cartItems.Any())
             {
-                return new NotFoundObjectResult(new BaseResponse { Success = false, Message = "Giỏ hàng của bạn trống." });
+                return new OkObjectResult(new BaseResponse { Success = false, Message = "Giỏ hàng của bạn trống." });
             }
 
             return new OkObjectResult(new BaseResponse

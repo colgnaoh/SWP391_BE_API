@@ -19,11 +19,11 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
             _orderService = orderService;
         }
 
-        [Authorize] 
+        [Authorize]
         [HttpPost("createOrderFromCart")]
-        public async Task<IActionResult> CreateOrderFromCart()
+        public async Task<IActionResult> CreateOrderFromCart([FromBody] List<Guid> selectedCartItemIds)
         {
-            var result = await _orderService.CreateOrderFromCartAsync();
+            var result = await _orderService.CreateOrderFromCartAsync(selectedCartItemIds);
             return result;
         }
 

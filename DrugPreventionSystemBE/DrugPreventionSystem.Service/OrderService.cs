@@ -40,7 +40,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             return _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Role)?.Value;
         }
 
-        public async Task<IActionResult> CreateOrderFromCartAsync()
+        public async Task<IActionResult> CreateOrderFromCartAsync(List<Guid> selectedCartItemIds)
         {
             var userId = GetCurrentUserId(); // Lấy userId từ token
 
@@ -50,24 +50,26 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 return new BadRequestObjectResult(new BaseResponse { Success = false, Message = "Người dùng không tồn tại." });
             }
 
+            // Lọc chỉ những cartItem được chọn
             var cartItems = await _context.Carts
                 .Include(c => c.Course)
-                .Where(c => c.UserId == userId && c.Status == CartStatus.Pending && !c.IsDeleted)
+                .Where(c => c.UserId == userId
+                            && c.Status == CartStatus.Pending
+                            && !c.IsDeleted
+                            && selectedCartItemIds.Contains(c.Id)) // Thêm điều kiện này
                 .ToListAsync();
 
             if (!cartItems.Any())
             {
-                return new NotFoundObjectResult(new BaseResponse { Success = false, Message = "Không tìm thấy giỏ hàng hoạt động hoặc giỏ hàng trống." });
+                return new NotFoundObjectResult(new BaseResponse { Success = false, Message = "Không tìm thấy các mục giỏ hàng được chọn hoặc chúng không hợp lệ." });
             }
 
             decimal totalOrderAmount = 0;
             var orderDetails = new List<OrderDetail>();
 
-            // Tạo dictionary để ánh xạ CourseId với CourseName, tránh lặp lại truy vấn
             var courseNamesMap = cartItems
                 .Where(ci => ci.CourseId.HasValue && ci.Course != null)
                 .ToDictionary(ci => ci.CourseId.Value, ci => ci.Course.Name);
-
 
             foreach (var cartItem in cartItems)
             {
@@ -88,6 +90,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     };
                     orderDetails.Add(orderDetail);
 
+                    // Đánh dấu các cartItem đã chọn là đã hoàn thành
                     cartItem.Status = CartStatus.Completed;
                     cartItem.UpdatedAt = DateTime.UtcNow;
                 }
@@ -95,7 +98,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 
             if (!orderDetails.Any())
             {
-                return new BadRequestObjectResult(new BaseResponse { Success = false, Message = "Giỏ hàng không chứa khóa học hợp lệ để tạo đơn hàng." });
+                return new BadRequestObjectResult(new BaseResponse { Success = false, Message = "Không có khóa học hợp lệ nào trong các mục giỏ hàng được chọn để tạo đơn hàng." });
             }
 
             var newOrderId = _idServices.GenerateNextId();
@@ -103,7 +106,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             {
                 Id = newOrderId,
                 UserId = userId,
-                CartId = null,
+                CartId = null, // Giỏ hàng có thể chứa nhiều mục, nên đặt null hoặc tham chiếu đến một giỏ hàng chính nếu có
                 OrderDate = DateTime.UtcNow,
                 Status = OrderStatus.Pending,
                 TotalAmount = totalOrderAmount,
@@ -139,7 +142,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 }).ToList()
             };
 
-            return new OkObjectResult(new BaseResponse { Success = true, Message = "Đơn hàng khóa học đã được tạo thành công từ giỏ hàng.", Data = orderResponse });
+            return new OkObjectResult(new BaseResponse { Success = true, Message = "Đơn hàng khóa học đã được tạo thành công từ các mục giỏ hàng đã chọn.", Data = orderResponse });
         }
         public async Task<IActionResult> GetOrderByIdAsync(Guid orderId)
         {
