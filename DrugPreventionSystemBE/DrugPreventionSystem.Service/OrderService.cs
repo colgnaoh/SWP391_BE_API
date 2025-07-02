@@ -43,7 +43,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 
         public async Task<IActionResult> CreateOrderFromCartAsync(CreateOrderFromCartReq selectedCartItemIds)
         {
-            var userId = GetCurrentUserId(); // Lấy userId từ token
+            var userId = GetCurrentUserId();
 
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId && !u.IsDeleted);
             if (user == null)
@@ -51,16 +51,14 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 return new BadRequestObjectResult(new BaseResponse { Success = false, Message = "Người dùng không tồn tại." });
             }
 
-            // Ensure selectedCartItemIds is not null and access its property correctly
             var selectedCartItemIdList = selectedCartItemIds?.selectedCartItemIds ?? new List<Guid>();
 
-            // Lọc chỉ những cartItem được chọn
             var cartItems = await _context.Carts
                 .Include(c => c.Course)
                 .Where(c => c.UserId == userId
                             && c.Status == CartStatus.Pending
                             && !c.IsDeleted
-                            && selectedCartItemIdList.Contains(c.Id)) 
+                            && selectedCartItemIdList.Contains(c.Id))
                 .ToListAsync();
 
             if (!cartItems.Any())
@@ -75,6 +73,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 .Where(ci => ci.CourseId.HasValue && ci.Course != null)
                 .ToDictionary(ci => ci.CourseId.Value, ci => ci.Course.Name);
 
+            var newOrderId = _idServices.GenerateNextId();
+
             foreach (var cartItem in cartItems)
             {
                 if (cartItem.CourseId.HasValue && cartItem.Course != null)
@@ -86,6 +86,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     var orderDetail = new OrderDetail
                     {
                         Id = orderDetailId,
+                        OrderId = newOrderId,
                         ServiceType = DrugPreventionSystemBE.DrugPreventionSystem.Enum.ServiceType.CourseSale,
                         CourseId = cartItem.CourseId,
                         Amount = itemPrice,
@@ -94,7 +95,9 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     };
                     orderDetails.Add(orderDetail);
 
-                    cartItem.Status = CartStatus.Completed;
+                    // Assign OrderId, but keep status Pending. It will be moved to Completed when payment is created.
+                    cartItem.OrderId = newOrderId;
+                    // cartItem.Status = CartStatus.Pending; // Already Pending, no change needed here
                     cartItem.UpdatedAt = DateTime.UtcNow;
                 }
             }
@@ -104,12 +107,10 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 return new BadRequestObjectResult(new BaseResponse { Success = false, Message = "Không có khóa học hợp lệ nào trong các mục giỏ hàng được chọn để tạo đơn hàng." });
             }
 
-            var newOrderId = _idServices.GenerateNextId();
             var order = new Order
             {
                 Id = newOrderId,
                 UserId = userId,
-                CartId = null, 
                 OrderDate = DateTime.UtcNow,
                 Status = OrderStatus.Pending,
                 TotalAmount = totalOrderAmount,
@@ -117,11 +118,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 UpdatedAt = DateTime.UtcNow,
                 OrderDetails = orderDetails
             };
-
-            foreach (var detail in order.OrderDetails)
-            {
-                detail.OrderId = order.Id;
-            }
 
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();

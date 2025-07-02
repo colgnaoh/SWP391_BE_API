@@ -104,37 +104,43 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Data
             // Cart - User
             modelBuilder.Entity<Cart>().HasOne(c => c.User).WithMany(u => u.Carts).HasForeignKey(c => c.UserId).IsRequired(false);
 
+            modelBuilder.Entity<Cart>()
+                .HasOne(c => c.Order)          // Một CartItem thuộc về MỘT Order
+                .WithMany(o => o.Carts)       // Một Order có NHIỀU CartItem
+                .HasForeignKey(c => c.OrderId)  // Khóa ngoại là OrderId trong Cart
+                .IsRequired(false);           // OrderId là nullable
+
             // Cart - Course
             modelBuilder.Entity<Cart>().HasOne(c => c.Course).WithMany(co => co.Carts).HasForeignKey(c => c.CourseId).IsRequired(false);
 
             // Consultants - User
             modelBuilder.Entity<Consultants>().HasOne(con => con.User).WithMany(u => u.ConsultantProfiles).HasForeignKey(con => con.UserId).IsRequired(false);
-            
+
             // Course - User (Người tạo khóa học)
             modelBuilder.Entity<Course>().HasOne(co => co.User).WithMany(u => u.CreatedCourses).HasForeignKey(co => co.UserId).IsRequired(false);
-            
+
             // Course - Category
             modelBuilder.Entity<Course>().HasOne(co => co.Category).WithMany(ca => ca.Courses).HasForeignKey(co => co.CategoryId).IsRequired(false);
-            
+
             // Lesson - Session
             modelBuilder.Entity<Lesson>().HasOne(l => l.Session).WithMany(s => s.Lessons).HasForeignKey(l => l.SessionId).IsRequired(false);
-            
+
             // Lesson - Course
             modelBuilder.Entity<Lesson>().HasOne(l => l.Course).WithMany(co => co.Lessons).HasForeignKey(l => l.CourseId).IsRequired(false);
-            
+
             // Lesson - User (Người tạo bài học)
             modelBuilder.Entity<Lesson>().HasOne(l => l.User).WithMany(u => u.CreatedLessons).HasForeignKey(l => l.UserId).IsRequired(false);
-            
-            // Order - Cart (Bắt buộc phải có Cart)
-            modelBuilder.Entity<Order>().HasOne(o => o.Cart).WithMany(c => c.Orders).HasForeignKey(o => o.CartId).IsRequired(false);
-            
+
+            // ĐÃ XÓA dòng này:
+            // modelBuilder.Entity<Order>().HasOne(o => o.Cart).WithMany(c => c.Orders).HasForeignKey(o => o.CartId).IsRequired(false);
+
             // Order - User (Bổ sung mối quan hệ 1-n)
             modelBuilder.Entity<Order>()
                 .HasOne(o => o.User)
                 .WithMany(u => u.Orders)
                 .HasForeignKey(o => o.UserId)
                 .IsRequired(); // Order BẮT BUỘC phải có User
-            
+
             // OrderDetail - Order
             modelBuilder.Entity<OrderDetail>().HasOne(od => od.Order).WithMany(o => o.OrderDetails).HasForeignKey(od => od.OrderId).IsRequired(false);
 
@@ -147,14 +153,14 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Data
                 .WithMany(c => c.OrderDetails)
                 .HasForeignKey(od => od.CourseId)
                 .IsRequired(); // OrderDetail BẮT BUỘC phải có Course
-            
+
             // OrderLog - Order (Bổ sung mối quan hệ 1-n)
             modelBuilder.Entity<OrderLog>()
                 .HasOne(ol => ol.Order)
                 .WithMany(o => o.OrderLogs)
                 .HasForeignKey(ol => ol.OrderId)
                 .IsRequired(); // Log BẮT BUỘC phải có Order
-            
+
             // OrderLog - User (Bổ sung mối quan hệ 1-n)
             modelBuilder.Entity<OrderLog>()
                 .HasOne(ol => ol.User)
@@ -164,55 +170,55 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Data
 
             // OrderLog - Cart (Cấu hình bạn đã thêm, tôi giữ nguyên)
             modelBuilder.Entity<OrderLog>().HasOne(ol => ol.Cart).WithMany(c => c.OrderLogs).HasForeignKey(ol => ol.CartId).IsRequired(false);
-            
+
             // Payment - User
             modelBuilder.Entity<Payment>().HasOne(p => p.User).WithMany(u => u.Payments).HasForeignKey(p => p.UserId).IsRequired(false);
-            
+
             // Question - Survey
             modelBuilder.Entity<Question>().HasOne(q => q.Survey).WithMany(s => s.Questions).HasForeignKey(q => q.SurveyId).IsRequired(false);
-            
+
             // AnswerOption - Question
             modelBuilder.Entity<AnswerOption>().HasOne(ao => ao.Question).WithMany(q => q.AnswerOptions).HasForeignKey(ao => ao.QuestionId).IsRequired(false);
-            
+
             // Review - Course
             modelBuilder.Entity<Review>().HasOne(r => r.Course).WithMany(co => co.Reviews).HasForeignKey(r => r.CourseId).IsRequired(false);
-            
+
             // Review - User
             modelBuilder.Entity<Review>().HasOne(r => r.User).WithMany(u => u.Reviews).HasForeignKey(r => r.UserId).IsRequired(false);
-            
+
             // Session - Course
             modelBuilder.Entity<Session>().HasOne(s => s.Course).WithMany(co => co.Sessions).HasForeignKey(s => s.CourseId).IsRequired(); // Session BẮT BUỘC phải có Course
-            
+
             // Session - User (Người tạo Session)
             modelBuilder.Entity<Session>().HasOne(s => s.User).WithMany(u => u.CreatedSessions).HasForeignKey(s => s.UserId).IsRequired(false);
-            
+
             // SurveyResult - User
             modelBuilder.Entity<SurveyResult>().HasOne(sr => sr.User).WithMany(u => u.SurveyResults).HasForeignKey(sr => sr.UserId).IsRequired(false);
-            
+
             // SurveyResult - Survey
             modelBuilder.Entity<SurveyResult>().HasOne(sr => sr.Survey).WithMany(s => s.SurveyResults).HasForeignKey(sr => sr.SurveyId).IsRequired(false);
-            
+
             // SurveyResult - CommunityProgram
             modelBuilder.Entity<SurveyResult>().HasOne(sr => sr.Program).WithMany(cp => cp.SurveyResults).HasForeignKey(sr => sr.ProgramId).IsRequired(false);
-            
+
             // UserAnswerLog - SurveyResult
             modelBuilder.Entity<UserAnswerLog>().HasOne(ual => ual.SurveyResult).WithMany(sr => sr.UserAnswerLogs).HasForeignKey(ual => ual.SurveyResultId).IsRequired(false);
-            
+
             // UserAnswerLog - Question
             modelBuilder.Entity<UserAnswerLog>().HasOne(ual => ual.Question).WithMany(q => q.UserAnswerLogs).HasForeignKey(ual => ual.QuestionId).IsRequired(false);
-            
+
             // UserAnswerLog - AnswerOption
             modelBuilder.Entity<UserAnswerLog>().HasOne(ual => ual.AnswerOption).WithMany(ao => ao.UserAnswerLogs).HasForeignKey(ual => ual.AnswerOptionId).IsRequired(false);
-            
+
             // UserAnswerLog - CommunityProgram
             modelBuilder.Entity<UserAnswerLog>().HasOne(ual => ual.Program).WithMany(cp => cp.UserAnswerLogs).HasForeignKey(ual => ual.ProgramId).IsRequired(false);
-            
+
             // Transaction - Consultants
             modelBuilder.Entity<Transaction>().HasOne(t => t.Consultant).WithMany(con => con.Transactions).HasForeignKey(t => t.ConsultantId).IsRequired(false);
-            
+
             // Transaction - Course
             modelBuilder.Entity<Transaction>().HasOne(t => t.Course).WithMany(co => co.Transactions).HasForeignKey(t => t.CourseId).IsRequired(false);
-            
+
             // Transaction - Program
             modelBuilder.Entity<Transaction>().HasOne(t => t.Program).WithMany(cp => cp.Transactions).HasForeignKey(t => t.ProgramId).IsRequired(false);
 
@@ -229,14 +235,16 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Data
                 .WithMany()  // Or WithMany(u => u.Consultations)
                 .HasForeignKey(a => a.ConsultantId)
                 .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Cart>()
+                .HasOne(c => c.Order)          
+                .WithMany(o => o.Carts)        
+                .HasForeignKey(c => c.OrderId)  
+                .IsRequired(false)             
+                .OnDelete(DeleteBehavior.SetNull);
 
             // Global filter: exclude soft-deleted users
             modelBuilder.Entity<User>().HasQueryFilter(u => !u.IsDeleted);
 
         }
-
-
     }
-
-
 }

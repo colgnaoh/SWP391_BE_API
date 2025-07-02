@@ -203,7 +203,19 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 
                 generatedPayUrl = await CreatePayOSPaymentAsync(payment);
 
+                // Update cart items for this order to Completed
+                var cartItemsToUpdate = await _context.Carts
+                                                     .Where(c => c.OrderId == request.OrderId && c.Status == CartStatus.Pending) // Still Pending from order creation
+                                                     .ToListAsync();
+
+                foreach (var item in cartItemsToUpdate)
+                {
+                    item.Status = CartStatus.Completed; // Mark as Completed
+                    item.UpdatedAt = DateTime.UtcNow;
+                }
                 await _context.SaveChangesAsync();
+
+                await _context.SaveChangesAsync(); // Save remaining changes to payment (PayOSCheckoutUrl, ExternalTransactionId)
             }
             else
             {
@@ -213,6 +225,17 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 
                 order.Status = OrderStatus.Paid;
                 order.UpdatedAt = DateTime.UtcNow;
+
+                // Update cart items for this order to Completed immediately
+                var cartItemsToUpdate = await _context.Carts
+                                                     .Where(c => c.OrderId == request.OrderId && c.Status == CartStatus.Pending) // Still Pending from order creation
+                                                     .ToListAsync();
+
+                foreach (var item in cartItemsToUpdate)
+                {
+                    item.Status = CartStatus.Completed; // Mark as Completed
+                    item.UpdatedAt = DateTime.UtcNow;
+                }
                 await _context.SaveChangesAsync();
             }
 
@@ -245,7 +268,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 });
             }
         }
-
         public async Task<IActionResult> GetPaymentByIdAsync(Guid paymentId)
         {
             var currentUserId = GetCurrentUserId();
@@ -378,7 +400,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 
             if (payment.Status == PaymentStatus.Failed && newStatus != PaymentStatus.Success)
             {
-                return new BadRequestObjectResult(new BaseResponse { Success = false, Message = "Thanh toán đã thất bại, chỉ có thể chuyển về trạng thái 'Pending' để thử lại." });
+                return new BadRequestObjectResult(new BaseResponse { Success = false, Message = "Thanh toán đã thất bại, chỉ có thể chuyển về trạng thái 'Success' để thử lại hoặc 'Pending' để tạo lại liên kết." });
             }
 
             payment.Status = newStatus;
@@ -394,10 +416,30 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     if (newStatus == PaymentStatus.Success)
                     {
                         order.Status = OrderStatus.Paid;
+                        // Update cart items status to Completed when payment becomes Success
+                        var cartItemsToUpdate = await _context.Carts
+                                                             .Where(c => c.OrderId == order.Id && c.Status == CartStatus.Pending) // Or any other state you want to transition from
+                                                             .ToListAsync();
+                        foreach (var item in cartItemsToUpdate)
+                        {
+                            item.Status = CartStatus.Completed; // Mark as Completed
+                            item.UpdatedAt = DateTime.UtcNow;
+                        }
+                        await _context.SaveChangesAsync();
                     }
                     else if (newStatus == PaymentStatus.Failed)
                     {
                         order.Status = OrderStatus.Failed;
+                        // Update cart items status to Canceled when payment becomes Failed
+                        var cartItemsToUpdate = await _context.Carts
+                                                             .Where(c => c.OrderId == order.Id && c.Status == CartStatus.Pending) // Or any other state you want to transition from
+                                                             .ToListAsync();
+                        foreach (var item in cartItemsToUpdate)
+                        {
+                            item.Status = CartStatus.Canceled; // Mark as Canceled/Failed
+                            item.UpdatedAt = DateTime.UtcNow;
+                        }
+                        await _context.SaveChangesAsync();
                     }
                     await _context.SaveChangesAsync();
                 }

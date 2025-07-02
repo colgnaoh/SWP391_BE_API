@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DrugPreventionSystemBE.Migrations
 {
     [DbContext(typeof(DrugPreventionDbContext))]
-    [Migration("20250630170400_AddImageAndVideoUrlsJsonToCourse")]
-    partial class AddImageAndVideoUrlsJsonToCourse
+    [Migration("20250702183407_CorrectCartOrderRelationship")]
+    partial class CorrectCartOrderRelationship
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -65,17 +65,27 @@ namespace DrugPreventionSystemBE.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("AppointmentTime")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ConsultantId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Note")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Status")
+                        .HasPrecision(10, 2)
                         .HasColumnType("int");
 
                     b.Property<Guid>("UserId")
@@ -144,6 +154,9 @@ namespace DrugPreventionSystemBE.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<Guid?>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<decimal>("Price")
                         .HasPrecision(10, 2)
                         .HasColumnType("decimal(10,2)");
@@ -161,6 +174,8 @@ namespace DrugPreventionSystemBE.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CourseId");
+
+                    b.HasIndex("OrderId");
 
                     b.HasIndex("UserId");
 
@@ -216,6 +231,13 @@ namespace DrugPreventionSystemBE.Migrations
 
                     b.Property<string>("ProgramImgUrl")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProgramVidUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RiskLevel")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2");
@@ -307,6 +329,10 @@ namespace DrugPreventionSystemBE.Migrations
                     b.Property<decimal?>("Price")
                         .HasPrecision(10, 2)
                         .HasColumnType("decimal(10,2)");
+
+                    b.Property<int>("RiskLevel")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("int");
 
                     b.Property<string>("Slug")
                         .HasColumnType("nvarchar(max)");
@@ -400,8 +426,11 @@ namespace DrugPreventionSystemBE.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CartId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("OrderDate")
                         .HasColumnType("datetime2");
@@ -413,12 +442,13 @@ namespace DrugPreventionSystemBE.Migrations
                         .HasPrecision(10, 2)
                         .HasColumnType("decimal(10,2)");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CartId");
 
                     b.HasIndex("UserId");
 
@@ -529,19 +559,30 @@ namespace DrugPreventionSystemBE.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("ExternalTransactionId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
+
+                    b.Property<Guid?>("OrderId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal?>("OrganizationShare")
                         .HasColumnType("decimal(10,2)");
 
+                    b.Property<string>("PayOSCheckoutUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PaymentMethod")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PaymentNo")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -551,6 +592,10 @@ namespace DrugPreventionSystemBE.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrderId")
+                        .IsUnique()
+                        .HasFilter("[OrderId] IS NOT NULL");
 
                     b.HasIndex("UserId");
 
@@ -909,7 +954,7 @@ namespace DrugPreventionSystemBE.Migrations
 
             modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Appointment", b =>
                 {
-                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Entity.User", "Consultant")
+                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Consultants", "Consultant")
                         .WithMany()
                         .HasForeignKey("ConsultantId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -940,11 +985,18 @@ namespace DrugPreventionSystemBE.Migrations
                         .WithMany("Carts")
                         .HasForeignKey("CourseId");
 
+                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Order", "Order")
+                        .WithMany("Carts")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Entity.User", "User")
                         .WithMany("Carts")
                         .HasForeignKey("UserId");
 
                     b.Navigation("Course");
+
+                    b.Navigation("Order");
 
                     b.Navigation("User");
                 });
@@ -1000,17 +1052,11 @@ namespace DrugPreventionSystemBE.Migrations
 
             modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Order", b =>
                 {
-                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Cart", "Cart")
-                        .WithMany("Orders")
-                        .HasForeignKey("CartId");
-
                     b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Entity.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Cart");
 
                     b.Navigation("User");
                 });
@@ -1063,9 +1109,15 @@ namespace DrugPreventionSystemBE.Migrations
 
             modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Payment", b =>
                 {
+                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Order", "Order")
+                        .WithOne("Payment")
+                        .HasForeignKey("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Payment", "OrderId");
+
                     b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Entity.User", "User")
                         .WithMany("Payments")
                         .HasForeignKey("UserId");
+
+                    b.Navigation("Order");
 
                     b.Navigation("User");
                 });
@@ -1194,8 +1246,6 @@ namespace DrugPreventionSystemBE.Migrations
             modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Cart", b =>
                 {
                     b.Navigation("OrderLogs");
-
-                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Category", b =>
@@ -1231,9 +1281,13 @@ namespace DrugPreventionSystemBE.Migrations
 
             modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Order", b =>
                 {
+                    b.Navigation("Carts");
+
                     b.Navigation("OrderDetails");
 
                     b.Navigation("OrderLogs");
+
+                    b.Navigation("Payment");
                 });
 
             modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Payment", b =>

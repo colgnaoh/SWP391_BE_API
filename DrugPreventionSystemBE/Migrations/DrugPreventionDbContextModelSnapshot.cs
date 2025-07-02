@@ -151,6 +151,9 @@ namespace DrugPreventionSystemBE.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<Guid?>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<decimal>("Price")
                         .HasPrecision(10, 2)
                         .HasColumnType("decimal(10,2)");
@@ -168,6 +171,8 @@ namespace DrugPreventionSystemBE.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CourseId");
+
+                    b.HasIndex("OrderId");
 
                     b.HasIndex("UserId");
 
@@ -418,9 +423,6 @@ namespace DrugPreventionSystemBE.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CartId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -444,8 +446,6 @@ namespace DrugPreventionSystemBE.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CartId");
 
                     b.HasIndex("UserId");
 
@@ -982,11 +982,18 @@ namespace DrugPreventionSystemBE.Migrations
                         .WithMany("Carts")
                         .HasForeignKey("CourseId");
 
+                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Order", "Order")
+                        .WithMany("Carts")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Entity.User", "User")
                         .WithMany("Carts")
                         .HasForeignKey("UserId");
 
                     b.Navigation("Course");
+
+                    b.Navigation("Order");
 
                     b.Navigation("User");
                 });
@@ -1042,17 +1049,11 @@ namespace DrugPreventionSystemBE.Migrations
 
             modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Order", b =>
                 {
-                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Cart", "Cart")
-                        .WithMany("Orders")
-                        .HasForeignKey("CartId");
-
                     b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Entity.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Cart");
 
                     b.Navigation("User");
                 });
@@ -1242,8 +1243,6 @@ namespace DrugPreventionSystemBE.Migrations
             modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Cart", b =>
                 {
                     b.Navigation("OrderLogs");
-
-                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Category", b =>
@@ -1279,12 +1278,13 @@ namespace DrugPreventionSystemBE.Migrations
 
             modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Order", b =>
                 {
+                    b.Navigation("Carts");
+
                     b.Navigation("OrderDetails");
 
                     b.Navigation("OrderLogs");
 
-                    b.Navigation("Payment")
-                        .IsRequired();
+                    b.Navigation("Payment");
                 });
 
             modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Payment", b =>

@@ -74,6 +74,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 
         public async Task<IActionResult> GetUserCartAsync(Guid userId)
         {
+            // Only display cart items that are in Pending status
             var cartItems = await _context.Carts
                 .Where(c => c.UserId == userId && !c.IsDeleted && c.Status == CartStatus.Pending)
                 .Include(c => c.Course)
@@ -85,7 +86,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     CourseImageUrl = c.Course.ImageUrls != null && c.Course.ImageUrls.Any()
                         ? c.Course.ImageUrls.First()
                         : null,
-
                     Price = c.Price,
                     Discount = c.Discount,
                     Status = c.Status,
@@ -105,7 +105,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 Message = "Lấy thông tin giỏ hàng thành công."
             });
         }
-
         public async Task<IActionResult> RemoveCartItemAsync(Guid userId, Guid cartItemId)
         {
             var cartItem = await _context.Carts

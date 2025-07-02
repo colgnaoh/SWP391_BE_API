@@ -9,13 +9,11 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Entity
         public decimal TotalAmount { get; set; }
         public DateTime? OrderDate { get; set; }
         public OrderStatus? Status { get; set; }
-        public Guid? CartId { get; set; }
-        public Cart? Cart { get; set; }
         public Guid UserId { get; set; }
         public User? User { get; set; }
-        public Payment Payment { get; set; }
+        public Payment? Payment { get; set; }
         public ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
         public ICollection<OrderLog> OrderLogs { get; set; } = new List<OrderLog>();
-
+        public ICollection<Cart> Carts { get; set; } = new List<Cart>();
     }
 }
