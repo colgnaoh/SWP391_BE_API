@@ -11,6 +11,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CommunityProgram
         public string? Description { get; set; }
         public Programtype? Type { get; set; }
         public string? ProgramImgUrl { get; set; }
+        public string? ProgramVidUrl { get; set; }
+        public RiskLevel RiskLevel { get; set; }
         public string? Location { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }

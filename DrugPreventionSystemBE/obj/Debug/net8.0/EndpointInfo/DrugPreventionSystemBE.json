@@ -1474,6 +1474,37 @@
         "tags": [
           "Order"
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -2360,6 +2391,13 @@
           "programImgUrl": {
             "type": "string",
             "nullable": true
+          },
+          "programVidUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "riskLevel": {
+            "$ref": "#/components/schemas/RiskLevel"
           }
         },
         "additionalProperties": false
@@ -2393,6 +2431,13 @@
           "programImgUrl": {
             "type": "string",
             "nullable": true
+          },
+          "programVidUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "riskLevel": {
+            "$ref": "#/components/schemas/RiskLevel"
           }
         },
         "additionalProperties": false

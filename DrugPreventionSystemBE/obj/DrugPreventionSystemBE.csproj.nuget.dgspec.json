@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj": {}
+    "D:\\SWP\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj": {}
   },
   "projects": {
-    "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj": {
+    "D:\\SWP\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj",
+        "projectUniqueName": "D:\\SWP\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj",
         "projectName": "DrugPreventionSystemBE",
-        "projectPath": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj",
-        "packagesPath": "C:\\Users\\ACER\\.nuget\\packages\\",
-        "outputPath": "D:\\DrugPreventionSystem\\DrugPreventionSystemBE\\DrugPreventionSystemBE\\obj\\",
+        "projectPath": "D:\\SWP\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj",
+        "packagesPath": "C:\\Users\\locho\\.nuget\\packages\\",
+        "outputPath": "D:\\SWP\\SWP391_BE_API\\DrugPreventionSystemBE\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\ACER\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\locho\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -26,7 +26,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {

@@ -136,6 +136,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
                     StartDate = request.StartDate,
                     EndDate = request.EndDate,
                     ProgramImgUrl = request.ProgramImgUrl,
+                    ProgramVidUrl = request.ProgramVidUrl, 
+                    RiskLevel = request.RiskLevel,
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow,
                     IsDeleted = false
@@ -154,6 +156,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
                     StartDate = program.StartDate,
                     EndDate = program.EndDate,
                     ProgramImgUrl = program.ProgramImgUrl,
+                    ProgramVidUrl = program.ProgramVidUrl,
                     CreatedAt = program.CreatedAt,
                     UpdatedAt = program.UpdatedAt,
                     Message = "Tạo chương trình thành công."
@@ -195,6 +198,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
                 program.StartDate = request.StartDate;
                 program.EndDate = request.EndDate;
                 program.ProgramImgUrl = request.ProgramImgUrl;
+                program.ProgramVidUrl = request.ProgramVidUrl;  
+                program.RiskLevel = request.RiskLevel;
                 program.UpdatedAt = DateTime.UtcNow;
 
                 await _context.SaveChangesAsync();
