@@ -33,13 +33,22 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
             Console.WriteLine($"DEBUG VNPAY Config: IpnUrl = '{_ipnUrl}'");
         }
 
+
         public string GetPaymentUrl(PaymentRequestVnPay request)
         {
             var pay = new VnpayPay();
             long amount = (long)(request.Money * 100);
 
-            // Sử dụng TimeZoneInfo để đảm bảo múi giờ GMT+7
-            var vnTimeZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time"); // GMT+7
+            TimeZoneInfo vnTimeZone;
+            try
+            {
+                vnTimeZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
+            }
+            catch (TimeZoneNotFoundException)
+            {
+                vnTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Asia/Ho_Chi_Minh");
+            }
+
             var createDate = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, vnTimeZone);
             var expireDate = createDate.AddMinutes(15);
 
@@ -49,7 +58,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
             pay.AddRequestData("vnp_Amount", amount.ToString(CultureInfo.InvariantCulture));
             pay.AddRequestData("vnp_CreateDate", createDate.ToString("yyyyMMddHHmmss", CultureInfo.InvariantCulture));
             pay.AddRequestData("vnp_CurrCode", request.Currency.ToString());
-            pay.AddRequestData("vnp_IpAddr", GetClientIp()); // Sử dụng _httpContextAccessor
+            pay.AddRequestData("vnp_IpAddr", GetClientIp());
             pay.AddRequestData("vnp_Locale", request.Language == Enum.DisplayLanguage.Vietnamese ? "vn" : "en");
             pay.AddRequestData("vnp_OrderInfo", string.IsNullOrEmpty(request.Description) ? "Thanh toan don hang" : request.Description);
             pay.AddRequestData("vnp_OrderType", "other");
@@ -67,21 +76,47 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
             Console.WriteLine($"DEBUG VNPAY Generated URL: {paymentUrl}");
             return paymentUrl;
         }
-
         // Phương thức lấy IP động từ client
+        // Đảm bảo bạn đã thêm: using System.Linq; ở đầu file VnPayService.cs
+        // Thay thế hàm GetClientIp() hiện có trong class VnPayService bằng hàm này:
+
         private string GetClientIp()
         {
             try
             {
-                var ipAddress = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString();
-                return string.IsNullOrEmpty(ipAddress) ? "127.0.0.1" : ipAddress;
+                var httpContext = _httpContextAccessor.HttpContext;
+                if (httpContext == null) return "127.0.0.1";
+
+                string ipAddress = null;
+
+                if (httpContext.Request.Headers.ContainsKey("X-Forwarded-For"))
+                {
+                    ipAddress = httpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault();
+                }
+
+                if (string.IsNullOrEmpty(ipAddress))
+                {
+                    ipAddress = httpContext.Connection.RemoteIpAddress?.ToString();
+                }
+
+                if (!string.IsNullOrEmpty(ipAddress) && ipAddress.Contains(','))
+                {
+                    ipAddress = ipAddress.Split(',')[0].Trim();
+                }
+
+                if (ipAddress == "::1" || string.IsNullOrEmpty(ipAddress) || ipAddress == "0.0.0.0")
+                {
+                    return "127.0.0.1";
+                }
+
+                return ipAddress;
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine($"ERROR in GetClientIp: {ex.Message}");
                 return "127.0.0.1";
             }
         }
-
         public bool ProcessVnPayReturn(VnPayReturnResponse response)
         {
             var pay = new VnpayPay();

@@ -39,6 +39,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
             }
         }
 
+        // Thay thế toàn bộ hàm CreateRequestUrl() hiện có trong class VnpayPay bằng hàm này:
+
         public string CreateRequestUrl(string baseUrl, string hashSecret)
         {
             var data = new StringBuilder();
@@ -54,11 +56,11 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
             string finalQueryString = queryString.ToString().TrimEnd('&');
 
             Console.WriteLine($"DEBUG VNPAY RawData for HASH: {rawData}");
+            Console.WriteLine($"DEBUG VNPAY Final Query String (encoded): {finalQueryString}");
 
             string vnp_SecureHash = HmacSHA512(hashSecret.Trim(), rawData);
             return $"{baseUrl}?{finalQueryString}&vnp_SecureHash={vnp_SecureHash}";
         }
-
         public bool ValidateSignature(string secureHash, string hashSecret)
         {
             var data = new StringBuilder();
