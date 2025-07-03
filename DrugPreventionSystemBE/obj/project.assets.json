@@ -3200,6 +3200,19 @@
           "lib/netstandard1.3/System.Xml.XDocument.dll": {}
         }
       },
+      "TimeZoneConverter/7.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/TimeZoneConverter.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/TimeZoneConverter.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "VNPAY.NET/8.5.0": {
         "type": "package",
         "dependencies": {
@@ -10107,6 +10120,28 @@
         "system.xml.xdocument.nuspec"
       ]
     },
+    "TimeZoneConverter/7.0.0": {
+      "sha512": "sFbY65N/5GdsHx7nkdHFHUG+5Ar4W0w6Aks7Y2X+Q4NOTw6XyX2Il7jm+4tPkc//4mA3nG0RdxI8gKgoJitdLw==",
+      "type": "package",
+      "path": "timezoneconverter/7.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "lib/net462/TimeZoneConverter.dll",
+        "lib/net462/TimeZoneConverter.xml",
+        "lib/net6.0/TimeZoneConverter.dll",
+        "lib/net6.0/TimeZoneConverter.xml",
+        "lib/net8.0/TimeZoneConverter.dll",
+        "lib/net8.0/TimeZoneConverter.xml",
+        "lib/net9.0/TimeZoneConverter.dll",
+        "lib/net9.0/TimeZoneConverter.xml",
+        "lib/netstandard2.0/TimeZoneConverter.dll",
+        "lib/netstandard2.0/TimeZoneConverter.xml",
+        "timezoneconverter.7.0.0.nupkg.sha512",
+        "timezoneconverter.nuspec"
+      ]
+    },
     "VNPAY.NET/8.5.0": {
       "sha512": "rdiNL0StLkIQ0F2bODf+/6rOFTkk7JXtQrpo0Zbl1xQ/ZhPIl4dfR0a5bOp8reeb44bkPuG2qRAEM0AJ3R36/Q==",
       "type": "package",
@@ -10137,6 +10172,7 @@
       "Swashbuckle.AspNetCore >= 8.1.4",
       "Swashbuckle.AspNetCore.Newtonsoft >= 8.1.4",
       "System.Data.SqlClient >= 4.9.0",
+      "TimeZoneConverter >= 7.0.0",
       "VNPAY.NET >= 8.5.0",
       "dotenv.net >= 3.2.1",
       "payOS >= 1.0.9"
@@ -10242,6 +10278,10 @@
           "System.Data.SqlClient": {
             "target": "Package",
             "version": "[4.9.0, )"
+          },
+          "TimeZoneConverter": {
+            "target": "Package",
+            "version": "[7.0.0, )"
           },
           "VNPAY.NET": {
             "target": "Package",

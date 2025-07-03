@@ -73,11 +73,16 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
 
             string rawData = data.ToString().TrimEnd('&');
             Console.WriteLine($"DEBUG VNPAY RawData for ValidateSignature: {rawData}");
+            Console.WriteLine($"DEBUG VNPAY Provided SecureHash: {secureHash}");
 
             string calculatedHash = HmacSHA512(hashSecret.Trim(), rawData);
-            return string.Equals(calculatedHash, secureHash, StringComparison.OrdinalIgnoreCase);
-        }
+            Console.WriteLine($"DEBUG VNPAY Calculated SecureHash: {calculatedHash}");
 
+            bool isValid = string.Equals(calculatedHash, secureHash, StringComparison.OrdinalIgnoreCase);
+            Console.WriteLine($"DEBUG VNPAY Signature Validation Result: {isValid}");
+
+            return isValid;
+        }
         private string HmacSHA512(string key, string inputData)
         {
             byte[] keyBytes = Encoding.UTF8.GetBytes(key);

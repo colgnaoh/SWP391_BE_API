@@ -101,6 +101,10 @@
               "target": "Package",
               "version": "[4.9.0, )"
             },
+            "TimeZoneConverter": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
             "VNPAY.NET": {
               "target": "Package",
               "version": "[8.5.0, )"

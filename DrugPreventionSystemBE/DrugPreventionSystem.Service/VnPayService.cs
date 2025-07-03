@@ -1,5 +1,5 @@
-﻿using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.PaymentReq;
-using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.VnPayPayment;
+﻿using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.VnPayPayment;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Globalization;
@@ -14,10 +14,12 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
         private readonly string _apiUrl;
         private readonly string _returnUrl;
         private readonly string _ipnUrl;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public VnPayService(IConfiguration configuration)
+        public VnPayService(IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             _configuration = configuration;
+            _httpContextAccessor = httpContextAccessor;
             _tmnCode = _configuration["VnPay:TmnCode"];
             _hashSecret = _configuration["VnPay:HashSecret"];
             _apiUrl = _configuration["VnPay:ApiUrl"];
@@ -36,19 +38,24 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
             var pay = new VnpayPay();
             long amount = (long)(request.Money * 100);
 
+            // Sử dụng TimeZoneInfo để đảm bảo múi giờ GMT+7
+            var vnTimeZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time"); // GMT+7
+            var createDate = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, vnTimeZone);
+            var expireDate = createDate.AddMinutes(15);
+
             pay.AddRequestData("vnp_Version", "2.1.0");
             pay.AddRequestData("vnp_Command", "pay");
             pay.AddRequestData("vnp_TmnCode", _tmnCode);
             pay.AddRequestData("vnp_Amount", amount.ToString(CultureInfo.InvariantCulture));
-            pay.AddRequestData("vnp_CreateDate", request.CreatedDate.ToString("yyyyMMddHHmmss", CultureInfo.InvariantCulture));
+            pay.AddRequestData("vnp_CreateDate", createDate.ToString("yyyyMMddHHmmss", CultureInfo.InvariantCulture));
             pay.AddRequestData("vnp_CurrCode", request.Currency.ToString());
-            pay.AddRequestData("vnp_IpAddr", "127.0.0.1");
+            pay.AddRequestData("vnp_IpAddr", GetClientIp()); // Sử dụng _httpContextAccessor
             pay.AddRequestData("vnp_Locale", request.Language == Enum.DisplayLanguage.Vietnamese ? "vn" : "en");
             pay.AddRequestData("vnp_OrderInfo", string.IsNullOrEmpty(request.Description) ? "Thanh toan don hang" : request.Description);
             pay.AddRequestData("vnp_OrderType", "other");
             pay.AddRequestData("vnp_ReturnUrl", _returnUrl);
             pay.AddRequestData("vnp_TxnRef", request.PaymentId.ToString());
-            pay.AddRequestData("vnp_ExpireDate", DateTime.Now.AddMinutes(15).ToString("yyyyMMddHHmmss", CultureInfo.InvariantCulture));
+            pay.AddRequestData("vnp_ExpireDate", expireDate.ToString("yyyyMMddHHmmss", CultureInfo.InvariantCulture));
             pay.AddRequestData("vnp_SecureHashType", "HmacSHA512");
 
             if (request.BankCode != Enum.BankCode.ANY)
@@ -59,6 +66,20 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
             string paymentUrl = pay.CreateRequestUrl(_apiUrl, _hashSecret);
             Console.WriteLine($"DEBUG VNPAY Generated URL: {paymentUrl}");
             return paymentUrl;
+        }
+
+        // Phương thức lấy IP động từ client
+        private string GetClientIp()
+        {
+            try
+            {
+                var ipAddress = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString();
+                return string.IsNullOrEmpty(ipAddress) ? "127.0.0.1" : ipAddress;
+            }
+            catch
+            {
+                return "127.0.0.1";
+            }
         }
 
         public bool ProcessVnPayReturn(VnPayReturnResponse response)
