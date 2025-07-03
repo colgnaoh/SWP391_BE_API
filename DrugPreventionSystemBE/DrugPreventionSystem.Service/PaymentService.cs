@@ -61,7 +61,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 if (createPayment?.checkoutUrl != null)
                 {
                     payment.ExternalTransactionId = createPayment.orderCode.ToString();
-                    payment.PayOSCheckoutUrl = createPayment.checkoutUrl;   
+                    payment.PayOSCheckoutUrl = createPayment.checkoutUrl;
                     return createPayment.checkoutUrl;
                 }
                 else

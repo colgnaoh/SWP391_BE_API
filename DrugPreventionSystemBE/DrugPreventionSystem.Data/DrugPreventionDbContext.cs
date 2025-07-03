@@ -83,6 +83,11 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Data
             modelBuilder.Entity<Appointment>().Property(ad => ad.Status).HasPrecision(10, 2);
             modelBuilder.Entity<Course>().Property(c => c.RiskLevel).HasPrecision(10, 2);
             modelBuilder.Entity<CommunityProgram>().Property(p => p.RiskLevel).HasPrecision(10, 2);
+            modelBuilder.Entity<Question>().Property(q => q.QuestionType).HasPrecision(10, 2);
+            modelBuilder.Entity<Survey>().Property(s => s.Type).HasPrecision(10, 2);
+            modelBuilder.Entity<SurveyResult>().Property(sr => sr.RiskLevel).HasPrecision(10, 2);
+
+
             //----------------------------------------------------------------------- cho đỡ rối ở trên là enh cấu hình các Enum trong DbContext này
             // Cấu hình cho List<string> trong Consultants
             //modelBuilder.Entity<Consultants>()

@@ -40,7 +40,6 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.4" />
     <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="8.1.4" />
     <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
-    <PackageReference Include="TimeZoneConverter" Version="7.0.0" />
     <PackageReference Include="VNPAY.NET" Version="8.5.0" />
   </ItemGroup>
 
