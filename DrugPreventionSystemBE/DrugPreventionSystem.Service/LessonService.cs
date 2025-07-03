@@ -133,7 +133,9 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 UpdatedAt = lesson.UpdatedAt,
                 UserId = lesson.UserId,
                 FullName = $"{lesson.User?.LastName} {lesson.User?.FirstName}".Trim(),
-                UserAvatar = lesson.User?.ProfilePicUrl
+                UserAvatar = lesson.User?.ProfilePicUrl,
+                CourseId = lesson.CourseId ?? Guid.Empty,
+                SessionId = lesson.SessionId ?? Guid.Empty,
             };
 
             return new OkObjectResult(new SingleLessonResponse
