@@ -101,6 +101,10 @@
               "target": "Package",
               "version": "[4.9.0, )"
             },
+            "VNPAY.NET": {
+              "target": "Package",
+              "version": "[8.5.0, )"
+            },
             "dotenv.net": {
               "target": "Package",
               "version": "[3.2.1, )"

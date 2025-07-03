@@ -1667,6 +1667,277 @@
         ]
       }
     },
+    "/api/payment/CreatePaymentUrl": {
+      "get": {
+        "tags": [
+          "Payments"
+        ],
+        "parameters": [
+          {
+            "name": "moneyToPay",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "description",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/payment/VnPayReturn": {
+      "get": {
+        "tags": [
+          "Payments"
+        ],
+        "parameters": [
+          {
+            "name": "vnp_Amount",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "vnp_BankCode",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "vnp_BankTranNo",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "vnp_CardType",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "vnp_OrderInfo",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "vnp_PayDate",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "vnp_ResponseCode",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "vnp_TmnCode",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "vnp_TransactionNo",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "vnp_TransactionStatus",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "vnp_TxnRef",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "vnp_SecureHashType",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "vnp_SecureHash",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/payment/VnPayIpn": {
+      "post": {
+        "tags": [
+          "Payments"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "vnp_Amount": {
+                    "type": "string"
+                  },
+                  "vnp_BankCode": {
+                    "type": "string"
+                  },
+                  "vnp_BankTranNo": {
+                    "type": "string"
+                  },
+                  "vnp_CardType": {
+                    "type": "string"
+                  },
+                  "vnp_OrderInfo": {
+                    "type": "string"
+                  },
+                  "vnp_PayDate": {
+                    "type": "string"
+                  },
+                  "vnp_ResponseCode": {
+                    "type": "string"
+                  },
+                  "vnp_TmnCode": {
+                    "type": "string"
+                  },
+                  "vnp_TransactionNo": {
+                    "type": "string"
+                  },
+                  "vnp_TransactionStatus": {
+                    "type": "string"
+                  },
+                  "vnp_TxnRef": {
+                    "type": "string"
+                  },
+                  "vnp_SecureHashType": {
+                    "type": "string"
+                  },
+                  "vnp_SecureHash": {
+                    "type": "string"
+                  }
+                }
+              },
+              "encoding": {
+                "vnp_Amount": {
+                  "style": "form"
+                },
+                "vnp_BankCode": {
+                  "style": "form"
+                },
+                "vnp_BankTranNo": {
+                  "style": "form"
+                },
+                "vnp_CardType": {
+                  "style": "form"
+                },
+                "vnp_OrderInfo": {
+                  "style": "form"
+                },
+                "vnp_PayDate": {
+                  "style": "form"
+                },
+                "vnp_ResponseCode": {
+                  "style": "form"
+                },
+                "vnp_TmnCode": {
+                  "style": "form"
+                },
+                "vnp_TransactionNo": {
+                  "style": "form"
+                },
+                "vnp_TransactionStatus": {
+                  "style": "form"
+                },
+                "vnp_TxnRef": {
+                  "style": "form"
+                },
+                "vnp_SecureHashType": {
+                  "style": "form"
+                },
+                "vnp_SecureHash": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/VnPayIpnResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VnPayIpnResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VnPayIpnResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/payos/webhook": {
       "post": {
         "tags": [
@@ -2516,6 +2787,10 @@
           "profilePicUrl": {
             "type": "string",
             "nullable": true
+          },
+          "phoneNumber": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -3256,6 +3531,20 @@
           },
           "isDescending": {
             "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "VnPayIpnResult": {
+        "type": "object",
+        "properties": {
+          "rspCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
