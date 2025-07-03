@@ -110,7 +110,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     Email = consultant.Email,
                     CreatedAt = (DateTime)consultant.CreatedAt,
                     Qualifications = qualificationsList,
-                    ProfilePicUrl = consultant.User?.ProfilePicUrl ?? string.Empty // Xử lý null cho ProfilePicUrl
+                    ProfilePicUrl = consultant.User?.ProfilePicUrl ?? string.Empty,
+                    PhoneNumber = consultant.User.PhoneNumber
                 }
             });
         }
@@ -136,7 +137,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     Salary = c.Salary ?? 0m, 
                     Status = (ConsultantStatus)c.Status,// Xử lý null cho Enum? (chọn một giá trị mặc định phù hợp)
                     CreatedAt = (DateTime)c.CreatedAt,
-                    ProfilePicUrl = c.User?.ProfilePicUrl
+                    ProfilePicUrl = c.User?.ProfilePicUrl,
+                    PhoneNumber = c.User.PhoneNumber
                 }).ToList();
 
                 return new ListConsultantResponse
