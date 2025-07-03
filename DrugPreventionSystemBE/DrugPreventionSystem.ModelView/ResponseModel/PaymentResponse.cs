@@ -13,5 +13,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel
         public PaymentMethod? PaymentMethod { get; set; }
         public PaymentStatus? Status { get; set; }
         public DateTime CreatedAt { get; set; }
+        public string? ExternalTransactionId { get; set; } 
+        public string? PayOSCheckoutUrl { get; set; }
     }
 }

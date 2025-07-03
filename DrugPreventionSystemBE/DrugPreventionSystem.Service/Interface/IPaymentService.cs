@@ -11,5 +11,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface
         Task<IActionResult> GetAllPaymentsAsync();
         Task<IActionResult> GetPaymentsByUserIdAsync(Guid userId);
         Task<IActionResult> UpdatePaymentStatusAsync(Guid paymentId, PaymentStatus newStatus);
+        Task<IActionResult> GetPaymentHistoryByUserIdAsync(Guid userId);
     }
 }

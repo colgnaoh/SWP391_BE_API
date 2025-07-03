@@ -28,6 +28,14 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
         }
 
         [Authorize]
+        [HttpGet("history/{userId}")]
+        public async Task<IActionResult> GetPaymentHistoryByUserId(Guid userId)
+        {
+            var result = await _paymentService.GetPaymentHistoryByUserIdAsync(userId);
+            return result;
+        }
+
+        [Authorize]
         [HttpGet("{paymentId}")]
         public async Task<IActionResult> GetPaymentByIdAsync(Guid paymentId)
         {

@@ -82,7 +82,6 @@ D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\bin\Debug\
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\bin\Debug\net8.0\System.Text.Encodings.Web.dll
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\bin\Debug\net8.0\System.Text.Json.dll
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\bin\Debug\net8.0\System.Windows.Extensions.dll
-D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\bin\Debug\net8.0\TimeZoneConverter.dll
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\bin\Debug\net8.0\VNPAY.NET.dll
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
 D:\DrugPreventionSystem\DrugPreventionSystemBE\DrugPreventionSystemBE\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
