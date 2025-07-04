@@ -113,6 +113,7 @@ namespace DrugPreventionSystemBE
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<IPayOSSignatureService, PayOSSignatureService>();
             builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+            builder.Services.AddScoped<ISurveyService, SurveyService>();
 
             Env.Load();
 
