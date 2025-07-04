@@ -1,73 +1,70 @@
-﻿namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
+﻿using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.SurveyReqModel;
+using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
+using Microsoft.AspNetCore.Mvc;
+
+namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
 {
-    using global::DrugPreventionSystemBE.DrugPreventionSystem.ModelView.SurveyReqModel;
-    using global::DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc;
-
-    namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
+    [ApiController]
+    [Route("api/survey")]
+    public class SurveyController : ControllerBase
     {
-        [ApiController]
-        [Route("api/surveys")]
-        public class SurveyController : ControllerBase
+        private readonly ISurveyService _surveyService;
+
+        public SurveyController(ISurveyService surveyService)
         {
-            private readonly ISurveyService _surveyService;
+            _surveyService = surveyService;
+        }
 
-            public SurveyController(ISurveyService surveyService)
-            {
-                _surveyService = surveyService;
-            }
 
-            /// <summary>
-            /// Lấy danh sách tất cả khảo sát (ASSIST, CRAFFT, ...)
-            /// </summary>
-            [HttpGet]
-            public async Task<IActionResult> GetAllSurveys()
-            {
-                var surveys = await _surveyService.GetAllSurveysAsync();
-                return Ok(surveys);
-            }
+        //GET: api/survey/page
+        [HttpGet("paged")]
+        public async Task<IActionResult> GetSurveysByPage(
+    [FromQuery] int pageNumber = 1,
+    [FromQuery] int pageSize = 10,
+    [FromQuery] string? filterByName = null)
+        {
+            return await _surveyService.GetSurveysByPageAsync(pageNumber, pageSize, filterByName);
+        }
 
-            /// <summary>
-            /// Lấy thông tin chi tiết khảo sát (bao gồm câu hỏi và đáp án)
-            /// </summary>
-            [HttpGet("{id}")]
-            public async Task<IActionResult> GetSurveyDetail(Guid id)
-            {
-                var survey = await _surveyService.GetSurveyDetailAsync(id);
-                if (survey == null)
-                    return NotFound("Survey not found");
 
-                return Ok(survey);
-            }
+        // GET: api/survey/{id}
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetSurveyDetail(Guid id)
+        {
+            var detail = await _surveyService.GetSurveyDetailAsync(id);
+            if (detail == null)
+                return NotFound("Survey không tồn tại.");
 
-            /// <summary>
-            /// Gửi bài làm khảo sát (người dùng trả lời)
-            /// </summary>
-            [HttpPost("{id}/submit")]
-            public async Task<IActionResult> SubmitSurvey(Guid id, [FromBody] SurveySubmitRequestModel model)
-            {
-                if (id != model.SurveyId)
-                    return BadRequest("Survey ID mismatch");
+            return Ok(detail);
+        }
 
-                var result = await _surveyService.SubmitSurveyAsync(model);
-                return Ok(result);
-            }
+        // POST: api/survey
+        [HttpPost]
+        public async Task<IActionResult> CreateSurvey([FromBody] SurveyCreateModel model)
+        {
+            return await _surveyService.CreateSurveyAsync(model);
+        }
 
-            /// <summary>
-            /// Tạo khảo sát mới (Admin)
-            /// </summary>
-            [HttpPost]
-            [Authorize(Roles = "Admin,Manager")]
-            public async Task<IActionResult> CreateSurvey([FromBody] SurveyCreateModel model)
-            {
-                if (!ModelState.IsValid)
-                    return BadRequest(ModelState);
+        // PUT: api/survey/{id}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateSurvey(Guid id, [FromBody] SurveyUpdateModel model)
+        {
+            return await _surveyService.UpdateSurveyAsync(id, model);
+        }
 
-                var newSurveyId = await _surveyService.CreateSurveyAsync(model);
-                return CreatedAtAction(nameof(GetSurveyDetail), new { id = newSurveyId }, new { id = newSurveyId });
-            }
+        // DELETE: api/survey/{id}
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteSurvey(Guid id)
+        {
+            return await _surveyService.DeleteSurveyAsync(id);
+        }
+
+        // POST: api/survey/submit
+        [HttpPost("submit")]
+        public async Task<IActionResult> SubmitSurvey([FromBody] SurveySubmitRequestModel model)
+        {
+            var result = await _surveyService.SubmitSurveyAsync(model);
+            return Ok(result);
         }
     }
-
 }

@@ -114,7 +114,8 @@ namespace DrugPreventionSystemBE
             builder.Services.AddScoped<IPayOSSignatureService, PayOSSignatureService>();
             builder.Services.AddScoped<IAppointmentService, AppointmentService>();
             builder.Services.AddScoped<ISurveyService, SurveyService>();
-
+            builder.Services.AddScoped<IAnswerOptionService, AnswerOptionService>();
+            builder.Services.AddScoped<IQuestionService, QuestionService>();
             Env.Load();
 
             var payOSConfig = builder.Configuration.GetSection("PayOS").Get<DrugPreventionSystem.ModelView.PayOS.PayOSConfig>();

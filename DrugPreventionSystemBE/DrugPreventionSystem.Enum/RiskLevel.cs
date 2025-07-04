@@ -4,8 +4,7 @@
     {
         None,        
         Low,         
-        Moderate,    
-        High,      
-        Severe
+        Medium,   
+        High
     }
 }

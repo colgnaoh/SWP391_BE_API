@@ -1,5 +1,110 @@
 [
   {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.AnswerOptionController",
+    "Method": "CreateAnswerOption",
+    "RelativePath": "api/AnswerOption",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.SurveyReqModel.AnswerOptionCreateModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.AnswerOptionController",
+    "Method": "UpdateAnswerOption",
+    "RelativePath": "api/AnswerOption/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "model",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.SurveyReqModel.AnswerOptionUpdateModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.AnswerOptionController",
+    "Method": "DeleteAnswerOption",
+    "RelativePath": "api/AnswerOption/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.AnswerOptionController",
+    "Method": "GetAnswerOptionsByQuestionId",
+    "RelativePath": "api/AnswerOption/by-question/{questionId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "questionId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.AnswerOptionController",
+    "Method": "GetAnswerOptionsByPage",
+    "RelativePath": "api/AnswerOption/paged",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "questionId",
+        "Type": "System.Nullable\u00601[[System.Guid, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageNumber",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "filter",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "filterByScore",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.AppointmentController",
     "Method": "AssignConsultant",
     "RelativePath": "api/appointments/assign",
@@ -951,6 +1056,106 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.QuestionController",
+    "Method": "CreateQuestion",
+    "RelativePath": "api/question",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.SurveyReqModel.QuestionCreateModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.QuestionController",
+    "Method": "UpdateQuestion",
+    "RelativePath": "api/question/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "model",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.SurveyReqModel.QuestionUpdateModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.QuestionController",
+    "Method": "DeleteQuestion",
+    "RelativePath": "api/question/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.QuestionController",
+    "Method": "GetQuestionsBySurveyId",
+    "RelativePath": "api/question/by-survey/{surveyId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "surveyId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.QuestionController",
+    "Method": "GetQuestionsByPage",
+    "RelativePath": "api/question/paged",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "surveyId",
+        "Type": "System.Nullable\u00601[[System.Guid, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageNumber",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "filter",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.ReviewController",
     "Method": "GetAll",
     "RelativePath": "api/review",
@@ -1151,19 +1356,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.DrugPreventionSystemBE.DrugPreventionSystem.Controllers.SurveyController",
-    "Method": "GetAllSurveys",
-    "RelativePath": "api/surveys",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.DrugPreventionSystemBE.DrugPreventionSystem.Controllers.SurveyController",
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.SurveyController",
     "Method": "CreateSurvey",
-    "RelativePath": "api/surveys",
+    "RelativePath": "api/survey",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -1177,9 +1372,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.DrugPreventionSystemBE.DrugPreventionSystem.Controllers.SurveyController",
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.SurveyController",
     "Method": "GetSurveyDetail",
-    "RelativePath": "api/surveys/{id}",
+    "RelativePath": "api/survey/{id}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -1193,10 +1388,10 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.DrugPreventionSystemBE.DrugPreventionSystem.Controllers.SurveyController",
-    "Method": "SubmitSurvey",
-    "RelativePath": "api/surveys/{id}/submit",
-    "HttpMethod": "POST",
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.SurveyController",
+    "Method": "UpdateSurvey",
+    "RelativePath": "api/survey/{id}",
+    "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
     "Parameters": [
@@ -1205,6 +1400,64 @@
         "Type": "System.Guid",
         "IsRequired": true
       },
+      {
+        "Name": "model",
+        "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.SurveyReqModel.SurveyUpdateModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.SurveyController",
+    "Method": "DeleteSurvey",
+    "RelativePath": "api/survey/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.SurveyController",
+    "Method": "GetSurveysByPage",
+    "RelativePath": "api/survey/paged",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pageNumber",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "filterByName",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.SurveyController",
+    "Method": "SubmitSurvey",
+    "RelativePath": "api/survey/submit",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
       {
         "Name": "model",
         "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.SurveyReqModel.SurveySubmitRequestModel",

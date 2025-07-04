@@ -249,7 +249,12 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Data
 
             // Global filter: exclude soft-deleted users
             modelBuilder.Entity<User>().HasQueryFilter(u => !u.IsDeleted);
-
+            modelBuilder.Entity<Survey>().HasQueryFilter(s => !s.IsDeleted);
+            modelBuilder.Entity<Question>().HasQueryFilter(q => !q.IsDeleted);
+            modelBuilder.Entity<AnswerOption>().HasQueryFilter(ao => !ao.IsDeleted);
+            modelBuilder.Entity<Blog>().HasQueryFilter(b => !b.IsDeleted);
+            modelBuilder.Entity<Session>().HasQueryFilter(se => !se.IsDeleted);
+            modelBuilder.Entity<Lesson>().HasQueryFilter(l => !l.IsDeleted);
         }
     }
 }
