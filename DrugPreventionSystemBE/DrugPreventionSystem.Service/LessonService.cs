@@ -113,11 +113,13 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
         public async Task<IActionResult> GetLessonByIdAsync(Guid lessonId)
         {
             var lesson = await _context.Lessons
-                .Include(l => l.User)
-                .FirstOrDefaultAsync(l => l.Id == lessonId && !l.IsDeleted);
+        .Include(l => l.User)
+        .Include(l => l.Course)
+        .Include(l => l.Session) //
+        .FirstOrDefaultAsync(l => l.Id == lessonId && !l.IsDeleted); 
 
             if (lesson == null)
-                return new NotFoundObjectResult("Không tìm thấy bài học.");
+                return new NotFoundObjectResult("Không tìm thấy bài học trong phiên hoặc khóa học này."); 
 
             var lessonResponse = new LessonResponseModel
             {
@@ -133,7 +135,9 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 UpdatedAt = lesson.UpdatedAt,
                 UserId = lesson.UserId,
                 FullName = $"{lesson.User?.LastName} {lesson.User?.FirstName}".Trim(),
-                UserAvatar = lesson.User?.ProfilePicUrl
+                UserAvatar = lesson.User?.ProfilePicUrl,
+                CourseId = lesson.Course.Id,
+                SessionId = lesson.Session.Id 
             };
 
             return new OkObjectResult(new SingleLessonResponse

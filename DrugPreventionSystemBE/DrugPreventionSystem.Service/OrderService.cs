@@ -279,12 +279,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 
         public async Task<IActionResult> UpdateOrderStatusAsync(Guid orderId, OrderStatus newStatus)
         {
-            var currentUserRole = GetCurrentUserRole();
-            if (currentUserRole != Role.Admin.ToString()) 
-            {
-                return new UnauthorizedObjectResult(new BaseResponse { Success = false, Message = "Bạn không có quyền cập nhật trạng thái đơn hàng." });
-            }
-
+            
             var order = await _context.Orders.FirstOrDefaultAsync(o => o.Id == orderId && !o.IsDeleted);
             if (order == null)
             {
