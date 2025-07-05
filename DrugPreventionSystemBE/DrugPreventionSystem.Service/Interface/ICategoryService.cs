@@ -8,5 +8,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface
     {
         Task<IActionResult> CreateCategoryAsync(CreateCategoryRequest request);
         Task<IActionResult> ListCategories();
+        Task<IActionResult> SoftDeleteCategoryAsync(Guid CategoryId);
+        Task<IActionResult> GetCategoryByIdAsync(Guid categoryId);
+        Task<IActionResult> UpdateCategoryAsync(Guid categoryId, CreateCategoryRequest request);
     }
 }

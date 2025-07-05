@@ -5,9 +5,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface
 {
     public interface ICourseService
     {
-
         Task<IActionResult> GetCoursesByPageAsync(int pageNumber, int pageSize, string? filterByName);
-
 
         Task<IActionResult> GetCourseByIdAsync(Guid courseId);
 
@@ -17,6 +15,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface
 
         Task<IActionResult> SoftDeleteCourseAsync(Guid courseId);
 
-        Task<IActionResult> GetPurchasedCoursesAsync();
+        Task<IActionResult> GetPurchasedCoursesAsync(string? filterByName, int pageNumber = 1, int pageSize = 12);
     }
 }

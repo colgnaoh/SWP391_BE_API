@@ -1,5 +1,6 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.Data;
 using DrugPreventionSystemBE.DrugPreventionSystem.Entity;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ApiResponse;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CategoryReqModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
@@ -86,5 +87,79 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             await _context.SaveChangesAsync();
             return new OkObjectResult("Category soft-deleted successfully.");
         }
+
+        public async Task<IActionResult> UpdateCategoryAsync(Guid categoryId, CreateCategoryRequest request)
+        {
+            if (request == null || string.IsNullOrWhiteSpace(request.Name))
+            {
+                return new BadRequestObjectResult(new BaseResponse(false, "Yêu cầu cập nhật danh mục không hợp lệ. Tên là bắt buộc.", null));
+            }
+
+            try
+            {
+                var categoryToUpdate = await _context.Categories.FindAsync(categoryId);
+
+                if (categoryToUpdate == null || categoryToUpdate.IsDeleted)
+                {
+                    return new NotFoundObjectResult(new BaseResponse(false, "Không tìm thấy danh mục để cập nhật hoặc danh mục đã bị xóa.", null));
+                }
+
+                var existingCategoryWithSameName = await _context.Categories
+                    .FirstOrDefaultAsync(c => c.Name.ToLower() == request.Name.ToLower() && c.Id != categoryId && !c.IsDeleted);
+
+                if (existingCategoryWithSameName != null)
+                {
+                    return new ConflictObjectResult(new BaseResponse(false, "Tên danh mục đã tồn tại cho một danh mục khác.", null));
+                }
+
+                categoryToUpdate.Name = request.Name;
+                categoryToUpdate.UpdatedAt = DateTime.UtcNow;
+
+                await _context.SaveChangesAsync();
+
+                var responseModel = new CategoryResponseModel
+                {
+                    Id = categoryToUpdate.Id,
+                    Name = categoryToUpdate.Name,
+                    CreatedAt = categoryToUpdate.CreatedAt,
+                    UpdatedAt = categoryToUpdate.UpdatedAt
+                };
+                return new OkObjectResult(new BaseResponse(true, "Cập nhật danh mục thành công.", responseModel));
+            }
+            catch (Exception ex)
+            {
+                return new ObjectResult(new BaseResponse(false, $"Lỗi khi cập nhật danh mục: {ex.Message}", null)) { StatusCode = 500 };
+            }
+        }
+
+        public async Task<IActionResult> GetCategoryByIdAsync(Guid categoryId)
+        {
+            try
+            {
+                var category = await _context.Categories
+                    .Where(c => c.Id == categoryId && !c.IsDeleted)
+                    .AsNoTracking() 
+                    .Select(c => new CategoryResponseModel
+                    {
+                        Id = c.Id,
+                        Name = c.Name,
+                        CreatedAt = c.CreatedAt,
+                        UpdatedAt = c.UpdatedAt
+                    })
+                    .FirstOrDefaultAsync();
+
+                if (category == null)
+                {
+                    return new NotFoundObjectResult(new BaseResponse(false, "Không tìm thấy danh mục.", null));
+                }
+
+                return new OkObjectResult(new BaseResponse(true, "Lấy danh mục thành công.", category));
+            }
+            catch (Exception ex)
+            {
+                return new ObjectResult(new BaseResponse(false, $"Lỗi khi lấy danh mục: {ex.Message}", null)) { StatusCode = 500 };
+            }
+        }
+
     }
 }

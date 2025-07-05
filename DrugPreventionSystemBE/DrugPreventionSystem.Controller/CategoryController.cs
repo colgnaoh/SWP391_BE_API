@@ -28,6 +28,25 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
         {
             return await _categoryService.ListCategories();
         }
+        [HttpGet("{categoryId}")] 
+        public async Task<IActionResult> GetCategoryByIdAsync(Guid categoryId)
+        {
+            return await _categoryService.GetCategoryByIdAsync(categoryId);
+        }
+
+        [HttpPut("{categoryId}")] 
+        [Authorize(Roles = "Admin,Manager")] 
+        public async Task<IActionResult> UpdateCategoryAsync(Guid categoryId, [FromBody] CreateCategoryRequest request)
+        {
+            return await _categoryService.UpdateCategoryAsync(categoryId, request);
+        }
+
+        [HttpDelete("{categoryId}")] 
+        [Authorize(Roles = "Admin,Manager")]
+        public async Task<IActionResult> SoftDeleteCategoryAsync(Guid categoryId)
+        {
+            return await _categoryService.SoftDeleteCategoryAsync(categoryId);
+        }
     }
     
 }
