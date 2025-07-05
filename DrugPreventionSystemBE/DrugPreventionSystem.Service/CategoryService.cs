@@ -47,14 +47,22 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             }
         }
 
-        public async Task<IActionResult> ListCategories()
+        public async Task<IActionResult> ListCategories(string? filterByName = null)
         {
             try
             {
-                var categories = await _context.Categories
-                    .Where(c => !c.IsDeleted)
-                    .AsNoTracking() 
-                    .ToListAsync();
+                var query = _context.Categories
+                    .Where(c => !c.IsDeleted) 
+                    .AsNoTracking()
+                    .AsQueryable();
+                // Nếu filterByName không null hoặc rỗng, thêm điều kiện tìm kiếm theo tên
+                if (!string.IsNullOrEmpty(filterByName))
+                {
+                    query = query.Where(c => c.Name != null && EF.Functions.Like(c.Name, $"%{filterByName}%"));
+                }
+
+                var categories = await query.ToListAsync();
+
                 return new OkObjectResult(new ListCategoryResponse
                 {
                     Success = true,
@@ -69,7 +77,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             }
             catch (Exception ex)
             {
-                throw new Exception("An error occurred while retrieving categories.", ex);
+                return new ObjectResult(new BaseResponse(false, $"Lỗi khi lấy danh mục: {ex.Message}", null)) { StatusCode = 500 };
             }
         }
 

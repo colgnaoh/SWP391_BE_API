@@ -24,9 +24,9 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
         }
 
         [HttpGet]
-        public async Task<IActionResult> ListCategories()
+        public async Task<IActionResult> ListCategories([FromQuery] string? filterByName)
         {
-            return await _categoryService.ListCategories();
+            return await _categoryService.ListCategories(filterByName);
         }
         [HttpGet("{categoryId}")] 
         public async Task<IActionResult> GetCategoryByIdAsync(Guid categoryId)

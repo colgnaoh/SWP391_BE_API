@@ -105,6 +105,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
         public async Task<IActionResult> GetBlogByIdAsync(Guid blogId)
         {
             var blog = await _context.Blogs
+                .Include(b => b.User) // Include User to get user details
                 .Where(b => b.Id == blogId)                 
                 .FirstOrDefaultAsync();
 
@@ -121,7 +122,9 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 BlogImgUrl = blog.BlogImgUrl,
                 CreatedAt = blog.CreatedAt,
                 UpdatedAt = blog.UpdatedAt,
-                IsDeleted = blog.IsDeleted
+                IsDeleted = blog.IsDeleted,
+                FullName = $"{blog.User?.LastName} {blog.User?.FirstName}".Trim(),
+                UserAvatar = blog.User?.ProfilePicUrl
             };
 
             return new OkObjectResult(new SingleBlogResponse

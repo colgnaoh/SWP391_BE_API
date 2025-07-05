@@ -22,7 +22,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
         {
             return await _authenticationService.RegisterUserAsync(request);
         }
-        [HttpGet("confirm-email")]
+        [HttpGet("confirmEmail")]
         public async Task<IActionResult> ConfirmEmail(string token)
         {
             return await _authenticationService.ConfirmEmailAsync(token);
@@ -33,21 +33,21 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
             return await _authenticationService.LoginUserAsync(request);
         }
 
-        [HttpPost("resend-token")]
+        [HttpPost("resendToken")]
         public async Task<IActionResult> ResendToken([FromBody] ResendTokenRequest request)
         {
             // Gọi phương thức ResendVerificationTokenAsync từ service
             return await _authenticationService.ResendVerificationTokenAsync(request.Email);
         }
 
-        [HttpPost("request-password-reset")]
+        [HttpPost("requestPasswordReset")]
         public async Task<IActionResult> RequestPasswordReset([FromBody] ForgotPasswordRequest request)
         {
             // Gọi phương thức RequestPasswordResetAsync từ service
             return await _authenticationService.RequestPasswordResetAsync(request.Email);
         }
 
-        [HttpPost("reset-password")]
+        [HttpPost("resetPassword")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
         {
             return await _authenticationService.ResetPasswordAsync(request);
