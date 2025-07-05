@@ -44,8 +44,9 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+            var result = await _programService.CreateCommunityProgramAsync(request);
 
-            return await _programService.CreateCommunityProgramAsync(request);
+            return StatusCode(201, result);
         }
 
         // PUT: api/program/{id}
@@ -59,12 +60,12 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
             return await _programService.UpdateCommunityProgramAsync(id, request);
         }
 
-        // DELETE: api/program/{id}
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin, Manager")]
         public async Task<IActionResult> DeleteProgram(Guid id)
         {
-            return await _programService.DeleteProgramAsync(id);
+            var success = await _programService.DeleteProgramAsync(id);
+
+            return StatusCode(204, new { message = "Đã xóa chương trình" });
         }
     }
 }
