@@ -20,40 +20,44 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var reviews = await _reviewService.GetAllReviewsAsync();
-            return Ok(reviews);
+            return await _reviewService.GetAllReviewsAsync();
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var review = await _reviewService.GetReviewByIdAsync(id);
-            if (review == null) return NotFound();
-            return Ok(review);
+            return await _reviewService.GetReviewByIdAsync(id);
         }
+
+        [HttpGet("course/{courseId}")]
+        public async Task<IActionResult> GetByCourseId(Guid courseId)
+        {
+            return await _reviewService.GetReviewsByCourseIdAsync(courseId);
+        }
+
+        [HttpGet("user/{userId}")]
+        public async Task<IActionResult> GetByUserId(Guid userId)
+        {
+            return await _reviewService.GetReviewsByUserIdAsync(userId);
+        }
+
 
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] CreateReviewReqModel request)
         {
-            var created = await _reviewService.CreateReviewAsync(request);
-            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+            return await _reviewService.CreateReviewAsync(request);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateReviewReqModel request)
         {
-            var success = await _reviewService.UpdateReviewAsync(id, request);
-            if (!success) return NotFound();
-            return NoContent();
+            return await _reviewService.UpdateReviewAsync(id, request);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var success = await _reviewService.DeleteReviewAsync(id);
-            if (!success) return NotFound();
-            return NoContent();
+            return await _reviewService.DeleteReviewAsync(id);
         }
     }
-
 }

@@ -95,16 +95,14 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             return _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Role)?.Value;
         }
 
-        private async Task AddOrderLogAsync(Guid orderId, Guid? cartId, string action, string? oldStatus, string? newStatus, string? note, Guid? courseId, Guid? userId)
+        private async Task AddOrderLogAsync(Guid orderId, Guid? cartId, string action, string? note, Guid? courseId, Guid? userId)
         {
             var orderLog = new OrderLog
             {
                 Id = _idServices.GenerateNextId(),
                 OrderId = orderId,
                 CartId = cartId,
-                Action = action,
-                OldStatus = oldStatus,
-                NewStatus = newStatus,
+                Action = action, // Chỉ lưu hành động
                 Note = note,
                 CourseId = courseId,
                 UserId = userId,
@@ -114,7 +112,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             _context.OrderLogs.Add(orderLog);
             await _context.SaveChangesAsync();
         }
-
         public async Task<IActionResult> CreatePaymentForOrderAsync(CreatePaymentRequest request)
         {
             var order = await _context.Orders.Include(o => o.User).FirstOrDefaultAsync(o => o.Id == request.OrderId);
@@ -133,25 +130,19 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 return new BadRequestObjectResult(new BaseResponse { Success = false, Message = "Số tiền thanh toán không khớp với tổng giá trị đơn hàng." });
             }
 
-            // Lấy các mục trong giỏ hàng của đơn hàng hiện tại đang được xử lý
             var orderCartItems = await _context.Carts
                                                 .Where(c => c.OrderId == request.OrderId && c.Status == CartStatus.Pending)
                                                 .Include(c => c.Course)
                                                 .ToListAsync();
 
-            // Kiểm tra xem người dùng đã sở hữu bất kỳ khóa học nào trong đơn hàng này chưa bằng OrderLog
             foreach (var cartItem in orderCartItems)
             {
                 if (cartItem.CourseId.HasValue)
                 {
-                    // Kiểm tra OrderLog xem có bản ghi nào cho thấy người dùng đã sở hữu khóa học này
-                    // Hành động "Cart Item Status Update" với NewStatus là "Completed"
                     var userAlreadyOwnsCourse = await _context.OrderLogs
                         .AnyAsync(ol => ol.UserId == request.UserId &&
-                                        ol.CourseId == cartItem.CourseId.Value &&
-                                        ol.Action == "Cart Item Status Update" && // Hoặc action khác mà bạn dùng để đánh dấu sở hữu
-                                        ol.NewStatus == CartStatus.Completed.ToString()); // Kiểm tra NewStatus của CartItem
-
+                                         ol.CourseId == cartItem.CourseId.Value &&
+                                         ol.Action == "Cart Item Status Update"); 
                     if (userAlreadyOwnsCourse)
                     {
                         return new ConflictObjectResult(new BaseResponse
@@ -253,24 +244,14 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 _context.Payments.Add(payment);
                 await _context.SaveChangesAsync();
 
-                await AddOrderLogAsync(payment.OrderId.Value, null, "Payment Creation", null, PaymentStatus.Pending.ToString(), "Tạo thanh toán qua PayOS", null, payment.UserId);
+                // **Không ghi log nếu chỉ là pending, vì yêu cầu là chỉ ghi log khi thanh toán thành công**
+                // await AddOrderLogAsync(payment.OrderId.Value, null, "Payment Creation", null, PaymentStatus.Pending.ToLogStatus(), "Tạo thanh toán qua PayOS", null, payment.UserId);
+                // await AddOrderLogAsync(payment.OrderId.Value, item.Id, "Cart Item Status Update", CartStatus.Pending.ToLogStatus(), CartStatus.Pending.ToLogStatus(), "Mục giỏ hàng đang chờ thanh toán PayOS", item.CourseId, payment.UserId);
 
                 generatedPayUrl = await CreatePayOSPaymentAsync(payment);
-
-                // Không cập nhật CartStatus thành Completed ngay tại đây cho BankTransfer.
-                // Các CartItems sẽ giữ trạng thái Pending hoặc chờ cho đến khi webhook PayOS báo thành công.
-                var cartItemsInOrder = await _context.Carts
-                                                        .Where(c => c.OrderId == request.OrderId && c.Status == CartStatus.Pending)
-                                                        .ToListAsync();
-                foreach (var item in cartItemsInOrder)
-                {
-                    await AddOrderLogAsync(payment.OrderId.Value, item.Id, "Cart Item Status Update", CartStatus.Pending.ToString(), CartStatus.Pending.ToString(), "Mục giỏ hàng đang chờ thanh toán PayOS", item.CourseId, payment.UserId);
-                }
-                await _context.SaveChangesAsync(); // Lưu các thay đổi về OrderLog
             }
             else
             {
-                // Xử lý thanh toán trực tiếp (ví dụ: tiền mặt)
                 payment.Status = PaymentStatus.Success;
                 _context.Payments.Add(payment);
                 await _context.SaveChangesAsync();
@@ -278,20 +259,21 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 order.Status = OrderStatus.Paid;
                 order.UpdatedAt = DateTime.UtcNow;
 
-                await AddOrderLogAsync(payment.OrderId.Value, null, "Payment Creation", null, PaymentStatus.Success.ToString(), "Thanh toán thành công trực tiếp", null, payment.UserId);
-                await AddOrderLogAsync(order.Id, null, "Order Status Update", OrderStatus.Pending.ToString(), OrderStatus.Paid.ToString(), "Đơn hàng đã được thanh toán", null, order.UserId);
+                // **Chỉ ghi log khi thanh toán thành công**
+                await AddOrderLogAsync(payment.OrderId.Value, null, "Payment Completed", "Thanh toán thành công trực tiếp", null, payment.UserId); // **ĐÃ SỬA**
+                await AddOrderLogAsync(order.Id, null, "Order Completed", "Đơn hàng đã được thanh toán", null, order.UserId); // **ĐÃ SỬA**
 
                 var cartItemsToUpdate = await _context.Carts
-                                                        .Where(c => c.OrderId == request.OrderId && c.Status == CartStatus.Pending)
-                                                        .Include(c => c.Course)
-                                                        .ToListAsync();
+                                                     .Where(c => c.OrderId == request.OrderId && c.Status == CartStatus.Pending)
+                                                     .Include(c => c.Course)
+                                                     .ToListAsync();
 
                 foreach (var item in cartItemsToUpdate)
                 {
-                    item.Status = CartStatus.Completed; // Đánh dấu là đã hoàn thành sau khi thanh toán trực tiếp thành công
+                    item.Status = CartStatus.Completed;
                     item.UpdatedAt = DateTime.UtcNow;
-                    // Quan trọng: Ghi log rằng Cart Item đã được Completed
-                    await AddOrderLogAsync(payment.OrderId.Value, item.Id, "Cart Item Status Update", CartStatus.Pending.ToString(), CartStatus.Completed.ToString(), "Mục giỏ hàng hoàn thành sau thanh toán", item.CourseId, payment.UserId);
+                    // **Chỉ ghi log khi mục giỏ hàng hoàn thành**
+                    await AddOrderLogAsync(payment.OrderId.Value, item.Id, "Cart Item Completed", "Mục giỏ hàng hoàn thành sau thanh toán", item.CourseId, payment.UserId); // **ĐÃ SỬA**
                 }
                 await _context.SaveChangesAsync();
             }
@@ -325,10 +307,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 });
             }
         }
-    
-
-
-    public async Task<IActionResult> GetPaymentByIdAsync(Guid paymentId)
+        public async Task<IActionResult> GetPaymentByIdAsync(Guid paymentId)
         {
             var currentUserId = GetCurrentUserId();
             var currentUserRole = GetCurrentUserRole();
@@ -514,7 +493,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 
             await _context.SaveChangesAsync();
 
-            await AddOrderLogAsync(payment.OrderId.Value, null, "Payment Status Update", oldPaymentStatus.ToString(), newStatus.ToString(), $"Cập nhật trạng thái thanh toán sang '{newStatus}'", null, payment.UserId);
+            await AddOrderLogAsync(payment.OrderId.Value, null, "Payment Status Update", $"Cập nhật trạng thái thanh toán sang '{newStatus}'", null, payment.UserId);
 
             if (payment.OrderId.HasValue)
             {
@@ -525,7 +504,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     if (newStatus == PaymentStatus.Success)
                     {
                         order.Status = OrderStatus.Paid;
-                        await AddOrderLogAsync(order.Id, null, "Order Status Update", oldOrderStatus.ToString(), OrderStatus.Paid.ToString(), "Đơn hàng đã được thanh toán", null, order.UserId);
+                        await AddOrderLogAsync(order.Id, null, "Order Status Update", "Đơn hàng đã được thanh toán", null, order.UserId);
 
                         var cartItemsToUpdate = await _context.Carts
                                                                 .Where(c => c.OrderId == order.Id && c.Status == CartStatus.Pending)
@@ -535,14 +514,14 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                             var oldCartStatus = item.Status;
                             item.Status = CartStatus.Completed;
                             item.UpdatedAt = DateTime.UtcNow;
-                            await AddOrderLogAsync(order.Id, item.Id, "Cart Item Status Update", oldCartStatus.ToString(), CartStatus.Completed.ToString(), "Mục giỏ hàng hoàn thành do thanh toán thành công", item.CourseId, payment.UserId);
+                            await AddOrderLogAsync(order.Id, item.Id, "Cart Item Status Update", "Mục giỏ hàng hoàn thành do thanh toán thành công", item.CourseId, payment.UserId);
                         }
                         await _context.SaveChangesAsync();
                     }
                     else if (newStatus == PaymentStatus.Failed)
                     {
                         order.Status = OrderStatus.Failed;
-                        await AddOrderLogAsync(order.Id, null, "Order Status Update", oldOrderStatus.ToString(), OrderStatus.Failed.ToString(), "Đơn hàng thất bại do thanh toán thất bại", null, order.UserId);
+                        await AddOrderLogAsync(order.Id, null, "Order Status Update", "Đơn hàng thất bại do thanh toán thất bại", null, order.UserId);
 
                         var cartItemsToUpdate = await _context.Carts
                                                                 .Where(c => c.OrderId == order.Id && c.Status == CartStatus.Pending)
@@ -552,7 +531,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                             var oldCartStatus = item.Status;
                             item.Status = CartStatus.Canceled;
                             item.UpdatedAt = DateTime.UtcNow;
-                            await AddOrderLogAsync(order.Id, item.Id, "Cart Item Status Update", oldCartStatus.ToString(), CartStatus.Canceled.ToString(), "Mục giỏ hàng bị hủy do thanh toán thất bại", item.CourseId, payment.UserId);
+                            await AddOrderLogAsync(order.Id, item.Id, "Cart Item Status Update", "Mục giỏ hàng bị hủy do thanh toán thất bại", item.CourseId, payment.UserId);
                         }
                         await _context.SaveChangesAsync();
                     }

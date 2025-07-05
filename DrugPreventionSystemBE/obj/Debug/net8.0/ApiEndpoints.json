@@ -703,6 +703,16 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.CourseController",
+    "Method": "GetPurchasedCourses",
+    "RelativePath": "api/course/myCourses",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controllers.LessonController",
     "Method": "CreateLesson",
     "RelativePath": "api/lesson",
@@ -1220,6 +1230,22 @@
   },
   {
     "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.ReviewController",
+    "Method": "GetByCourseId",
+    "RelativePath": "api/review/course/{courseId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "courseId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.ReviewController",
     "Method": "Create",
     "RelativePath": "api/review/create",
     "HttpMethod": "POST",
@@ -1229,6 +1255,22 @@
       {
         "Name": "request",
         "Type": "DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ReviewReqModel.CreateReviewReqModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.ReviewController",
+    "Method": "GetByUserId",
+    "RelativePath": "api/review/user/{userId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Guid",
         "IsRequired": true
       }
     ],

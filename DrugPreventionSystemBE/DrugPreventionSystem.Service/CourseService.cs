@@ -1,6 +1,7 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.Data;
 using DrugPreventionSystemBE.DrugPreventionSystem.Entity;
 using DrugPreventionSystemBE.DrugPreventionSystem.Helpers;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ApiResponse;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CourseReqModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
@@ -397,5 +398,73 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 
             return slug;
         }
+
+        public async Task<IActionResult> GetPurchasedCoursesAsync()
+        {
+            try
+            {
+                // 1. Lấy User ID của người dùng đang đăng nhập
+                Guid? userId = GetCurrentUserId();
+
+                if (!userId.HasValue)
+                {
+                    return new UnauthorizedObjectResult(new BaseResponse(false, "Người dùng chưa đăng nhập hoặc không xác định được ID.", null));
+                }
+                var purchasedCourseIds = await _context.OrderLogs
+                    .Where(ol => ol.UserId == userId.Value && // Kiểm tra hành động cụ thể khi giỏ hàng đã hoàn tất
+                                 ol.CourseId.HasValue)
+                    .Select(ol => ol.CourseId.Value)
+                    .Distinct() // Đảm bảo chỉ lấy các CourseId duy nhất
+                    .ToListAsync();
+
+                if (!purchasedCourseIds.Any())
+                {
+                    // Trả về thành công nhưng không có dữ liệu nếu người dùng chưa mua khóa học nào
+                    return new OkObjectResult(new BaseResponse(true, "Bạn chưa mua khóa học nào.", new List<CourseResponseModel>()));
+                }
+
+                // 3. Lấy thông tin chi tiết các khóa học dựa trên danh sách CourseId
+                var purchasedCourses = await _context.Courses
+                    .Where(c => purchasedCourseIds.Contains(c.Id) && !c.IsDeleted)
+                    .Select(c => new CourseResponseModel
+                    {
+                        Id = c.Id,
+                        UserId = (Guid)c.UserId,
+                        CategoryId = c.CategoryId,
+                        Name = c.Name,
+                        Content = c.Content,
+                        Status = c.Status,
+                        TargetAudience = c.TargetAudience,
+                        ImageUrls = c.ImageUrls,
+                        VideoUrls = c.VideoUrls,
+                        Price = c.Price,
+                        Discount = c.Discount,
+                        CreatedAt = c.CreatedAt,
+                        Slug = c.Slug
+                    })
+                    .ToListAsync();
+
+                return new OkObjectResult(new BaseResponse(true, "Lấy danh sách khóa học đã mua thành công.", purchasedCourses));
+            }
+            catch (Exception ex)
+            {
+                return new ObjectResult(new BaseResponse(false, $"Lỗi khi lấy danh sách khóa học đã mua: {ex.Message}", null)) { StatusCode = 500 };
+            }
+        }
+        private Guid? GetCurrentUserId()
+        {
+            var userPrincipal = _httpContextAccessor.HttpContext?.User;
+            if (userPrincipal == null)
+            {
+                return null;
+            }
+            var userIdClaim = userPrincipal.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim != null && Guid.TryParse(userIdClaim.Value, out Guid userId))
+            {
+                return userId;
+            }
+            return null;
+        }
+
     }
 }

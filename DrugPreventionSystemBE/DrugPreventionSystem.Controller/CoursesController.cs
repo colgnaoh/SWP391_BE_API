@@ -66,5 +66,11 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
         {
             return await _courseService.SoftDeleteCourseAsync(id);
         }
+        [HttpGet("myCourses")]
+        [Authorize] 
+        public async Task<IActionResult> GetPurchasedCourses()
+        {
+            return await _courseService.GetPurchasedCoursesAsync();
+        }
     }
 }

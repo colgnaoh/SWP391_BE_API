@@ -1,113 +1,273 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.Data;
 using DrugPreventionSystemBE.DrugPreventionSystem.Entity;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ApiResponse; 
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ReviewReqModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 {
     public class ReviewService : IReviewService
     {
         private readonly DrugPreventionDbContext _context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ReviewService(DrugPreventionDbContext context)
+        public ReviewService(DrugPreventionDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<List<ReviewResModel>> GetAllReviewsAsync()
+        public async Task<IActionResult> GetAllReviewsAsync()
         {
-            return await _context.Reviews
-                .Where(r => !r.IsDeleted)
-                .Select(r => new ReviewResModel
+            try
+            {
+                var reviews = await _context.Reviews
+                    .Where(r => !r.IsDeleted)
+                    .Select(r => new ReviewResModel
+                    {
+                        Id = r.Id,
+                        CourseId = r.CourseId,
+                        UserId = r.UserId,
+                        Rating = r.Rating,
+                        Comment = r.Comment,
+                        CreatedAt = r.CreatedAt
+                    })
+                    .ToListAsync();
+
+                if (!reviews.Any())
                 {
-                    Id = r.Id,
-                    CourseId = r.CourseId,
-                    UserId = r.UserId,
-                    Rating = r.Rating,
-                    Comment = r.Comment,
-                    CreatedAt = r.CreatedAt
-                })
-                .ToListAsync();
-        }
+                    return new OkObjectResult(new BaseResponse(true, "Không tìm thấy đánh giá nào.", null));
+                }
 
-        public async Task<ReviewResModel?> GetReviewByIdAsync(Guid id)
-        {
-            var review = await _context.Reviews
-                .Where(r => !r.IsDeleted && r.Id == id)
-                .FirstOrDefaultAsync();
-
-            if (review == null) return null;
-
-            return new ReviewResModel
+                return new OkObjectResult(new BaseResponse(true, "Lấy tất cả đánh giá thành công.", reviews));
+            }
+            catch (Exception ex)
             {
-                Id = review.Id,
-                CourseId = review.CourseId,
-                UserId = review.UserId,
-                Rating = review.Rating,
-                Comment = review.Comment,
-                CreatedAt = review.CreatedAt
-            };
+                return new ObjectResult(new BaseResponse(false, $"Lỗi khi lấy tất cả đánh giá: {ex.Message}", null))
+                { StatusCode = 500 };
+            }
         }
 
-
-        public async Task<ReviewResModel> CreateReviewAsync(CreateReviewReqModel request)
+        public async Task<IActionResult> GetReviewByIdAsync(Guid id)
         {
-            var review = new Review
+            try
             {
-                Id = Guid.NewGuid(),
-                CourseId = request.CourseId,
-                UserId = request.UserId,
-                Rating = request.Rating,
-                Comment = request.Comment,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
-            };
+                var review = await _context.Reviews
+                    .Where(r => !r.IsDeleted && r.Id == id)
+                    .FirstOrDefaultAsync();
 
-            _context.Reviews.Add(review);
-            await _context.SaveChangesAsync();
+                if (review == null)
+                {
+                    // Trả về 404 Not Found
+                    return new NotFoundObjectResult(new BaseResponse(false, "Không tìm thấy đánh giá.", null));
+                }
 
-            return new ReviewResModel
+                var reviewResModel = new ReviewResModel
+                {
+                    Id = review.Id,
+                    CourseId = review.CourseId,
+                    UserId = review.UserId,
+                    Rating = review.Rating,
+                    Comment = review.Comment,
+                    CreatedAt = review.CreatedAt
+                };
+
+                // Trả về 200 OK
+                return new OkObjectResult(new BaseResponse(true, "Lấy đánh giá theo ID thành công.", reviewResModel));
+            }
+            catch (Exception ex)
             {
-                Id = review.Id,
-                CourseId = review.CourseId,
-                UserId = review.UserId,
-                Rating = review.Rating,
-                Comment = review.Comment,
-                CreatedAt = review.CreatedAt
-            };
+                return new ObjectResult(new BaseResponse(false, $"Lỗi khi lấy đánh giá theo ID: {ex.Message}", null))
+                { StatusCode = 500 };
+            }
         }
 
-        public async Task<bool> UpdateReviewAsync(Guid id, UpdateReviewReqModel request)
+        public async Task<IActionResult> GetReviewsByCourseIdAsync(Guid courseId)
         {
-            var review = await _context.Reviews.FindAsync(id);
-            if (review == null) return false;
+            try
+            {
+                var reviews = await _context.Reviews
+                    .Where(r => !r.IsDeleted && r.CourseId == courseId)
+                    .Select(r => new ReviewResModel
+                    {
+                        Id = r.Id,
+                        CourseId = r.CourseId,
+                        UserId = r.UserId,
+                        Rating = r.Rating,
+                        Comment = r.Comment,
+                        CreatedAt = r.CreatedAt
+                    })
+                    .ToListAsync();
 
-            review.Rating = request.Rating;
-            review.Comment = request.Comment;
-            review.UpdatedAt = DateTime.UtcNow;
+                if (!reviews.Any())
+                {
+                    return new OkObjectResult(new BaseResponse(true, $"Không tìm thấy đánh giá nào cho khóa học ID '{courseId}'.", null));
+                }
 
-            _context.Reviews.Update(review);
-            await _context.SaveChangesAsync();
-
-            return true;
+                return new OkObjectResult(new BaseResponse(true, $"Lấy đánh giá cho khóa học ID '{courseId}' thành công.", reviews));
+            }
+            catch (Exception ex)
+            {
+                return new ObjectResult(new BaseResponse(false, $"Lỗi khi lấy đánh giá theo Course ID: {ex.Message}", null))
+                { StatusCode = 500 };
+            }
         }
 
-        public async Task<bool> DeleteReviewAsync(Guid id)
+        public async Task<IActionResult> GetReviewsByUserIdAsync(Guid userId)
         {
-            var review = await _context.Reviews.FindAsync(id);
-            if (review == null || review.IsDeleted) return false;
+            try
+            {
+                var reviews = await _context.Reviews
+                    .Where(r => !r.IsDeleted && r.UserId == userId)
+                    .Select(r => new ReviewResModel
+                    {
+                        Id = r.Id,
+                        CourseId = r.CourseId,
+                        UserId = r.UserId,
+                        Rating = r.Rating,
+                        Comment = r.Comment,
+                        CreatedAt = r.CreatedAt
+                    })
+                    .ToListAsync();
 
-            review.IsDeleted = true;
-            review.UpdatedAt = DateTime.UtcNow;
+                if (!reviews.Any())
+                {
+                    return new OkObjectResult(new BaseResponse(true, $"Không tìm thấy đánh giá nào từ người dùng ID '{userId}'.", null));
+                }
 
-            _context.Reviews.Update(review);
-            await _context.SaveChangesAsync();
-
-            return true;
+                return new OkObjectResult(new BaseResponse(true, $"Lấy đánh giá từ người dùng ID '{userId}' thành công.", reviews));
+            }
+            catch (Exception ex)
+            {
+                return new ObjectResult(new BaseResponse(false, $"Lỗi khi lấy đánh giá theo User ID: {ex.Message}", null))
+                { StatusCode = 500 };
+            }
         }
 
+        public async Task<IActionResult> CreateReviewAsync(CreateReviewReqModel request)
+        {
+            try
+            {
+                var hasPurchasedCourse = await _context.OrderLogs
+                    .AnyAsync(ol => ol.UserId == request.UserId && 
+                                    ol.CourseId == request.CourseId);
+
+                if (!hasPurchasedCourse)
+                {
+                    return new BadRequestObjectResult(new BaseResponse(false, "Bạn chỉ có thể đánh giá các khóa học mà bạn đã mua thành công.", null));
+                }
+
+                var existingReview = await _context.Reviews
+                    .AnyAsync(r => r.UserId == request.UserId && // Sử dụng UserId từ request
+                                   r.CourseId == request.CourseId &&
+                                   !r.IsDeleted);
+
+                if (existingReview)
+                {
+                    return new BadRequestObjectResult(new BaseResponse(false, "Bạn đã đánh giá khóa học này rồi. Bạn chỉ có thể đánh giá một lần.", null));
+                }
+
+                // Bước 3: Tạo đánh giá
+                var review = new Review
+                {
+                    Id = Guid.NewGuid(),
+                    CourseId = request.CourseId,
+                    UserId = request.UserId,
+                    Rating = request.Rating,
+                    Comment = request.Comment,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow,
+                    IsDeleted = false
+                };
+
+                _context.Reviews.Add(review);
+                await _context.SaveChangesAsync();
+
+                var reviewResModel = new ReviewResModel
+                {
+                    Id = review.Id,
+                    CourseId = review.CourseId,
+                    UserId = review.UserId, // Lấy UserId từ đối tượng review đã lưu
+                    Rating = review.Rating,
+                    Comment = review.Comment,
+                    CreatedAt = review.CreatedAt
+                };
+
+                return new ObjectResult(new BaseResponse(true, "Tạo đánh giá thành công.", reviewResModel))
+                { StatusCode = 201 }; // 201 Created
+            }
+            catch (Exception ex)
+            {
+                return new ObjectResult(new BaseResponse(false, $"Lỗi khi tạo đánh giá: {ex.Message}", null))
+                { StatusCode = 500 };
+            }
+        }
+
+
+        public async Task<IActionResult> UpdateReviewAsync(Guid id, UpdateReviewReqModel request)
+        {
+            try
+            {
+                var review = await _context.Reviews
+                                           .Where(r => !r.IsDeleted && r.Id == id)
+                                           .FirstOrDefaultAsync();
+
+                if (review == null)
+                {
+                    return new NotFoundObjectResult(new BaseResponse(false, "Không tìm thấy đánh giá để cập nhật hoặc đã bị xóa.", null));
+                }
+
+                review.Rating = request.Rating;
+                review.Comment = request.Comment;
+                review.UpdatedAt = DateTime.UtcNow;
+
+                _context.Reviews.Update(review);
+                await _context.SaveChangesAsync();
+
+                return new OkObjectResult(new BaseResponse(true, "Cập nhật đánh giá thành công.", null));
+            }
+            catch (Exception ex)
+            {
+                return new ObjectResult(new BaseResponse(false, $"Lỗi khi cập nhật đánh giá: {ex.Message}", null))
+                { StatusCode = 500 };
+            }
+        }
+
+        public async Task<IActionResult> DeleteReviewAsync(Guid id)
+        {
+            try
+            {
+                var review = await _context.Reviews
+                                           .Where(r => !r.IsDeleted && r.Id == id)
+                                           .FirstOrDefaultAsync();
+
+                if (review == null)
+                {
+                    // Trả về 404 Not Found
+                    return new NotFoundObjectResult(new BaseResponse(false, "Không tìm thấy đánh giá để xóa hoặc đã bị xóa.", null));
+                }
+
+                review.IsDeleted = true;
+                review.UpdatedAt = DateTime.UtcNow;
+
+                _context.Reviews.Update(review);
+                await _context.SaveChangesAsync();
+
+                // Trả về 200 OK
+                return new OkObjectResult(new BaseResponse(true, "Xóa đánh giá thành công.", null));
+            }
+            catch (Exception ex)
+            {
+                return new ObjectResult(new BaseResponse(false, $"Lỗi khi xóa đánh giá: {ex.Message}", null))
+                { StatusCode = 500 };
+            }
+        }
     }
 }

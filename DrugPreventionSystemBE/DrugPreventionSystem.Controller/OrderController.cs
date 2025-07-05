@@ -57,7 +57,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
             var result = await _orderService.GetAllOrdersAsync();
             return result;
         }
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         [HttpPut("status/{orderId}/{newStatus}")]
         public async Task<IActionResult> UpdateOrderStatus(Guid orderId, OrderStatus newStatus)
         {
