@@ -15,6 +15,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface
 
         Task<IActionResult> SoftDeleteCourseAsync(Guid courseId);
 
-        Task<IActionResult> GetPurchasedCoursesAsync(string? filterByName, int pageNumber = 1, int pageSize = 12);
+        Task<IActionResult> GetPurchasedCoursesAsync();
     }
 }

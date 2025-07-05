@@ -68,11 +68,9 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
         }
         [HttpGet("myCourses")]
         [Authorize] 
-        public async Task<IActionResult> GetPurchasedCourses([FromQuery] int pageNumber = 1,
-            [FromQuery] int pageSize = 12,
-            [FromQuery] string? filterByName = null)
+        public async Task<IActionResult> GetPurchasedCourses()
         {
-            return await _courseService.GetPurchasedCoursesAsync(filterByName, pageNumber, pageSize);
+            return await _courseService.GetPurchasedCoursesAsync();
         }
     }
 }

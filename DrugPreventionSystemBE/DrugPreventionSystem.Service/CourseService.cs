@@ -226,7 +226,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     return new NotFoundObjectResult("Không tìm thấy khóa học.");
                 }
 
-                // Cập nhật các thuộc tính chỉ khi chúng được cung cấp (không null và không rỗng đối với string, không null và không Guid.Empty đối với Guid)
 
                 // Name: string?
                 if (!string.IsNullOrWhiteSpace(model.Name))
@@ -234,8 +233,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     course.Name = model.Name;
                 }
 
-                // CategoryId: Guid?
-                // Chỉ cập nhật nếu CategoryId được truyền và không phải null HOẶC Guid.Empty
                 if (model.CategoryId != null && model.CategoryId != Guid.Empty)
                 {
                     var categoryExists = await _context.Categories.AnyAsync(c => c.Id == model.CategoryId);
@@ -245,10 +242,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     }
                     course.CategoryId = model.CategoryId;
                 }
-                // Nếu model.CategoryId là null HOẶC Guid.Empty, giá trị cũ của course.CategoryId sẽ được giữ nguyên.
-
-                // UserId: Guid?
-                // Chỉ cập nhật nếu UserId được truyền và không phải null HOẶC Guid.Empty
                 if (model.UserId != null && model.UserId != Guid.Empty)
                 {
                     var userExists = await _context.Users.AnyAsync(u => u.Id == model.UserId);
@@ -258,9 +251,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     }
                     course.UserId = model.UserId;
                 }
-                // Nếu model.UserId là null HOẶC Guid.Empty, giá trị cũ của course.UserId sẽ được giữ nguyên.
-
-                // Content: string?
                 if (model.Content != null)
                 {
                     course.Content = model.Content;
@@ -398,10 +388,11 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             return slug;
         }
 
-        public async Task<IActionResult> GetPurchasedCoursesAsync(string? filterByName, int pageNumber = 1, int pageSize = 12)
+        public async Task<IActionResult> GetPurchasedCoursesAsync()
         {
             try
             {
+                // 1. Lấy User ID của người dùng đang đăng nhập
                 Guid? userId = GetCurrentUserId();
 
                 if (!userId.HasValue)
@@ -409,96 +400,41 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     return new UnauthorizedObjectResult(new BaseResponse(false, "Người dùng chưa đăng nhập hoặc không xác định được ID.", null));
                 }
 
-                var safePageNumber = pageNumber < 1 ? 1 : pageNumber;
-                var safePageSize = pageSize < 1 ? 12 : pageSize;
-
                 var purchasedCourseIds = await _context.OrderLogs
-                    .Where(ol => ol.UserId == userId.Value && ol.CourseId.HasValue)
+                    .Where(ol => ol.UserId == userId.Value && // Kiểm tra hành động cụ thể khi giỏ hàng đã hoàn tất
+                                 ol.CourseId.HasValue)
                     .Select(ol => ol.CourseId.Value)
-                    .Distinct()
+                    .Distinct() // Đảm bảo chỉ lấy các CourseId duy nhất
                     .ToListAsync();
 
                 if (!purchasedCourseIds.Any())
                 {
-                    return new OkObjectResult(new GetCoursesByPageResponse
-                    {
-                        Success = true,
-                        Data = new List<CourseResponseModel>(),
-                        TotalCount = 0,
-                        PageNumber = safePageNumber,
-                        PageSize = safePageSize,
-                        TotalPages = 0
-                    });
+                    // Trả về thành công nhưng không có dữ liệu nếu người dùng chưa mua khóa học nào
+                    return new OkObjectResult(new BaseResponse(true, "Bạn chưa mua khóa học nào.", new List<CourseResponseModel>()));
                 }
 
-                var query = _context.Courses
+                // 3. Lấy thông tin chi tiết các khóa học dựa trên danh sách CourseId
+                var purchasedCourses = await _context.Courses
                     .Where(c => purchasedCourseIds.Contains(c.Id) && !c.IsDeleted)
-                    .Include(c => c.Sessions.Where(s => !s.IsDeleted).OrderBy(s => s.PositionOrder))
-                        .ThenInclude(s => s.Lessons.Where(l => !l.IsDeleted).OrderBy(l => l.PositionOrder))
-                    .AsQueryable();
-
-                if (!string.IsNullOrEmpty(filterByName))
-                {
-                    query = query.Where(c => c.Name != null && EF.Functions.Like(c.Name, $"%{filterByName}%"));
-                }
-
-                var totalCount = await query.CountAsync();
-                var totalPages = (int)Math.Ceiling((double)totalCount / safePageSize);
-
-                if (totalCount > 0 && safePageNumber > totalPages)
-                {
-                    safePageNumber = totalPages;
-                }
-
-                var purchasedCourses = await query
-                    .OrderBy(c => c.CreatedAt)
-                    .Skip((safePageNumber - 1) * safePageSize)
-                    .Take(safePageSize)
-                    .Select(course => new CourseResponseModel
+                    .Select(c => new CourseResponseModel
                     {
-                        Id = course.Id,
-                        UserId = (Guid)course.UserId,
-                        CategoryId = course.CategoryId,
-                        Name = course.Name,
-                        Content = course.Content,
-                        Status = course.Status,
-                        TargetAudience = course.TargetAudience,
-                        ImageUrls = course.ImageUrls,
-                        VideoUrls = course.VideoUrls,
-                        Price = course.Price,
-                        Discount = course.Discount,
-                        CreatedAt = course.CreatedAt,
-                        Slug = course.Slug,
-                        SessionList = course.Sessions.Select(s => new SessionResponseModel
-                        {
-                            Id = s.Id,
-                            Name = s.Name,
-                            PositionOrder = s.PositionOrder,
-                            Content = s.Content,
-                            LessonList = s.Lessons.Select(l => new LessonResponseModel
-                            {
-                                Id = l.Id,
-                                Name = l.Name,
-                                Content = l.Content,
-                                ImageUrl = l.ImageUrl,
-                                VideoUrl = l.VideoUrl,
-                                LessonType = l.LessonType,
-                                PositionOrder = l.PositionOrder,
-                                FullTime = l.FullTime
-                            }).ToList()
-                        }).ToList()
+                        Id = c.Id,
+                        UserId = (Guid)c.UserId,
+                        CategoryId = c.CategoryId,
+                        Name = c.Name,
+                        Content = c.Content,
+                        Status = c.Status,
+                        TargetAudience = c.TargetAudience,
+                        ImageUrls = c.ImageUrls,
+                        VideoUrls = c.VideoUrls,
+                        Price = c.Price,
+                        Discount = c.Discount,
+                        CreatedAt = c.CreatedAt,
+                        Slug = c.Slug
                     })
                     .ToListAsync();
 
-                return new OkObjectResult(new GetCoursesByPageResponse
-                {
-                    Success = true,
-                    Data = purchasedCourses,
-                    TotalCount = totalCount,
-                    PageNumber = safePageNumber,
-                    PageSize = safePageSize,
-                    TotalPages = totalPages
-                });
+                return new OkObjectResult(new BaseResponse(true, "Lấy danh sách khóa học đã mua thành công.", purchasedCourses));
             }
             catch (Exception ex)
             {
