@@ -1,8 +1,9 @@
-﻿using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
+﻿using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.BookingReqModel;
-using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
+using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Sprache;
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -28,14 +29,17 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
             if (userIdClaim == null || !Guid.TryParse(userIdClaim.Value, out var userId))
                 return Unauthorized("Không xác thực được người dùng.");
 
-            return await _appointmentService.BookWithScheduleAsync(userId, request);
+            var result = await _appointmentService.BookWithScheduleAsync(userId, request);
+
+            return StatusCode(201, result);
         }
 
         [HttpPost("assign")]
         [Authorize(Roles = "Manager,Admin")]
         public async Task<IActionResult> AssignConsultant([FromBody] AssignConsultantRequest request)
         {
-            return await _appointmentService.AssignConsultantAsync(request);
+            var result = await _appointmentService.AssignConsultantAsync(request);
+            return StatusCode(201, result);
         }
 
         //[HttpPut("complete")]

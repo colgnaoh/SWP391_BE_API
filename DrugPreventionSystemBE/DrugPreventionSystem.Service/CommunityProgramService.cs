@@ -157,6 +157,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
                     EndDate = program.EndDate,
                     ProgramImgUrl = program.ProgramImgUrl,
                     ProgramVidUrl = program.ProgramVidUrl,
+                    RiskLevel = program.RiskLevel,
                     CreatedAt = program.CreatedAt,
                     UpdatedAt = program.UpdatedAt,
                     Message = "Tạo chương trình thành công."
@@ -191,6 +192,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
                     });
                 }
 
+                // Update fields
                 program.Name = request.Name;
                 program.Description = request.Description;
                 program.Location = request.Location;
@@ -198,15 +200,27 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
                 program.StartDate = request.StartDate;
                 program.EndDate = request.EndDate;
                 program.ProgramImgUrl = request.ProgramImgUrl;
-                program.ProgramVidUrl = request.ProgramVidUrl;  
+                program.ProgramVidUrl = request.ProgramVidUrl;
                 program.RiskLevel = request.RiskLevel;
                 program.UpdatedAt = DateTime.UtcNow;
 
                 await _context.SaveChangesAsync();
 
-                return new OkObjectResult(new SingleProgramResponseModel
+                //Return updated data
+                return new OkObjectResult(new CommunityProgramResponseModel
                 {
-                    Success = true,
+                    Id = program.Id,
+                    Name = program.Name,
+                    Description = program.Description,
+                    Location = program.Location,
+                    Type = program.Type,
+                    StartDate = program.StartDate,
+                    EndDate = program.EndDate,
+                    ProgramImgUrl = program.ProgramImgUrl,
+                    ProgramVidUrl = program.ProgramVidUrl,
+                    RiskLevel = program.RiskLevel,
+                    CreatedAt = program.CreatedAt,
+                    UpdatedAt = program.UpdatedAt,
                     Message = "Cập nhật chương trình thành công."
                 });
             }
@@ -220,6 +234,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
                 { StatusCode = 500 };
             }
         }
+
 
         public async Task<IActionResult> DeleteProgramAsync(Guid id)
         {
