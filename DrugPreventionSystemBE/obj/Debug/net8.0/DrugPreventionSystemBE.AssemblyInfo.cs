@@ -11,10 +11,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("898c8363-e727-41dc-a752-6b5a6f56e0ce")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("DrugPreventionSystemBE")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+243f0748dbefe483332bdbcb1d53b879b961a2ca")]
 [assembly: System.Reflection.AssemblyProductAttribute("DrugPreventionSystemBE")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DrugPreventionSystemBE")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
