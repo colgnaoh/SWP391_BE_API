@@ -1973,6 +1973,18 @@
         ]
       }
     },
+    "/api/payment/stripe-webhook": {
+      "post": {
+        "tags": [
+          "Payments"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/payos/webhook": {
       "post": {
         "tags": [

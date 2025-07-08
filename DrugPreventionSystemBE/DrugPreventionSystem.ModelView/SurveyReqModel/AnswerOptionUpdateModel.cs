@@ -3,7 +3,7 @@
     public class AnswerOptionUpdateModel
     {
         public Guid Id { get; set; }
-
+        public Guid? QuestionId { get; set; }
         public string OptionContent { get; set; } = string.Empty;
         public int Score { get; set; }
         public int PositionOrder { get; set; }

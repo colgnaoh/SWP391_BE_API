@@ -1009,6 +1009,16 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.PaymentsController",
+    "Method": "StripeWebhook",
+    "RelativePath": "api/payment/stripe-webhook",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "DrugPreventionSystemBE.DrugPreventionSystem.Controller.PayOSWebhookController",
     "Method": "Webhook",
     "RelativePath": "api/payos/webhook",

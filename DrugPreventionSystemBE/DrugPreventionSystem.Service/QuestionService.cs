@@ -85,16 +85,25 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 }).ToListAsync();
         }
 
-        public async Task<IActionResult> GetQuestionsByPageAsync(Guid? surveyId, int pageNumber, int pageSize, string? filter)
+        public async Task<IActionResult> GetQuestionsByPageAsync(
+    Guid? surveyId,
+    int pageNumber,
+    int pageSize,
+    string? filter)
         {
             var safePageNumber = pageNumber < 1 ? 1 : pageNumber;
             var safePageSize = pageSize < 1 ? 10 : pageSize;
 
             var query = _context.Questions
-                .Where(q => q.SurveyId == surveyId && !q.IsDeleted)
+                .Where(q => !q.IsDeleted)
                 .AsQueryable();
 
-            if (!string.IsNullOrEmpty(filter))
+            if (surveyId.HasValue)
+            {
+                query = query.Where(q => q.SurveyId == surveyId.Value);
+            }
+
+            if (!string.IsNullOrWhiteSpace(filter))
             {
                 query = query.Where(q => EF.Functions.Like(q.QuestionContent, $"%{filter}%"));
             }
@@ -124,6 +133,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 TotalPages = (int)Math.Ceiling((double)totalCount / safePageSize)
             });
         }
+
 
     }
 
