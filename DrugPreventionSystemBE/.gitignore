@@ -1,3 +1,81 @@
 .vs/
 *.db
 *.suo
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.aps
+*.bsc
+*.dsw
+*.ncb
+*.opensdf
+*.sdf
+*.bak
+*.log
+*.cache
+*.userprefs
+
+# Build results
+[Bb]in/
+[Oo]bj/
+*.exe
+*.dll
+*.pdb
+*.tmp
+*.obj
+*.idb
+*.res
+*.lib
+*.ncb
+*.sbr
+*.pch
+*.exp
+*.map
+*.ilk
+*.ipdb
+*.tlog
+*.lastbuildstate
+*.cache
+*.dswa.cache.json
+*.Up2Date
+*.vsidx
+*.json.cache
+*.txt
+*.pdb
+*.build.endpoints.json
+*.build.json
+*.references.upToDateCheck.txt
+*.removed.txt
+*.targets
+*.sourcelink.json
+*.user
+*.tmp
+*.staticwebassets.endpoints.json
+
+# Rider
+.idea/
+
+# VS Code
+.vscode/
+
+# Packages
+packages/
+*.nupkg
+*.snupkg
+
+# Test Results
+TestResults/
+
+# NuGet
+.nuget/
+*.nuget.log
+project.lock.json
+
+# Npm
+node_modules/
+
+# Other common files
+*.zip
+*.rar
+*.7z
