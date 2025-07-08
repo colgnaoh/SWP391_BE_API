@@ -132,84 +132,107 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             });
         }
 
-        public async Task<IActionResult> GetAppointmentsByFilterAsync(
+        public async Task<GetAppointmentsByUserResponse> GetAppointmentsByFilterAsync(
+    string userId,
+    List<string> roles,
     AppointmentStatus? status = null,
     DateTime? fromDate = null,
     DateTime? toDate = null,
     int pageNumber = 1,
     int pageSize = 12)
         {
-            var safePageNumber = pageNumber < 1 ? 1 : pageNumber;
-            var safePageSize = pageSize < 1 ? 12 : pageSize;
-
-            var user = _httpContextAccessor.HttpContext?.User;
-            var userId = user?.FindFirstValue(ClaimTypes.NameIdentifier);
-            var userRoles = user?.FindAll(ClaimTypes.Role).Select(r => r.Value).ToList() ?? new List<string>();
-
+            var safePageNumber = Math.Max(1, pageNumber);
+            var safePageSize = Math.Max(1, pageSize);
 
             var query = _context.Appointments
                 .Include(a => a.Consultant)
                 .AsQueryable();
 
             // Role-based filtering
-            if (userRoles.Contains("Admin") || userRoles.Contains("Manager"))
+            if (roles.Contains("Admin") || roles.Contains("Manager"))
             {
-                // No filtering – view all
+                // No filter
             }
-            else if (userRoles.Contains("Consultant"))
+            else if (roles.Contains("Consultant"))
             {
-                query = query.Where(a => a.ConsultantId.ToString() == userId);
+                if (!Guid.TryParse(userId, out var consultantUserGuid))
+                {
+                    throw new ArgumentException("ID người dùng không hợp lệ.");
+                }
+
+                var consultant = await _context.consultants
+                    .FirstOrDefaultAsync(c => c.UserId == consultantUserGuid);
+
+                if (consultant == null)
+                {
+                    throw new InvalidOperationException("Tài khoản chưa được gán với chuyên viên.");
+                }
+
+                query = query.Where(a => a.ConsultantId == consultant.Id);
             }
             else
             {
-                // Default to regular user
-                query = query.Where(a => a.UserId.ToString() == userId);
+                if (!Guid.TryParse(userId, out var userGuid))
+                {
+                    throw new ArgumentException("ID người dùng không hợp lệ.");
+                }
+
+                query = query.Where(a => a.UserId == userGuid);
             }
 
-            // Optional filters
+            // Filter by status and time
             if (status.HasValue)
-                query = query.Where(a => a.Status == status);
+                query = query.Where(a => a.Status == status.Value);
 
             if (fromDate.HasValue)
-                query = query.Where(a => a.AppointmentTime >= fromDate);
+                query = query.Where(a => a.AppointmentTime >= fromDate.Value.Date);
 
             if (toDate.HasValue)
-                query = query.Where(a => a.AppointmentTime <= toDate);
+            {
+                var endOfDay = toDate.Value.Date.AddDays(1).AddTicks(-1);
+                query = query.Where(a => a.AppointmentTime <= endOfDay);
+            }
 
             var totalCount = await query.CountAsync();
             var totalPages = (int)Math.Ceiling((double)totalCount / safePageSize);
 
-            var appointments = await query
+            // Lấy dữ liệu về trước
+            var appointmentsRaw = await query
                 .OrderByDescending(a => a.AppointmentTime)
+                .ThenByDescending(a => a.Id)
                 .Skip((safePageNumber - 1) * safePageSize)
                 .Take(safePageSize)
                 .ToListAsync();
 
-            var result = new GetAppointmentsByUserResponse
+            // Map thủ công sang response model, xử lý Split trong RAM
+            var appointments = appointmentsRaw.Select(a => new AppointmentResponseModel
+            {
+                Id = a.Id,
+                AppointmentTime = a.AppointmentTime,
+                Status = a.Status,
+                Note = a.Note,
+                Name = a.Name,
+                Consultant = a.Consultant == null ? null : new ConsultantResponseModel
+                {
+                    Id = a.Consultant.Id,
+                    FullName = a.Consultant.FullName,
+                    Qualifications = string.IsNullOrEmpty(a.Consultant.Qualifications)
+                        ? new List<string>()
+                        : a.Consultant.Qualifications.Split(',').Select(q => q.Trim()).ToList()
+                }
+            }).ToList();
+
+            return new GetAppointmentsByUserResponse
             {
                 Success = true,
                 TotalCount = totalCount,
                 PageNumber = safePageNumber,
                 PageSize = safePageSize,
                 TotalPages = totalPages,
-                Data = appointments.Select(a => new AppointmentResponseModel
-                {
-                    Id = a.Id,
-                    AppointmentTime = a.AppointmentTime,
-                    Status = a.Status,
-                    Note = a.Note,
-                    Name = a.Name,
-                    Consultant = a.Consultant == null ? null : new ConsultantResponseModel
-                    {
-                        Id = a.Consultant.Id,
-                        FullName = a.Consultant.FullName,
-                        Qualifications = a.Consultant.Qualifications?.Split(',').Select(q => q.Trim()).ToList()
-                    }
-                }).ToList()
+                Data = appointments
             };
-
-            return new OkObjectResult(result);
         }
+
 
 
         public async Task<IActionResult> CancelAppointmentAsync(Guid appointmentId)

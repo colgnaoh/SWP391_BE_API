@@ -58,19 +58,43 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
 
         [HttpGet("search")]
         [Authorize]
-        public async Task<IActionResult> GetAppointmentsByfilter(
-            [FromQuery] AppointmentStatus? status,
-            [FromQuery] DateTime? fromDate,
-            [FromQuery] DateTime? toDate,
-            [FromQuery] int pageNumber = 1,
-            [FromQuery] int pageSize = 12)
+        public async Task<IActionResult> GetAppointmentsByFilter(
+    [FromQuery] AppointmentStatus? status = null,
+    [FromQuery] DateTime? fromDate = null,
+    [FromQuery] DateTime? toDate = null,
+    [FromQuery] int pageNumber = 1,
+    [FromQuery] int pageSize = 12)
         {
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (userIdClaim == null || !Guid.TryParse(userIdClaim.Value, out var userId))
-                return Unauthorized("Không xác thực được người dùng.");
+            var user = HttpContext.User;
+            var userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
+            var roles = user.FindAll(ClaimTypes.Role).Select(r => r.Value).ToList();
 
-            return await _appointmentService.GetAppointmentsByFilterAsync( status, fromDate, toDate, pageNumber, pageSize);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized("Không xác định được người dùng.");
+            }
+
+            try
+            {
+                var result = await _appointmentService.GetAppointmentsByFilterAsync(
+                    userId, roles, status, fromDate, toDate, pageNumber, pageSize);
+
+                return Ok(result);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { Success = false, Message = ex.Message });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { Success = false, Message = ex.Message });
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new { Success = false, Message = "Đã xảy ra lỗi hệ thống." });
+            }
         }
+
 
         [HttpPut("cancel/{appointmentId}")]
         public async Task<IActionResult> Cancel(Guid appointmentId)

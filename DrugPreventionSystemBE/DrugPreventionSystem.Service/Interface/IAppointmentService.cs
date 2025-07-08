@@ -1,5 +1,6 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.BookingReqModel;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface
@@ -14,12 +15,14 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface
 
         Task<IActionResult> ChangeAppointmentStatusAsync(Guid appointmentId, AppointmentStatus newStatus);
 
-        Task<IActionResult> GetAppointmentsByFilterAsync(
-            AppointmentStatus? status = null,
-            DateTime? fromDate = null,
-            DateTime? toDate = null,
-            int pageNumber = 1,
-            int pageSize = 12);
+        Task<GetAppointmentsByUserResponse> GetAppointmentsByFilterAsync(
+    string userId,
+    List<string> roles,
+    AppointmentStatus? status = null,
+    DateTime? fromDate = null,
+    DateTime? toDate = null,
+    int pageNumber = 1,
+    int pageSize = 12);
 
         Task<IActionResult> CancelAppointmentAsync(Guid appointmentId);
     }
