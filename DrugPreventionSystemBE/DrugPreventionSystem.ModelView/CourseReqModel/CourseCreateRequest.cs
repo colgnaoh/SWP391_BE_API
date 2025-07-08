@@ -13,7 +13,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CourseReqModel
         [Required]
         public CourseStatus Status { get; set; }
         [Required]
-        public targetAudience TargetAudience { get; set; }
+        public CourseTargetAudience TargetAudience { get; set; }
         public RiskLevel RiskLevel { get; set; }
         public List<string> ImageUrls { get; set; }
         public List<string> VideoUrls { get; set; }

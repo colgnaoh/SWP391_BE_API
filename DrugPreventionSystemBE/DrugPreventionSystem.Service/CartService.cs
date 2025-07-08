@@ -36,12 +36,43 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 
         public async Task<IActionResult> AddCourseToCartAsync(Guid userId, AddToCartRequest request)
         {
-            var course = await _context.Courses.FirstOrDefaultAsync(c => c.Id == request.CourseId && !c.IsDeleted);
+            var course = await _context.Courses
+                                       .FirstOrDefaultAsync(c => c.Id == request.CourseId && !c.IsDeleted);
             if (course == null)
             {
                 return new NotFoundObjectResult(new BaseResponse { Success = false, Message = "Id khóa học không tồn tại." });
             }
 
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId && !u.IsDeleted);
+            if (user == null)
+            {
+                return new UnauthorizedObjectResult(new BaseResponse { Success = false, Message = "Người dùng không tồn tại hoặc đã bị vô hiệu hóa." });
+            }
+
+            if (course.TargetAudience != CourseTargetAudience.GeneralPublic)
+            {
+                CourseTargetAudience userMappedTargetAudience;
+
+                switch (user.AgeGroup)
+                {
+                    case AgeGroup.Student:
+                        userMappedTargetAudience = CourseTargetAudience.Student;
+                        break;
+                    case AgeGroup.UniversityStudent:
+                        userMappedTargetAudience = CourseTargetAudience.UniversityStudent;
+                        break;
+                    case AgeGroup.Parent:
+                        userMappedTargetAudience = CourseTargetAudience.Parent; 
+                        break;
+                    default:
+                        return new BadRequestObjectResult(new BaseResponse { Success = false, Message = "Nhóm tuổi của bạn không phù hợp để thêm khóa học này vào giỏ hàng." });
+                }
+
+                if (course.TargetAudience != userMappedTargetAudience)
+                {
+                    return new BadRequestObjectResult(new BaseResponse { Success = false, Message = $"Khóa học này chỉ dành cho đối tượng '{course.TargetAudience.ToString()}', không phù hợp với nhóm tuổi của bạn." });
+                }
+            }
             var existingCartItem = await _context.Carts
                 .FirstOrDefaultAsync(c => c.UserId == userId && c.CourseId == request.CourseId && !c.IsDeleted && c.Status == CartStatus.Pending);
 

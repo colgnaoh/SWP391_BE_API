@@ -17,7 +17,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Entity
         public RiskLevel RiskLevel { get; set; }
         public CourseStatus? Status { get; set; }
         
-        public targetAudience? TargetAudience { get; set; }
+        public CourseTargetAudience? TargetAudience { get; set; }
         public string ImageUrlsJson { get; set; }  // Cột lưu JSON trong DB
         public string VideoUrlsJson { get; set; }  // Cột lưu JSON trong DB
         public decimal? Price { get; set; }

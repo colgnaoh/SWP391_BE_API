@@ -11,7 +11,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CourseReqModel
         public Guid CategoryId { get; set; }
         public string? Content { get; set; }
         public CourseStatus Status { get; set; }
-        public targetAudience TargetAudience { get; set; }
+        public CourseTargetAudience TargetAudience { get; set; }
         public RiskLevel? RiskLevel { get; set; }
         public List<string> ImageUrls { get; set; }
         public List<string> VideoUrls { get; set; }
