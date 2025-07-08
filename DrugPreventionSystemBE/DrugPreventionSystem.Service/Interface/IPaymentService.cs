@@ -13,6 +13,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface
         Task<IActionResult> GetPaymentsByUserIdAsync(Guid userId);
         Task<IActionResult> UpdatePaymentStatusAsync(Guid paymentId, PaymentStatus newStatus);
         Task<IActionResult> GetPaymentHistoryByUserIdAsync(Guid userId);
-
+        Task<IActionResult> HandleStripeWebhookAsync(string json);
     }
 }

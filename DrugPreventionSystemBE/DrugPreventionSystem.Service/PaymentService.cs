@@ -617,5 +617,83 @@
 
                 return new OkObjectResult(new BaseResponse { Success = true, Message = $"Trạng thái thanh toán '{payment.PaymentNo}' đã được cập nhật thành '{newStatus}'." });
             }
+        public async Task<IActionResult> HandleStripeWebhookAsync(string json)
+        {
+            var stripeWebhookSecret = _configuration["Stripe:WebhookSecret"];
+            if (string.IsNullOrEmpty(stripeWebhookSecret))
+            {
+                Console.WriteLine("Stripe Webhook Secret is not configured.");
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
+
+            Stripe.Event stripeEvent;
+            try
+            {
+                stripeEvent = EventUtility.ParseEvent(json);
+            }
+            catch (StripeException e)
+            {
+                Console.WriteLine($"Stripe Webhook Error: {e.Message}");
+                return new BadRequestObjectResult(new BaseResponse { Success = false, Message = $"Webhook Error: {e.Message}" });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"General Webhook Error: {ex.Message}");
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
+
+            switch (stripeEvent.Type)
+            {
+                case "checkout.session.completed":
+                    {
+                        var session = stripeEvent.Data.Object as Stripe.Checkout.Session;
+                        if (session == null || session.Metadata == null)
+                        {
+                            Console.WriteLine("Checkout Session or Metadata is null.");
+                            return new BadRequestObjectResult(new BaseResponse { Success = false, Message = "Dữ liệu session hoặc metadata không hợp lệ." });
+                        }
+
+                        if (session.Metadata.TryGetValue("paymentId", out string paymentIdStr) &&
+                            Guid.TryParse(paymentIdStr, out Guid paymentId)) // Ensure paymentId is assigned here
+                        {
+                            var payment = await _context.Payments.FirstOrDefaultAsync(p => p.Id == paymentId);
+
+                            if (payment == null)
+                            {
+                                Console.WriteLine($"Payment with ID {paymentId} not found for checkout.session.completed.");
+                                return new NotFoundObjectResult(new BaseResponse { Success = false, Message = "Không tìm thấy thanh toán." });
+                            }
+
+                            if (payment.Status != PaymentStatus.Success)
+                            {
+                                var updateResult = await UpdatePaymentStatusAsync(payment.Id, PaymentStatus.Success);
+                                if (updateResult is OkObjectResult okResult && ((BaseResponse)okResult.Value).Success)
+                                {
+                                    Console.WriteLine($"Payment {payment.PaymentNo} (Order {payment.OrderId}) successfully updated to Success via webhook.");
+                                    return new OkObjectResult(new BaseResponse { Success = true, Message = "Xử lý webhook checkout.session.completed thành công." });
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"Failed to update payment {payment.PaymentNo} to Success: {((BaseResponse)((ObjectResult)updateResult).Value).Message}");
+                                    return updateResult;
+                                }
+                            }
+                            Console.WriteLine($"Payment {payment.PaymentNo} already in Success state. No update needed.");
+                            return new OkObjectResult(new BaseResponse { Success = true, Message = "Thanh toán đã ở trạng thái thành công." });
+                        }
+                        else
+                        {
+                            Console.WriteLine("Missing paymentId in metadata for checkout.session.completed.");
+                            return new BadRequestObjectResult(new BaseResponse { Success = false, Message = "Thiếu paymentId trong metadata." });
+                        }
+                    }
+
+                default:
+                    {
+                        Console.WriteLine($"Unhandled Stripe event type: {stripeEvent.Type}");
+                        return new OkObjectResult(new BaseResponse { Success = true, Message = $"Đã nhận sự kiện Stripe: {stripeEvent.Type} nhưng không có hành động cụ thể." });
+                    }
+            }
         }
+    }
     }
