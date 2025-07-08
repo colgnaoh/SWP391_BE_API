@@ -42,7 +42,10 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 
         public async Task<IActionResult> BulkUpdateAnswerOptionsAsync(BulkUpdateAnswerOptionModel model)
         {
-            var optionIds = model.Options.Select(o => o.Id).ToList();
+            var optionIds = model.Options
+                .Where(o => o.Id != Guid.Empty)
+                .Select(o => o.Id)
+                .ToList();
 
             var existingOptions = await _context.AnswerOptions
                 .Where(o => optionIds.Contains(o.Id) && !o.IsDeleted)
@@ -50,6 +53,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 
             foreach (var updateItem in model.Options)
             {
+                // Update existing
                 var option = existingOptions.FirstOrDefault(o => o.Id == updateItem.Id);
                 if (option != null)
                 {
@@ -57,11 +61,26 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     option.Score = updateItem.Score;
                     option.PositionOrder = updateItem.PositionOrder;
                 }
+                else
+                {
+                    // Add new (Id should be empty or a new Guid)
+                    var newOption = new AnswerOption
+                    {
+                        Id = updateItem.Id == Guid.Empty ? Guid.NewGuid() : updateItem.Id,
+                        QuestionId = updateItem.QuestionId, // Ensure this is included in your request model
+                        OptionContent = updateItem.OptionContent,
+                        Score = updateItem.Score,
+                        PositionOrder = updateItem.PositionOrder,
+                        IsDeleted = false
+                    };
+                    _context.AnswerOptions.Add(newOption);
+                }
             }
 
             await _context.SaveChangesAsync();
-            return new OkObjectResult("Cập nhật đáp án hàng loạt thành công.");
+            return new OkObjectResult("Cập nhật và thêm đáp án hàng loạt thành công.");
         }
+
 
 
         public async Task<IActionResult> DeleteAnswerOptionAsync(Guid id)
@@ -94,16 +113,26 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 }).ToListAsync();
         }
 
-        public async Task<IActionResult> GetAnswerOptionsByPageAsync(Guid? questionId, int pageNumber, int pageSize, string? filter, int? filterByScore)
+        public async Task<IActionResult> GetAnswerOptionsByPageAsync(
+    Guid? questionId,
+    int pageNumber,
+    int pageSize,
+    string? filter,
+    int? filterByScore)
         {
             var safePageNumber = pageNumber < 1 ? 1 : pageNumber;
             var safePageSize = pageSize < 1 ? 10 : pageSize;
 
             var query = _context.AnswerOptions
-                .Where(a => a.QuestionId == questionId && !a.IsDeleted)
+                .Where(a => !a.IsDeleted)
                 .AsQueryable();
 
-            if (!string.IsNullOrEmpty(filter))
+            if (questionId.HasValue)
+            {
+                query = query.Where(a => a.QuestionId == questionId.Value);
+            }
+
+            if (!string.IsNullOrWhiteSpace(filter))
             {
                 query = query.Where(a => EF.Functions.Like(a.OptionContent, $"%{filter}%"));
             }
@@ -138,6 +167,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 TotalPages = (int)Math.Ceiling((double)totalCount / safePageSize)
             });
         }
+
 
     }
 

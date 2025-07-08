@@ -8,6 +8,7 @@ using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Security.Claims;
 
 
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
@@ -15,6 +16,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
     public class AppointmentService : IAppointmentService
     {
         private readonly DrugPreventionDbContext _context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public AppointmentService(DrugPreventionDbContext context)
         {
@@ -70,8 +72,12 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
         public async Task<IActionResult> AssignConsultantAsync(AssignConsultantRequest request)
         {
             var appointment = await _context.Appointments.FirstOrDefaultAsync(a => a.Id == request.AppointmentId);
-            if (appointment == null || appointment.Status != AppointmentStatus.Pending)
-                return new NotFoundObjectResult("Cuộc hẹn không tồn tại hoặc đã được xử lý.");
+            if (appointment == null)
+                return new NotFoundObjectResult("Cuộc hẹn không tồn tại.");
+
+            // Only block reassignment if the appointment is completed or cancelled
+            if (appointment.Status == AppointmentStatus.Completed || appointment.Status == AppointmentStatus.Canceled)
+                return new BadRequestObjectResult("Không thể gán chuyên viên cho cuộc hẹn đã hoàn tất hoặc đã hủy.");
 
             // Kiểm tra consultant có tồn tại không
             var consultantExists = await _context.consultants.AnyAsync(c => c.Id == request.ConsultantUserId);
@@ -79,11 +85,17 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 return new NotFoundObjectResult("Không tìm thấy chuyên viên tư vấn.");
 
             appointment.ConsultantId = request.ConsultantUserId;
-            appointment.Status = AppointmentStatus.Assigned;
+
+            // Update status to Assigned if not already
+            if (appointment.Status != AppointmentStatus.Assigned)
+            {
+                appointment.Status = AppointmentStatus.Assigned;
+            }
 
             await _context.SaveChangesAsync();
             return new OkObjectResult("Đã gán chuyên viên thành công.");
         }
+
 
 
         //public async Task<IActionResult> MarkAsCompletedAsync(Guid consultantId, Guid appointmentId)
@@ -130,11 +142,31 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             var safePageNumber = pageNumber < 1 ? 1 : pageNumber;
             var safePageSize = pageSize < 1 ? 12 : pageSize;
 
+            var user = _httpContextAccessor.HttpContext?.User;
+            var userId = user?.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userRoles = user?.FindAll(ClaimTypes.Role).Select(r => r.Value).ToList() ?? new List<string>();
+
+
             var query = _context.Appointments
                 .Include(a => a.Consultant)
-                //.Where(a => a.UserId == userId)
                 .AsQueryable();
 
+            // Role-based filtering
+            if (userRoles.Contains("Admin") || userRoles.Contains("Manager"))
+            {
+                // No filtering – view all
+            }
+            else if (userRoles.Contains("Consultant"))
+            {
+                query = query.Where(a => a.ConsultantId.ToString() == userId);
+            }
+            else
+            {
+                // Default to regular user
+                query = query.Where(a => a.UserId.ToString() == userId);
+            }
+
+            // Optional filters
             if (status.HasValue)
                 query = query.Where(a => a.Status == status);
 
@@ -178,6 +210,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 
             return new OkObjectResult(result);
         }
+
 
         public async Task<IActionResult> CancelAppointmentAsync(Guid appointmentId)
         {
