@@ -1,4 +1,4 @@
-﻿    using CloudinaryDotNet.Actions; // Có vẻ không dùng, có thể xóa
+﻿    using CloudinaryDotNet.Actions; 
     using DrugPreventionSystemBE.DrugPreventionSystem.Core;
     using DrugPreventionSystemBE.DrugPreventionSystem.Data;
     using DrugPreventionSystemBE.DrugPreventionSystem.Entity;
@@ -13,7 +13,7 @@
     using Stripe;
     using Stripe.Checkout;
     using System.Security.Claims;
-    using System.Text.Json; // Có vẻ không dùng, có thể xóa
+    using System.Text.Json; 
 
     namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
     {
@@ -361,10 +361,6 @@
                 }
             }
 
-            // Các phương thức GetPaymentByIdAsync, GetAllPaymentsAsync, GetPaymentsByUserIdAsync, GetPaymentHistoryByUserIdAsync, UpdatePaymentStatusAsync
-            // Giữ nguyên như đã sửa đổi trước đó, vì chúng không thay đổi logic tạo thanh toán mà chỉ là truy vấn/cập nhật trạng thái
-            // dựa trên các trường có sẵn (bao gồm StripeCheckoutUrl).
-            // ... (phần còn lại của PaymentService không thay đổi)
             public async Task<IActionResult> GetPaymentByIdAsync(Guid paymentId)
             {
                 var currentUserId = GetCurrentUserId();
@@ -533,11 +529,6 @@
 
             public async Task<IActionResult> UpdatePaymentStatusAsync(Guid paymentId, PaymentStatus newStatus)
             {
-                var currentUserRole = GetCurrentUserRole();
-                if (currentUserRole != Enum.Role.Admin.ToString())
-                {
-                    return new UnauthorizedObjectResult(new BaseResponse { Success = false, Message = "Bạn không có quyền cập nhật trạng thái thanh toán." });
-                }
 
                 var payment = await _context.Payments.FirstOrDefaultAsync(p => p.Id == paymentId && !p.IsDeleted);
                 if (payment == null)

@@ -79,5 +79,13 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
             }
         }
 
+        [HttpPut("{paymentId}/status")] // Hoặc [HttpPatch("{paymentId}/status")]
+        public async Task<IActionResult> UpdatePaymentStatus(Guid paymentId, Enum.PaymentStatus request)
+        {
+
+            var result = await _paymentService.UpdatePaymentStatusAsync(paymentId, request);
+            return result;
+        }
+
     }
 }
