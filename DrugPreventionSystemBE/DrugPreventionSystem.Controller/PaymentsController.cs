@@ -45,6 +45,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
             var result = await _paymentService.GetPaymentByIdAsync(paymentId);
             return result;
         }
+        [AllowAnonymous]
         [HttpPost("stripe-webhook")] 
         public async Task<IActionResult> StripeWebhook()
         {
