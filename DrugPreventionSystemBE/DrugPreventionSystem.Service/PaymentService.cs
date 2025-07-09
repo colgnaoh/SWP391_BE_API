@@ -608,7 +608,7 @@
 
                 return new OkObjectResult(new BaseResponse { Success = true, Message = $"Trạng thái thanh toán '{payment.PaymentNo}' đã được cập nhật thành '{newStatus}'." });
             }
-        public async Task<IActionResult> HandleStripeWebhookAsync(string json)
+            public async Task<IActionResult> HandleStripeWebhookAsync(string json)
         {
             var stripeWebhookSecret = _configuration["Stripe:WebhookSecret"];
             if (string.IsNullOrEmpty(stripeWebhookSecret))
