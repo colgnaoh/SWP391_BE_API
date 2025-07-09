@@ -3,6 +3,7 @@
     public enum SurveyType
     {
         RiskAssessment,
-        Feedback,
+        PreFeedback,
+        PostFeedback
     }
 }

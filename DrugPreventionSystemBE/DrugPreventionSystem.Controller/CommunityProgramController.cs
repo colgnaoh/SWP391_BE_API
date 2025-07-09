@@ -1,7 +1,9 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CommunityProgramReqModel;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CommunityProgramsResModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Stripe;
 using System;
 using System.Threading.Tasks;
 
@@ -59,6 +61,53 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
 
             return await _programService.UpdateCommunityProgramAsync(id, request);
         }
+
+
+        [HttpPost("enroll")]
+        public async Task<IActionResult> Enroll([FromBody] EnrollProgramRequest request)
+        {
+            var userIdStr = User.FindFirst("sub")?.Value;
+            if (!Guid.TryParse(userIdStr, out var userId))
+            {
+                return Unauthorized(new EnrollProgramResponse
+                {
+                    Success = false,
+                    Message = "Token không hợp lệ hoặc thiếu thông tin người dùng."
+                });
+            }
+
+            var result = await _programService.EnrollToProgramAsync(request, userId);
+            return result.Success
+                ? Ok(result)
+                : BadRequest(result);
+        }
+
+
+        [HttpGet("history")]
+        [Authorize]
+        public async Task<IActionResult> GetHistory()
+        {
+            var userIdStr = User.FindFirst("sub")?.Value;
+            if (!Guid.TryParse(userIdStr, out var userId))
+            {
+                return Unauthorized(new
+                {
+                    Success = false,
+                    Message = "Token không hợp lệ hoặc thiếu thông tin người dùng."
+                });
+            }
+
+            var history = await _programService.GetEnrollmentHistoryAsync(userId, User);
+
+            return Ok(new
+            {
+                Success = true,
+                Message = "Lấy dữ liệu chương trình thành công.",
+                Data = history
+            });
+        }
+
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProgram(Guid id)

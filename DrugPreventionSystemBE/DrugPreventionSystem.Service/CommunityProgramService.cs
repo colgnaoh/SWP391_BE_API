@@ -6,6 +6,7 @@ using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CommunityProgramsRes
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
 {
@@ -238,6 +239,105 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
                 { StatusCode = 500 };
             }
         }
+
+
+        public async Task<EnrollProgramResponse> EnrollToProgramAsync(EnrollProgramRequest request, Guid userId)
+        {
+            var program = await _context.Programs
+                .FirstOrDefaultAsync(p => p.Id == request.ProgramId && !p.IsDeleted);
+
+            if (program == null)
+            {
+                return new EnrollProgramResponse
+                {
+                    Success = false,
+                    Message = "Chương trình không tồn tại."
+                };
+            }
+
+            bool alreadyEnrolled = await _context.ProgramRegistrations
+                .AnyAsync(r => r.UserId == userId && r.ProgramId == request.ProgramId && !r.IsDeleted);
+
+            if (alreadyEnrolled)
+            {
+                return new EnrollProgramResponse
+                {
+                    Success = false,
+                    Message = "Bạn đã tham gia chương trình này rồi."
+                };
+            }
+
+            var registration = new ProgramRegistration
+            {
+                UserId = userId,
+                ProgramId = request.ProgramId,
+                JoinDate = DateTime.UtcNow
+            };
+
+            _context.ProgramRegistrations.Add(registration);
+            await _context.SaveChangesAsync();
+
+            return new EnrollProgramResponse
+            {
+                Success = true,
+                Message = "Tham gia chương trình thành công."
+            };
+        }
+
+        public async Task<List<EnrollmentHistoryItem>> GetEnrollmentHistoryAsync(Guid userId, ClaimsPrincipal user)
+{
+    var isAdminOrManager = user.IsInRole("Admin") || user.IsInRole("Manager");
+
+    if (isAdminOrManager)
+    {
+        var programs = await _context.Programs
+            .Where(p => !p.IsDeleted)
+            .Select(p => new EnrollmentHistoryItem
+            {
+                ProgramId = p.Id,
+                Name = p.Name,
+                Description = p.Description,
+                Location = p.Location,
+                Type = p.Type,
+                StartDate = p.StartDate,
+                EndDate = p.EndDate,
+                ProgramImgUrl = p.ProgramImgUrl,
+                ProgramVidUrl = p.ProgramVidUrl,
+                RiskLevel = p.RiskLevel,
+                JoinDate = null,
+                UserCount = _context.ProgramRegistrations.Count(r => r.ProgramId == p.Id && !r.IsDeleted)
+            })
+            .ToListAsync();
+
+        return programs;
+    }
+    else
+    {
+        var joinedPrograms = await _context.ProgramRegistrations
+            .Include(r => r.Program)
+            .Where(r => r.UserId == userId && !r.IsDeleted && !r.Program.IsDeleted)
+            .OrderByDescending(r => r.JoinDate)
+            .ToListAsync();
+
+        var result = joinedPrograms.Select(r => new EnrollmentHistoryItem
+        {
+            ProgramId = r.Program.Id,
+            Name = r.Program.Name,
+            Description = r.Program.Description,
+            Location = r.Program.Location,
+            Type = r.Program.Type,
+            StartDate = r.Program.StartDate,
+            EndDate = r.Program.EndDate,
+            ProgramImgUrl = r.Program.ProgramImgUrl,
+            ProgramVidUrl = r.Program.ProgramVidUrl,
+            RiskLevel = r.Program.RiskLevel,
+            JoinDate = r.JoinDate,
+            UserCount = null // Không hiển thị
+        }).ToList();
+
+        return result;
+    }
+}
 
 
         public async Task<IActionResult> DeleteProgramAsync(Guid id)

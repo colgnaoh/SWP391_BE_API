@@ -47,6 +47,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Data
         public DbSet<OrderLog> OrderLogs { get; set; }
 
         public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<ProgramRegistration> ProgramRegistrations { get; set; }
+
 
 
 
