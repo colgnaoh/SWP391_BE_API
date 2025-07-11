@@ -47,6 +47,11 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
             return await _reviewService.GetReviewsByAppointmentIdAsync(appointmentId);
         }
 
+        [HttpGet("consultant/{consultantId}")]
+        public async Task<IActionResult> GetReviewsByConsultantId(Guid consultantId)
+        {
+            return await _reviewService.GetReviewsByConsultantIdAsync(consultantId);
+        }
 
         [HttpPost("course")]
         public async Task<IActionResult> CreateCourseReview([FromBody] CreateReviewCourseReqModel request)

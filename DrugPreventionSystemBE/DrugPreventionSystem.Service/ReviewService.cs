@@ -107,12 +107,24 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     })
                     .ToListAsync();
 
-                if (!reviews.Any())
-                {
-                    return new OkObjectResult(new BaseResponse(true, $"Không tìm thấy đánh giá nào cho khóa học ID '{courseId}'.", null));
-                }
+                var totalReviews = reviews.Count;
+                var averageRating = totalReviews > 0
+    ? Math.Round(reviews.Average(r => (double)r.Rating), 2)
+    : 0;
 
-                return new OkObjectResult(new BaseResponse(true, $"Lấy đánh giá cho khóa học ID '{courseId}' thành công.", reviews));
+
+                var response = new CourseReviewSummaryResModel
+                {
+                    TotalReviews = totalReviews,
+                    AverageRating = averageRating,
+                    Reviews = reviews
+                };
+
+                var message = totalReviews > 0
+                    ? $"Lấy đánh giá cho khóa học ID '{courseId}' thành công."
+                    : $"Không tìm thấy đánh giá nào cho khóa học ID '{courseId}'.";
+
+                return new OkObjectResult(new BaseResponse(true, message, response));
             }
             catch (Exception ex)
             {
@@ -120,6 +132,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 { StatusCode = 500 };
             }
         }
+
 
         public async Task<IActionResult> GetReviewsByUserIdAsync(Guid userId)
         {
@@ -184,6 +197,52 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             }
         }
 
+        public async Task<IActionResult> GetReviewsByConsultantIdAsync(Guid consultantId)
+        {
+            try
+            {
+                // Lấy danh sách review có liên kết tới các Appointment của consultant đó
+                var reviews = await _context.Reviews
+                    .Where(r => !r.IsDeleted && r.AppointmentId != null &&
+                                _context.Appointments.Any(a =>
+                                    a.Id == r.AppointmentId &&
+                                    a.ConsultantId == consultantId &&
+                                    a.Status != AppointmentStatus.Canceled))
+                    .Select(r => new ReviewResModel
+                    {
+                        Id = r.Id,
+                        AppointmentId = r.AppointmentId,
+                        UserId = r.UserId,
+                        Rating = r.Rating,
+                        Comment = r.Comment,
+                        CreatedAt = r.CreatedAt
+                    })
+                    .ToListAsync()  ;
+
+                var totalReviews = reviews.Count;
+                var averageRating = totalReviews > 0
+                    ? Math.Round(reviews.Average(r => (double)r.Rating), 2)
+                    : 0;
+
+                var response = new ConsultantReviewSummaryResModel
+                {
+                    TotalReviews = totalReviews,
+                    AverageRating = averageRating,
+                    Reviews = reviews
+                };
+
+                var message = totalReviews > 0
+                    ? $"Lấy đánh giá cho tư vấn viên ID '{consultantId}' thành công."
+                    : $"Không tìm thấy đánh giá nào cho tư vấn viên ID '{consultantId}'.";
+
+                return new OkObjectResult(new BaseResponse(true, message, response));
+            }
+            catch (Exception ex)
+            {
+                return new ObjectResult(new BaseResponse(false, $"Lỗi khi lấy đánh giá theo Consultant ID: {ex.Message}", null))
+                { StatusCode = 500 };
+            }
+        }
 
         public async Task<IActionResult> CreateReviewAsync(CreateReviewCourseReqModel request)
         {
