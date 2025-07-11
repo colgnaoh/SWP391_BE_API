@@ -109,7 +109,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             var cartItems = await _context.Carts
                 .Where(c => c.UserId == userId && !c.IsDeleted && c.Status == CartStatus.Pending)
                 .Include(c => c.Course)
-                .Select(c => new CartItemResponse
+                .Select(c => new    
                 {
                     CartId = c.Id,
                     CourseId = c.CourseId ?? Guid.Empty,

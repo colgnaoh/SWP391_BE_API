@@ -113,8 +113,6 @@ using DrugPreventionSystemBE.DrugPreventionSystem.Helpers;
                         Discount = course.Discount,
                         CreatedAt = course.CreatedAt,
                         Slug = course.Slug,
-                        IsInCart = isInCart,
-                        IsPurchased = isPurchased,
                         SessionList = course.Sessions.Select(s => new SessionResponseModel
                         {
                             Id = s.Id,

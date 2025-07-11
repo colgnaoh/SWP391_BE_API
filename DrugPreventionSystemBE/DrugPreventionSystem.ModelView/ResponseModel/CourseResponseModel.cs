@@ -18,8 +18,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel
         public decimal? Discount { get; set; }
         public string? Slug { get; set; }
         public DateTime? CreatedAt { get; set; }
-        public bool IsInCart { get; set; }
-        public bool IsPurchased { get; set; }
         public List<SessionResponseModel>? SessionList { get; set; }
         public RiskLevel RiskLevel { get; set; }
 
