@@ -79,3 +79,55 @@ node_modules/
 *.zip
 *.rar
 *.7z
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.log
+*.pdb
+*.opendb
+*.tlog
+*.cache
+*.obj
+*.bak
+*.sbr
+*.bsc
+*.map
+*.lib
+*.netmodule
+*.exp
+*.com
+*.dll
+*.exe
+*.ilk
+*.vshost.*
+*.vspscc
+*.vssscc
+*.buildlog
+*.orig
+*.ide
+*.intellisense
+
+# NuGet
+packages/
+*.nupkg
+*.snupkg
+
+# Binaries
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+*.dll
+*.exe
+
+# Other common
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Rider/JetBrains IDEs
+.idea/
+
+# macOS
+.DS_Store
