@@ -1,6 +1,8 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.SurveyReqModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
 {
@@ -18,12 +20,21 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
 
         //GET: api/survey/page
         [HttpGet("paged")]
-        public async Task<IActionResult> GetSurveysByPage(
-    [FromQuery] int pageNumber = 1,
-    [FromQuery] int pageSize = 10,
-    [FromQuery] string? filterByName = null)
+        [Authorize] // Ensure JWT authentication is required
+        public async Task<IActionResult> GetSurveysByPageAsync(
+        int pageNumber = 1,
+        int pageSize = 10,
+        string? filterByName = null)
         {
-            return await _surveyService.GetSurveysByPageAsync(pageNumber, pageSize, filterByName);
+            var userClaims = User;
+
+            var userIdClaim = userClaims.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var role = userClaims.FindFirst(ClaimTypes.Role)?.Value;
+
+            if (!Guid.TryParse(userIdClaim, out var userId))
+                return BadRequest("Invalid user ID in token.");
+
+            return await _surveyService.GetSurveysByPageWithStatusAsync(userId, role, pageNumber, pageSize, filterByName);
         }
 
 

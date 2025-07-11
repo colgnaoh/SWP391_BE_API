@@ -19,6 +19,9 @@ public class UserAnswerLog
     public Guid? ProgramId { get; set; }
     public CommunityProgram? Program { get; set; }
 
+    public Guid UserId { get; set; }
+    public User User { get; set; }
+
     [Column(TypeName = "nvarchar(255)")]
     public string? AnswerValue { get; set; }
 

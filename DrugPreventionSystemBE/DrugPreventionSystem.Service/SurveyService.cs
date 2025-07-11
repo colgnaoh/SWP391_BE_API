@@ -113,14 +113,19 @@ public class SurveyService : ISurveyService
         };
     }
 
-    public async Task<IActionResult> GetSurveysByPageAsync(int pageNumber, int pageSize, string? filterByName)
+    public async Task<IActionResult> GetSurveysByPageWithStatusAsync(
+        Guid userId,
+        string? role,
+        int pageNumber,
+        int pageSize,
+        string? filterByName)
     {
         var safePageNumber = pageNumber < 1 ? 1 : pageNumber;
         var safePageSize = pageSize < 1 ? 10 : pageSize;
 
         var query = _context.Surveys
-                            .Where(s => !s.IsDeleted)
-                            .AsQueryable();
+            .Where(s => !s.IsDeleted)
+            .AsQueryable();
 
         if (!string.IsNullOrEmpty(filterByName))
         {
@@ -137,9 +142,46 @@ public class SurveyService : ISurveyService
 
         var totalPages = (int)Math.Ceiling((double)totalCount / safePageSize);
 
-        var result = new SurveyPagedResultModel
+        // For customers: check if user completed the surveys
+        if (role?.ToLower() == "customer")
+        {
+            var surveyIds = surveys.Select(s => s.Id).ToList();
+
+            var completedSurveyIds = await _context.SurveyResults
+                .Where(r => r.UserId == userId && surveyIds.Contains(r.SurveyId))
+                .Select(r => r.SurveyId)
+                .Distinct()
+                .ToListAsync();
+
+            var result = new SurveyPagedResultModelWithStatus
+            {
+                Success = true,
+                PageNumber = safePageNumber,
+                PageSize = safePageSize,
+                TotalPages = totalPages,
+                TotalCount = totalCount,
+                Data = surveys.Select(s => new SurveyResponseModelWithStatus
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Description = s.Description,
+                    SurveyType = s.Type,
+                    CreatedAt = s.CreatedAt,
+                    IsCompleted = completedSurveyIds.Contains(s.Id)
+                }).ToList()
+            };
+
+            return new OkObjectResult(result);
+        }
+
+        // Other roles: return without IsCompleted
+        var adminResult = new SurveyPagedResultModel
         {
             Success = true,
+            PageNumber = safePageNumber,
+            PageSize = safePageSize,
+            TotalPages = totalPages,
+            TotalCount = totalCount,
             Data = surveys.Select(s => new SurveyResponseModel
             {
                 Id = s.Id,
@@ -147,14 +189,10 @@ public class SurveyService : ISurveyService
                 Description = s.Description,
                 SurveyType = s.Type,
                 CreatedAt = s.CreatedAt
-            }).ToList(),
-            PageNumber = safePageNumber,
-            PageSize = safePageSize,
-            TotalPages = totalPages,
-            TotalCount = totalCount
+            }).ToList()
         };
 
-        return new OkObjectResult(result);
+        return new OkObjectResult(adminResult);
     }
 
 
@@ -178,7 +216,8 @@ public class SurveyService : ISurveyService
                 SurveyResultId = surveyResultId,
                 QuestionId = answer.QuestionId,
                 AnswerOptionId = answer.AnswerOptionId,
-                Score = score
+                Score = score,
+                UserId = model.UserId
             });
         }
 
