@@ -1,6 +1,7 @@
 ﻿    using DrugPreventionSystemBE.DrugPreventionSystem.Data;
     using DrugPreventionSystemBE.DrugPreventionSystem.Entity;
-    using DrugPreventionSystemBE.DrugPreventionSystem.Helpers;
+using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
+using DrugPreventionSystemBE.DrugPreventionSystem.Helpers;
     using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ApiResponse;
     using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CourseReqModel;
     using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel;
@@ -65,7 +66,8 @@
                             Price = c.Price,
                             Discount = c.Discount,
                             CreatedAt = c.CreatedAt,
-                            Slug = c.Slug
+                            Slug = c.Slug,
+                            RiskLevel = c.RiskLevel
                         }).ToList(),
                         TotalCount = totalCount,
                         PageNumber = safePageNumber,
@@ -99,6 +101,7 @@
                     {
                         Id = course.Id,
                         UserId = (Guid)course.UserId,
+                        RiskLevel = course.RiskLevel,
                         CategoryId = course.CategoryId,
                         Name = course.Name,
                         Content = course.Content,
@@ -182,7 +185,7 @@
                         Discount = CourseCreateRequest.Discount,
                         CreatedAt = DateTime.UtcNow,
                         UpdatedAt = DateTime.UtcNow,
-                        IsDeleted = false
+                        IsDeleted = false,
                     };
 
                     var baseSlug = string.IsNullOrWhiteSpace(CourseCreateRequest.Slug)
@@ -206,6 +209,7 @@
                         Status = course.Status,
                         TargetAudience = course.TargetAudience,
                         Slug = course.Slug,
+                        RiskLevel = course.RiskLevel,
                     });
                 }
                 catch (Exception)
@@ -430,7 +434,8 @@
                             Price = c.Price,
                             Discount = c.Discount,
                             CreatedAt = c.CreatedAt,
-                            Slug = c.Slug
+                            Slug = c.Slug,
+                            RiskLevel = c.RiskLevel
                         })
                         .ToListAsync();
 

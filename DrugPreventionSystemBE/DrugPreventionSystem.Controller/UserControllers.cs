@@ -35,7 +35,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
 
         // GET: api/User        
         [HttpGet]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetUsersPaged(int pageNumber = 1, int pageSize = 10)
         {
             var result = await _userService.GetUsersByPageAsync(pageNumber, pageSize);
@@ -44,7 +43,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
 
         // GET: api/User/{id}
         [HttpGet("{id}")]
-        [Authorize]
         public async Task<IActionResult> GetUserById(Guid id)
         {
             var user = await _userService.GetUserByIdAsync(id);
@@ -93,7 +91,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
 
         // POST: api/User/search
         [HttpPost("search")]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> SearchUsers([FromBody] UserSearchModel search)
         {
             var result = await _userService.SearchUsersAsync(search);

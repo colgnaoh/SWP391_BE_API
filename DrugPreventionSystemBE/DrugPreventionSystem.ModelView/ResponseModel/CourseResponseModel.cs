@@ -21,6 +21,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel
         public bool IsInCart { get; set; }
         public bool IsPurchased { get; set; }
         public List<SessionResponseModel>? SessionList { get; set; }
+        public RiskLevel RiskLevel { get; set; }
 
     }
 }

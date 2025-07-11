@@ -79,7 +79,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             {
                 if (cartItem.CourseId.HasValue && cartItem.Course != null)
                 {
-                    decimal itemPrice = (decimal)(cartItem.Course.Price - cartItem.Course.Discount);
+                    decimal itemPrice = (decimal)(cartItem.Course.Price - (cartItem.Course.Price * (cartItem.Course.Discount / 100)));
                     totalOrderAmount += itemPrice;
 
                     var orderDetailId = _idServices.GenerateNextId();

@@ -112,6 +112,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
+
             var confirmationUrl = $"{_configuration["Frontend:BaseUrl"]}/confirm-email?token={token}";
             var emailBody = $"<p>Vui lòng xác nhận email của bạn bằng cách nhấn vào liên kết sau: <a href='{confirmationUrl}'>Xác nhận email</a></p>";
 
@@ -141,8 +142,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             }
 
             user.IsVerified = true;
-            user.VerificationToken = null;
-            user.VerificationTokenExpires = null;
 
             try
             {
@@ -236,7 +235,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             // Generate new verification token and update user
             var newToken = Guid.NewGuid().ToString();
             user.VerificationToken = newToken;
-            user.VerificationTokenExpires = DateTime.UtcNow.AddHours(24); // Token valid for 24 hours
+            user.VerificationTokenExpires = DateTime.UtcNow.AddHours(2); // Token valid for 24 hours
 
             try
             {
