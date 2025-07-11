@@ -7,7 +7,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Entity
     {
         public Guid? UserId { get; set; }
         public User? User { get; set; } // Assuming a User model exists
-        public Guid? SurveyId { get; set; }
+        public Guid SurveyId { get; set; }
         public Survey? Survey { get; set; } // Assuming a Survey model exists
         public int? TotalScore { get; set; }
         public RiskLevel? RiskLevel { get; set; }
