@@ -6,6 +6,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView.SurveyReqModel
     {
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
+        public int? EstimateTime { get; set; }
+
         public SurveyType SurveyType { get; set; }
     }
 

@@ -7,6 +7,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView.SurveyReqModel
         public string Name { get; set; }
         public string Description { get; set; }
         public SurveyType SurveyType { get; set; } // enum
+        public int? EstimateTime { get; set; }
+
     }
 }
 

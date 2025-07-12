@@ -8,6 +8,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView.SurveyResModel
         public string Name { get; set; }
         public string Description { get; set; }
         public SurveyType? Type { get; set; }
+        public int? EstimateTime { get; set; }
+
         public DateTime CreatedAt { get; set; }
         public List<QuestionModel> Questions { get; set; }
     }
