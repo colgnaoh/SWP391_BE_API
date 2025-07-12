@@ -20,18 +20,19 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
 
         // GET: api/Course
         [HttpGet]
-        [AllowAnonymous] // Public access
+        [AllowAnonymous]// Public access
         public async Task<IActionResult> GetCoursesByPage(
             [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 12,
-            [FromQuery] string? filterByName = null)
+            [FromQuery] string? filterByName = null,
+            [FromQuery] Guid? userId = null)
         {
-            return await _courseService.GetCoursesByPageAsync(pageNumber, pageSize, filterByName);
+            return await _courseService.GetCoursesByPageAsync(pageNumber, pageSize, filterByName, userId);
         }
 
         // GET: api/Course/{id}
         [HttpGet("{id}")]
-        [AllowAnonymous] // Public access
+        [Authorize] // Public access
         public async Task<IActionResult> GetCourseById(Guid id)
         {
             return await _courseService.GetCourseByIdAsync(id);

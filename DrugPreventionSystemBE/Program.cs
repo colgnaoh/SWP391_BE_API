@@ -146,6 +146,8 @@ namespace DrugPreventionSystemBE
                     ValidAudience = builder.Configuration["Jwt:Audience"],
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"]))
                 };
+
+
             });
 
 

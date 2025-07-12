@@ -5,7 +5,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface
 {
     public interface ICourseService
     {
-        Task<IActionResult> GetCoursesByPageAsync(int pageNumber, int pageSize, string? filterByName);
+        Task<IActionResult> GetCoursesByPageAsync(int pageNumber, int pageSize, string? filterByName, Guid? userId);
 
         Task<IActionResult> GetCourseByIdAsync(Guid courseId);
 

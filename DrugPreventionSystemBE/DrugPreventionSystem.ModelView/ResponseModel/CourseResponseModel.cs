@@ -20,6 +20,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel
         public DateTime? CreatedAt { get; set; }
         public List<SessionResponseModel>? SessionList { get; set; }
         public RiskLevel RiskLevel { get; set; }
-
+        public bool isPurchased { get; set; }
     }
 }
