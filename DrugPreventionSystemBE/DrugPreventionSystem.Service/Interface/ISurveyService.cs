@@ -11,6 +11,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface
         Task<IActionResult> DeleteSurveyAsync(Guid id);
         Task<SurveyDetailModel?> GetSurveyDetailAsync(Guid id);
         Task<SurveyResultResponseModel> SubmitSurveyAsync(SurveySubmitRequestModel model);
+        Task<SurveyResultDetailResponseModel?> GetSurveyResultAsync(Guid surveyResultId);
         Task<IActionResult> GetSurveysByPageWithStatusAsync(
                 Guid userId,
                 string? role,

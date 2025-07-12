@@ -77,5 +77,16 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
             var result = await _surveyService.SubmitSurveyAsync(model);
             return Ok(result);
         }
+
+        [HttpGet("survey-result/{id}")]
+        public async Task<IActionResult> GetSurveyResult(Guid id)
+        {
+            var result = await _surveyService.GetSurveyResultAsync(id);
+            if (result == null)
+                return NotFound(new { Message = "Kết quả khảo sát không tồn tại." });
+
+            return Ok(result);
+        }
+
     }
 }

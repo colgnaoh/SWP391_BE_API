@@ -250,6 +250,46 @@ public class SurveyService : ISurveyService
         };
     }
 
+    public async Task<SurveyResultDetailResponseModel?> GetSurveyResultAsync(Guid surveyResultId)
+    {
+        var surveyResult = await _context.SurveyResults
+            .Where(sr => sr.Id == surveyResultId)
+            .FirstOrDefaultAsync();
+
+        if (surveyResult == null)
+            return null;
+
+        var answers = await _context.UserAnswerLogs
+            .Where(log => log.SurveyResultId == surveyResultId)
+            .Select(log => new UserAnswerDetail
+            {
+                QuestionId = log.QuestionId,
+                AnswerOptionId = log.AnswerOptionId,
+                QuestionContent = _context.Questions
+                    .Where(q => q.Id == log.QuestionId)
+                    .Select(q => q.QuestionContent)
+                    .FirstOrDefault(),
+                AnswerOptionContent = log.AnswerOptionId != null
+                    ? _context.AnswerOptions
+                        .Where(a => a.Id == log.AnswerOptionId)
+                        .Select(a => a.OptionContent)
+                        .FirstOrDefault()
+                    : null,
+                Score = log.Score
+            }).ToListAsync();
+
+        return new SurveyResultDetailResponseModel
+        {
+            SurveyResultId = surveyResult.Id,
+            SurveyId = surveyResult.SurveyId,
+            UserId = surveyResult.UserId,
+            TotalScore = surveyResult.TotalScore,
+            RiskLevel = surveyResult.RiskLevel,
+            Answers = answers
+        };
+    }
+
+
     private RiskLevel GetRiskLevel(int score)
     {
         return score switch
