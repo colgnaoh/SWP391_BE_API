@@ -31,11 +31,11 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
         }
 
         // GET: api/Course/{id}
-        [HttpGet("{id}")]
-        [Authorize] // Public access
-        public async Task<IActionResult> GetCourseById(Guid id)
+        [HttpGet("{courseId}")]
+        [AllowAnonymous] // Public access
+        public async Task<IActionResult> GetCourseById(Guid courseId, [FromQuery] Guid? userId = null)
         {
-            return await _courseService.GetCourseByIdAsync(id);
+            return await _courseService.GetCourseByIdAsync(courseId, userId);
         }
 
         // POST: api/Course

@@ -140,7 +140,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             }
         }
 
-        public async Task<IActionResult> GetCourseByIdAsync(Guid courseId)
+        public async Task<IActionResult> GetCourseByIdAsync(Guid courseId, Guid? userId = null)
         {
             try
             {
@@ -154,7 +154,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 
                 if (course == null)
                     return new NotFoundObjectResult("Không tìm thấy khóa học.");
-                Guid? currentUserId = GetCurrentUserId();
+                Guid? currentUserId = userId;
                 bool isPurchasedLocal = false;
 
                 if (currentUserId.HasValue)

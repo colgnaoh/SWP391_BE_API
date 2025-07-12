@@ -7,7 +7,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface
     {
         Task<IActionResult> GetCoursesByPageAsync(int pageNumber, int pageSize, string? filterByName, Guid? userId);
 
-        Task<IActionResult> GetCourseByIdAsync(Guid courseId);
+        Task<IActionResult> GetCourseByIdAsync(Guid courseId, Guid? userId);
 
         Task<IActionResult> CreateCourseAsync(CourseCreateModel courseCreateRequest);
 
