@@ -12,6 +12,7 @@ public class Survey : BaseEnity
     public string? Description { get; set; }
 
     public SurveyType? Type { get; set; }  // Enum
+    public int? EstimateTime { get; set; }
 
     public ICollection<Question> Questions { get; set; }
     public ICollection<SurveyResult> SurveyResults { get; set; }

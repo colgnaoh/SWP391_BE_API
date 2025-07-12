@@ -26,8 +26,10 @@ public class SurveyService : ISurveyService
             Name = model.Name,
             Description = model.Description,
             Type = model.SurveyType,
+            EstimateTime = model.EstimateTime,
             CreatedAt = DateTime.UtcNow
         };
+
 
         _context.Surveys.Add(survey);
         await _context.SaveChangesAsync();
@@ -45,7 +47,9 @@ public class SurveyService : ISurveyService
         survey.Name = model.Name;
         survey.Description = model.Description;
         survey.Type = model.SurveyType;
+        survey.EstimateTime = model.EstimateTime;
         survey.UpdatedAt = DateTime.UtcNow;
+
 
         await _context.SaveChangesAsync();
 
@@ -96,6 +100,7 @@ public class SurveyService : ISurveyService
             Description = survey.Description,
             Type = survey.Type,
             CreatedAt = survey.CreatedAt,
+            EstimateTime = survey.EstimateTime,
             Questions = survey.Questions.OrderBy(q => q.PositionOrder).Select(q => new QuestionModel
             {
                 Id = q.Id,
@@ -166,6 +171,7 @@ public class SurveyService : ISurveyService
                     Name = s.Name,
                     Description = s.Description,
                     SurveyType = s.Type,
+                    EstimateTime = s.EstimateTime,
                     CreatedAt = s.CreatedAt,
                     IsCompleted = completedSurveyIds.Contains(s.Id)
                 }).ToList()
@@ -188,6 +194,7 @@ public class SurveyService : ISurveyService
                 Name = s.Name,
                 Description = s.Description,
                 SurveyType = s.Type,
+                EstimateTime = s.EstimateTime,
                 CreatedAt = s.CreatedAt
             }).ToList()
         };
