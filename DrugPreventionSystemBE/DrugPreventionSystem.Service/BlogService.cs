@@ -44,6 +44,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             {
                 Id = nextId, // Sử dụng ID được tạo từ IdServices
                 UserId = userId, // Gán UserId đã lấy từ token
+                Title = request.Title,
                 Content = request.Content,
                 BlogImgUrl = request.BlogImgUrl,
                 CreatedAt = DateTime.UtcNow,
@@ -87,6 +88,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 {
                     Id = b.Id,
                     UserId = (Guid)b.UserId,
+                    Title = b.Title,
                     Content = b.Content,
                     BlogImgUrl = b.BlogImgUrl,
                     CreatedAt = b.CreatedAt,
@@ -118,6 +120,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             {
                 Id = blog.Id,
                 UserId = (Guid)blog.UserId,
+                Title = blog.Title,
                 Content = blog.Content,
                 BlogImgUrl = blog.BlogImgUrl,
                 CreatedAt = blog.CreatedAt,
@@ -156,6 +159,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 {
                     Id = b.Id,
                     UserId = (Guid)b.UserId,
+                    Title = b.Title,
                     Content = b.Content,
                     BlogImgUrl = b.BlogImgUrl,
                     CreatedAt = b.CreatedAt,
@@ -196,6 +200,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             }
 
             // Update fields
+            blog.Title = request.Title;
             blog.Content = request.Content;
             blog.BlogImgUrl = request.BlogImgUrl;
             blog.UpdatedAt = DateTime.UtcNow;

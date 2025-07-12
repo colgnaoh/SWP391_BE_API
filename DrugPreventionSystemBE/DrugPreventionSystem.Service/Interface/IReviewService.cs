@@ -1,6 +1,7 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ReviewReqModel;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface
 {
@@ -15,5 +16,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface
         Task<IActionResult> GetReviewsByUserIdAsync(Guid userId);
         Task<IActionResult> GetReviewsByCourseIdAsync(Guid courseId);
         Task<IActionResult> GetReviewsByAppointmentIdAsync(Guid appointmentId);
+        Task<IActionResult> GetReviewsByConsultantIdAsync(Guid consultantId);
     }
 }

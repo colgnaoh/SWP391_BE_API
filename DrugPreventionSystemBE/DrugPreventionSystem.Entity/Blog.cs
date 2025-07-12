@@ -7,6 +7,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Entity
     {
         public Guid? UserId { get; set; }    
         public User? User { get; set; }
+        public string? Title { get; set; }
+
         public string? Content { get; set; }
         public string? BlogImgUrl { get; set; }
 

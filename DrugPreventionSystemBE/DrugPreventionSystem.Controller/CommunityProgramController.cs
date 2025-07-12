@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Stripe;
 using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
@@ -66,7 +67,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
         [HttpPost("enroll")]
         public async Task<IActionResult> Enroll([FromBody] EnrollProgramRequest request)
         {
-            var userIdStr = User.FindFirst("sub")?.Value;
+            var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (!Guid.TryParse(userIdStr, out var userId))
             {
                 return Unauthorized(new EnrollProgramResponse
@@ -87,7 +88,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
         [Authorize]
         public async Task<IActionResult> GetHistory()
         {
-            var userIdStr = User.FindFirst("sub")?.Value;
+            var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (!Guid.TryParse(userIdStr, out var userId))
             {
                 return Unauthorized(new
