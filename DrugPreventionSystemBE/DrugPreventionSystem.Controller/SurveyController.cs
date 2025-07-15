@@ -51,6 +51,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
 
         // POST: api/survey
         [HttpPost]
+        [Authorize(Roles = "Admin, Manager")]
         public async Task<IActionResult> CreateSurvey([FromBody] SurveyCreateModel model)
         {
             return await _surveyService.CreateSurveyAsync(model);
@@ -58,6 +59,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
 
         // PUT: api/survey/{id}
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin, Manager")]
         public async Task<IActionResult> UpdateSurvey(Guid id, [FromBody] SurveyUpdateModel model)
         {
             return await _surveyService.UpdateSurveyAsync(id, model);
@@ -65,6 +67,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
 
         // DELETE: api/survey/{id}
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin, Manager")]
         public async Task<IActionResult> DeleteSurvey(Guid id)
         {
             return await _surveyService.DeleteSurveyAsync(id);
@@ -72,6 +75,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
 
         // POST: api/survey/submit
         [HttpPost("submit")]
+        
         public async Task<IActionResult> SubmitSurvey([FromBody] SurveySubmitRequestModel model)
         {
             var result = await _surveyService.SubmitSurveyAsync(model);

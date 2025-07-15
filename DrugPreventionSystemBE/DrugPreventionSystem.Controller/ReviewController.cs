@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
 {
-    [Authorize]
+    
     [Route("api/review")]
     [ApiController]
     public class ReviewController : ControllerBase
@@ -54,12 +54,14 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
         }
 
         [HttpPost("course")]
+        [Authorize]
         public async Task<IActionResult> CreateCourseReview([FromBody] CreateReviewCourseReqModel request)
         {
             return await _reviewService.CreateReviewAsync(request);
         }
 
         [HttpPost("appointment")]
+        [Authorize]
         public async Task<IActionResult> CreateAppointmentReview([FromBody] CreateAppointmentReviewReqModel request)
         {
             return await _reviewService.CreateAppointmentReviewAsync(request);
@@ -67,12 +69,14 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
 
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateReviewReqModel request)
         {
             return await _reviewService.UpdateReviewAsync(id, request);
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> Delete(Guid id)
         {
             return await _reviewService.DeleteReviewAsync(id);
