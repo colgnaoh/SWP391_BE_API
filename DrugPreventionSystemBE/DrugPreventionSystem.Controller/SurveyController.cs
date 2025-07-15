@@ -20,7 +20,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
 
         //GET: api/survey/page
         [HttpGet("paged")]
-        [Authorize] // Ensure JWT authentication is required
+       
         public async Task<IActionResult> GetSurveysByPageAsync(
         int pageNumber = 1,
         int pageSize = 10,
