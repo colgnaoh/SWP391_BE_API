@@ -6,6 +6,7 @@ using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.SurveyResModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 public class SurveyService : ISurveyService
 {
@@ -119,11 +120,10 @@ public class SurveyService : ISurveyService
     }
 
     public async Task<IActionResult> GetSurveysByPageWithStatusAsync(
-        Guid userId,
-        string? role,
-        int pageNumber,
-        int pageSize,
-        string? filterByName)
+    Guid? userId,
+    int pageNumber,
+    int pageSize,
+    string? filterByName)
     {
         var safePageNumber = pageNumber < 1 ? 1 : pageNumber;
         var safePageSize = pageSize < 1 ? 10 : pageSize;
@@ -147,8 +147,47 @@ public class SurveyService : ISurveyService
 
         var totalPages = (int)Math.Ceiling((double)totalCount / safePageSize);
 
-        // For customers: check if user completed the surveys
-        if (role?.ToLower() == "customer")
+        // If userId is not provided, return basic survey list
+        if (userId == null || userId == Guid.Empty)
+        {
+            var result = new SurveyPagedResultModelWithStatus
+            {
+                Success = true,
+                PageNumber = safePageNumber,
+                PageSize = safePageSize,
+                TotalPages = totalPages,
+                TotalCount = totalCount,
+                Data = surveys.Select(s => new SurveyResponseModelWithStatus
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Description = s.Description,
+                    SurveyType = s.Type,
+                    EstimateTime = s.EstimateTime,
+                    CreatedAt = s.CreatedAt,
+                    IsCompleted = false // or you can use `null` if IsCompleted is nullable
+                }).ToList()
+            };
+
+            return new OkObjectResult(result);
+        }
+
+        // If userId exists, fetch user role
+        var user = await _context.Users
+            .FirstOrDefaultAsync(u => u.Id == userId && !u.IsDeleted);
+
+        if (user == null)
+        {
+            return new NotFoundObjectResult(new
+            {
+                Success = false,
+                Message = "User not found"
+            });
+        }
+
+        var role = user.Role.ToString().ToLower();
+
+        if (role == "customer")
         {
             var surveyIds = surveys.Select(s => s.Id).ToList();
 
@@ -180,27 +219,30 @@ public class SurveyService : ISurveyService
             return new OkObjectResult(result);
         }
 
-        // Other roles: return without IsCompleted
-        var adminResult = new SurveyPagedResultModel
+        // If not customer
+        var generalResult = new SurveyPagedResultModelWithStatus
         {
             Success = true,
             PageNumber = safePageNumber,
             PageSize = safePageSize,
             TotalPages = totalPages,
             TotalCount = totalCount,
-            Data = surveys.Select(s => new SurveyResponseModel
+            Data = surveys.Select(s => new SurveyResponseModelWithStatus
             {
                 Id = s.Id,
                 Name = s.Name,
                 Description = s.Description,
                 SurveyType = s.Type,
                 EstimateTime = s.EstimateTime,
-                CreatedAt = s.CreatedAt
+                CreatedAt = s.CreatedAt,
+                IsCompleted = null 
             }).ToList()
         };
 
-        return new OkObjectResult(adminResult);
+        return new OkObjectResult(generalResult);
     }
+
+
 
 
     public async Task<SurveyResultResponseModel> SubmitSurveyAsync(SurveySubmitRequestModel model)

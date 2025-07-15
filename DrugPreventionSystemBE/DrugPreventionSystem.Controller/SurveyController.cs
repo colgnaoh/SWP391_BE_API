@@ -20,21 +20,13 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
 
         //GET: api/survey/page
         [HttpGet("paged")]
-       
-        public async Task<IActionResult> GetSurveysByPageAsync(
-        int pageNumber = 1,
-        int pageSize = 10,
-        string? filterByName = null)
+        public async Task<IActionResult> GetSurveysByPageWithStatusAsync(
+    [FromQuery] Guid? userId,
+    [FromQuery] int pageNumber = 1,
+    [FromQuery] int pageSize = 10,
+    [FromQuery] string? filterByName = null)
         {
-            var userClaims = User;
-
-            var userIdClaim = userClaims.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var role = userClaims.FindFirst(ClaimTypes.Role)?.Value;
-
-            if (!Guid.TryParse(userIdClaim, out var userId))
-                return BadRequest("Invalid user ID in token.");
-
-            return await _surveyService.GetSurveysByPageWithStatusAsync(userId, role, pageNumber, pageSize, filterByName);
+            return await _surveyService.GetSurveysByPageWithStatusAsync(userId, pageNumber, pageSize, filterByName);
         }
 
 

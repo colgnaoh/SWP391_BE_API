@@ -2,7 +2,7 @@
 {
     public class SurveyResponseModelWithStatus : SurveyResponseModel
     {
-        public bool IsCompleted { get; set; }
+        public bool? IsCompleted { get; set; }
 
     }
 }
