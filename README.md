@@ -18,6 +18,11 @@ JWT Authentication
 
 Deployed on Render
 
+☁️ Database Information
+
+
+Recommended to store connection strings securely using User Secrets or Environment Variables
+
 📦 Features
 ✅ Authentication & Authorization (JWT-based)
 
