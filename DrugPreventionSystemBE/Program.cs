@@ -129,11 +129,11 @@ namespace DrugPreventionSystemBE
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme; // Đặt DefaultChallengeScheme là JWT Bearer
             })
             .AddCookie()
-            .AddFacebook(facebookOptions =>
-            {
-                facebookOptions.AppId = builder.Configuration["Authentication:Facebook:AppId"];
-                facebookOptions.AppSecret = builder.Configuration["Authentication:Facebook:AppSecret"];
-            })
+            //.AddFacebook(facebookOptions =>
+            //{
+            //    facebookOptions.AppId = builder.Configuration["Authentication:Facebook:AppId"];
+            //    facebookOptions.AppSecret = builder.Configuration["Authentication:Facebook:AppSecret"];
+            //})
             .AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
