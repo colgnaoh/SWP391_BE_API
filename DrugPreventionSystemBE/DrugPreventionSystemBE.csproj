@@ -9,9 +9,13 @@
 
   <ItemGroup>
     <Compile Remove="DTOs\**" />
+    <Compile Remove="ResponeFormat\**" />
     <Content Remove="DTOs\**" />
+    <Content Remove="ResponeFormat\**" />
     <EmbeddedResource Remove="DTOs\**" />
+    <EmbeddedResource Remove="ResponeFormat\**" />
     <None Remove="DTOs\**" />
+    <None Remove="ResponeFormat\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,7 +46,6 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
-    <Folder Include="ResponeFormat\" />
   </ItemGroup>
 
 </Project>
