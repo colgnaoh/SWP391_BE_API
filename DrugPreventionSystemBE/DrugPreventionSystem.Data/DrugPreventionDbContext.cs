@@ -50,7 +50,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Data
         public DbSet<ProgramRegistration> ProgramRegistrations { get; set; }
 
         public DbSet<ProgramFavorite> ProgramFavorites { get; set; }
-
+        public DbSet<Favorite> Favorites { get; set; }
 
 
 
@@ -262,6 +262,11 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Data
                 .WithMany(p => p.ProgramFavorites)
                 .HasForeignKey(f => f.ProgramId);
 
+            //Favorite - user
+            modelBuilder.Entity<Favorite>()
+                .HasOne(f => f.User)
+                .WithMany()
+                .HasForeignKey(f => f.UserId);
 
             // Global filter: exclude soft-deleted users
             modelBuilder.Entity<User>().HasQueryFilter(u => !u.IsDeleted);
