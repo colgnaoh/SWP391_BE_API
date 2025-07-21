@@ -49,6 +49,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Data
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<ProgramRegistration> ProgramRegistrations { get; set; }
 
+        public DbSet<ProgramFavorite> ProgramFavorites { get; set; }
 
 
 
@@ -248,6 +249,19 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Data
                 .HasForeignKey(c => c.OrderId)  
                 .IsRequired(false)             
                 .OnDelete(DeleteBehavior.SetNull);
+
+            //programFavorite - user
+            modelBuilder.Entity<ProgramFavorite>()
+                .HasOne(f => f.User)
+                .WithMany(u => u.ProgramFavorites)
+                .HasForeignKey(f => f.UserId);
+
+            //programFavorite - CommunityProgram
+            modelBuilder.Entity<ProgramFavorite>()
+                .HasOne(f => f.Program)
+                .WithMany(p => p.ProgramFavorites)
+                .HasForeignKey(f => f.ProgramId);
+
 
             // Global filter: exclude soft-deleted users
             modelBuilder.Entity<User>().HasQueryFilter(u => !u.IsDeleted);

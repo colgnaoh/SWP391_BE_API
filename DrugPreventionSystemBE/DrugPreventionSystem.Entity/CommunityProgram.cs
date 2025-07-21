@@ -22,6 +22,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Entity
         public ICollection<UserAnswerLog> UserAnswerLogs { get; set; } = new List<UserAnswerLog>();
 
         public ICollection<Course> Courses { get; set; } = new List<Course>();
+        public ICollection<ProgramFavorite> ProgramFavorites { get; set; }
+
 
     }
 }

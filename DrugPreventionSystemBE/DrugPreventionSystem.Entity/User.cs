@@ -43,5 +43,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Entity
         public ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
         public ICollection<Order> Orders { get; set; } = new List<Order>();
         public ICollection<OrderLog> OrderLogs { get; set; } = new List<OrderLog>();
+        public ICollection<ProgramFavorite> ProgramFavorites { get; set; }
+
     }
 }
