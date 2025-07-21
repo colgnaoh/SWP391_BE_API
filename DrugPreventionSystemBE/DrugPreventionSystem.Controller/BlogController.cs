@@ -75,7 +75,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
             }
             else
             {
-                var blog = await _blogService.GetBlogByIdAsync(id); // Await the task to get the actual result
+                var blog = await _blogService.GetBlogByIdAsync(id); 
                 return Ok(new ApiResponse<IActionResult>
                 {
                     Success = true,

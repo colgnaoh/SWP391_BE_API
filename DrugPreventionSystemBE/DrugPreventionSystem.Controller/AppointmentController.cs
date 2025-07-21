@@ -59,11 +59,11 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
         [HttpGet("search")]
         [Authorize]
         public async Task<IActionResult> GetAppointmentsByFilter(
-    [FromQuery] AppointmentStatus? status = null,
-    [FromQuery] DateTime? fromDate = null,
-    [FromQuery] DateTime? toDate = null,
-    [FromQuery] int pageNumber = 1,
-    [FromQuery] int pageSize = 12)
+        [FromQuery] AppointmentStatus? status = null,
+        [FromQuery] DateTime? fromDate = null,
+        [FromQuery] DateTime? toDate = null,
+        [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 12)
         {
             var user = HttpContext.User;
             var userId = user.FindFirstValue(ClaimTypes.NameIdentifier);

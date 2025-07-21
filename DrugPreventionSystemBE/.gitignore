@@ -55,7 +55,7 @@
 
 # Rider
 .idea/
-
+.json/
 # VS Code
 .vscode/
 
