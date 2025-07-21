@@ -7,6 +7,7 @@ obj/
 [Oo]bj/
 *.suo
 *.user
+*.json
 *.useros
 *.bak
 *.log
