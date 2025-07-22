@@ -173,6 +173,7 @@ namespace DrugPreventionSystemBE
 
             var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
             app.Urls.Add($"http://*:{port}");
+            app.MapGet("/", () => Results.Redirect("/swagger"));
 
             app.Lifetime.ApplicationStarted.Register(() =>
             {
