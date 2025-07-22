@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "D:\\SWP\\SWP391_BE_API\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|d:\\swp\\swp391_be_api\\drugpreventionsystembe\\drugpreventionsystem.service\\favoriteservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\drugpreventionsystem.service\\favoriteservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|d:\\swp\\swp391_be_api\\drugpreventionsystembe\\drugpreventionsystem.service\\interface\\ifavoriteservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{64CD3937-DCF2-4860-A20A-68F5ADE8F0EB}|DrugPreventionSystemBE\\DrugPreventionSystemBE.csproj|solutionrelative:drugpreventionsystembe\\drugpreventionsystem.service\\interface\\ifavoriteservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -47,6 +51,19 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "FavoriteService.cs",
+              "DocumentMoniker": "D:\\SWP\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Service\\FavoriteService.cs",
+              "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.Service\\FavoriteService.cs",
+              "ToolTip": "D:\\SWP\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Service\\FavoriteService.cs",
+              "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.Service\\FavoriteService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-22T08:12:18.29Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "IFavoriteService.cs",
               "DocumentMoniker": "D:\\SWP\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Service\\Interface\\IFavoriteService.cs",
               "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.Service\\Interface\\IFavoriteService.cs",
@@ -59,7 +76,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "FavoriteItemResponseModel.cs",
               "DocumentMoniker": "D:\\SWP\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.ModelView\\AddFavoriteResModel\\FavoriteItemResponseModel.cs",
               "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.ModelView\\AddFavoriteResModel\\FavoriteItemResponseModel.cs",
@@ -71,7 +88,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "AddFavoriteRequestModel.cs",
               "DocumentMoniker": "D:\\SWP\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.ModelView\\AddFavoriteReqModel\\AddFavoriteRequestModel.cs",
               "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.ModelView\\AddFavoriteReqModel\\AddFavoriteRequestModel.cs",
@@ -79,12 +96,11 @@
               "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.ModelView\\AddFavoriteReqModel\\AddFavoriteRequestModel.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-21T09:38:13.63Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-21T09:38:13.63Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "FavoriteType.cs",
               "DocumentMoniker": "D:\\SWP\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Enum\\FavoriteType.cs",
               "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.Enum\\FavoriteType.cs",
@@ -96,7 +112,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "Favorite.cs",
               "DocumentMoniker": "D:\\SWP\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\Favorite.cs",
               "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\Favorite.cs",
