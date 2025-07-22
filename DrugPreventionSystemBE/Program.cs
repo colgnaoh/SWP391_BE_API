@@ -113,6 +113,7 @@ namespace DrugPreventionSystemBE
             builder.Services.AddScoped<ISurveyService, SurveyService>();
             builder.Services.AddScoped<IAnswerOptionService, AnswerOptionService>();
             builder.Services.AddScoped<IQuestionService, QuestionService>();
+            builder.Services.AddScoped<IFavoriteService, FavoriteService>();
             Env.Load();
 
             StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];

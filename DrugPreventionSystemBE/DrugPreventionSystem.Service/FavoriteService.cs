@@ -1,15 +1,46 @@
-﻿using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
+﻿using DrugPreventionSystemBE.DrugPreventionSystem.Data;
+using DrugPreventionSystemBE.DrugPreventionSystem.Entity;
+using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.AddFavoriteReqModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.AddFavoriteResModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 {
     public class FavoriteService : IFavoriteService
     {
-        public Task<bool> AddToFavoriteAsync(Guid userId, AddFavoriteRequestModel model)
+        private readonly DrugPreventionDbContext _context;
+
+        public FavoriteService(DrugPreventionDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+
+        public async Task<bool> AddToFavoriteAsync(Guid userId, AddFavoriteRequestModel model)
+        {
+            var exists = await _context.Favorites.AnyAsync(f =>
+                f.UserId == userId && f.TargetId == model.TargetId &&
+                f.TargetType == model.TargetType && !f.IsDeleted);
+
+            if (exists) return false;
+
+            var favorite = new Favorite
+            {
+                Id = Guid.NewGuid(),
+                UserId = userId,
+                TargetId = model.TargetId,
+                TargetType = model.TargetType,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+
+            _context.Favorites.Add(favorite);
+            await _context.SaveChangesAsync();
+
+            return true;
         }
 
         public Task<List<FavoriteItemResponseModel>> GetFavoritesAsync(Guid userId)
