@@ -21,7 +21,7 @@ Deployed on Render
 ☁️ Database Information
 
 
-Recommended to store connection strings securely using User Secrets or Environment Variables
+SQL Server database is hosted on AWS RDS
 
 📦 Features
 
