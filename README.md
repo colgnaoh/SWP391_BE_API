@@ -24,6 +24,7 @@ Deployed on Render
 Recommended to store connection strings securely using User Secrets or Environment Variables
 
 📦 Features
+
 ✅ Authentication & Authorization (JWT-based)
 
 ✅ User Management
