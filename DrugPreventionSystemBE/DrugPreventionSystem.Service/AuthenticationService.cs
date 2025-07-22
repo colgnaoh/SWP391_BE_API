@@ -114,7 +114,25 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 
 
             var confirmationUrl = $"{_configuration["Frontend:BaseUrl"]}/confirm-email?token={token}";
-            var emailBody = $"<p>Vui lòng xác nhận email của bạn bằng cách nhấn vào liên kết sau: <a href='{confirmationUrl}'>Xác nhận email</a></p>";
+            var emailBody = $@"
+            <div style='font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9;'>
+                <div style='max-width: 600px; margin: auto; background: white; border-radius: 8px; overflow: hidden;'>
+                    <div style='background: #4CAF50; color: white; padding: 20px; text-align: center;'>
+                        <h2>Xác Thực Tài Khoản</h2>
+                    </div>
+                    <div style='padding: 30px; color: #333;'>
+                        <p>Chào {request.FirstName},</p>
+                        <p>Cảm ơn bạn đã đăng ký tài khoản tại <strong>Drug Prevention System</strong>.</p>
+                        <p>Vui lòng nhấn vào nút bên dưới để xác nhận email của bạn:</p>
+                        <div style='text-align: center; margin: 20px 0;'>
+                            <a href='{confirmationUrl}' style='background: #4CAF50; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px;'>Xác Nhận Email</a>
+                        </div>
+                        <p>Nếu bạn không đăng ký tài khoản, vui lòng bỏ qua email này.</p>
+                        <p>Trân trọng,<br/><strong>Drug Prevention System Team</strong></p>
+                    </div>
+                </div>
+            </div>";
+
 
             await _emailService.SendEmailAsync(request.Email, "Xác thực email", emailBody);
 
@@ -249,7 +267,24 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 
             // Send new confirmation email
             var confirmationUrl = $"{_configuration["Frontend:BaseUrl"]}/confirm-email?token={newToken}";
-            var emailBody = $"<p>Bạn đã yêu cầu gửi lại email xác thực. Vui lòng xác nhận email của bạn bằng cách nhấn vào liên kết sau: <a href='{confirmationUrl}'>Xác nhận email</a></p>";
+            var emailBody = $@"
+            <div style='font-family: Arial, sans-serif; padding: 20px; background-color: #f2f2f2;'>
+                <div style='max-width: 600px; margin: auto; background: white; border-radius: 8px; overflow: hidden;'>
+                    <div style='background: #f44336; color: white; padding: 20px; text-align: center;'>
+                        <h2>Đặt Lại Mật Khẩu</h2>
+                    </div>
+                    <div style='padding: 30px; color: #333;'>
+                        <p>Chào {user.FirstName},</p>
+                        <p>Bạn đã yêu cầu đặt lại mật khẩu. Vui lòng nhấn vào nút dưới đây để tiến hành:</p>
+                        <div style='text-align: center; margin: 20px 0;'>
+                            <a href='{confirmationUrl}' style='background: #f44336; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px;'>Đặt Lại Mật Khẩu</a>
+                        </div>
+                        <p>Nếu bạn không yêu cầu, vui lòng bỏ qua email này.</p>
+                        <p>Trân trọng,<br/><strong>Drug Prevention System Team</strong></p>
+                    </div>
+                </div>
+            </div>";
+
 
             await _emailService.SendEmailAsync(email, "Yêu cầu xác thực email mới", emailBody);
 

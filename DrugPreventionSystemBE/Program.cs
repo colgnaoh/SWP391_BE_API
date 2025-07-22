@@ -174,6 +174,21 @@ namespace DrugPreventionSystemBE
             var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
             app.Urls.Add($"http://*:{port}");
 
+            app.Lifetime.ApplicationStarted.Register(() =>
+            {
+                var url = $"http://localhost:{port}/swagger";
+                try
+                {
+                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                    {
+                        FileName = url,
+                        UseShellExecute = true
+                    });
+                }
+                catch { }
+            });
+
+
             app.UseForwardedHeaders();
 
             app.UseCors("AllowSpecificOrigin");
