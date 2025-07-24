@@ -48,9 +48,19 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             throw new NotImplementedException();
         }
 
-        public Task<bool> RemoveFromFavoriteAsync(Guid userId, Guid targetId, FavoriteType targetType)
+        public async Task<bool> RemoveFromFavoriteAsync(Guid userId, Guid targetId, FavoriteType targetType)
         {
-            throw new NotImplementedException();
+            var favorite = await _context.Favorites.FirstOrDefaultAsync(f =>
+                f.UserId == userId && f.TargetId == targetId &&
+                f.TargetType == targetType && !f.IsDeleted);
+
+            if (favorite == null) return false;
+
+            favorite.IsDeleted = true;
+            favorite.UpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }
