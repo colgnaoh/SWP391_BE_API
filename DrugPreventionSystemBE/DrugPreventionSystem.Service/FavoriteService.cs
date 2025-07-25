@@ -43,9 +43,51 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             return true;
         }
 
-        public Task<List<FavoriteItemResponseModel>> GetFavoritesAsync(Guid userId)
+        public async Task<List<FavoriteItemResponseModel>> GetFavoritesAsync(Guid userId)
         {
-            throw new NotImplementedException();
+            var favorites = await _context.Favorites
+                .Where(f => f.UserId == userId && !f.IsDeleted)
+                .ToListAsync();
+
+            var result = new List<FavoriteItemResponseModel>();
+
+            foreach (var favorite in favorites)
+            {
+                if (favorite.TargetType == FavoriteType.Program)
+                {
+                    var program = await _context.Programs
+                        .Where(p => p.Id == favorite.TargetId && !p.IsDeleted)
+                        .Select(p => new FavoriteItemResponseModel
+                        {
+                            TargetId = p.Id,
+                            Name = p.Name,
+                            Type = "Program",
+                            ImgUrl = p.ProgramImgUrl,
+                            Description = p.Description
+                        })
+                        .FirstOrDefaultAsync();
+
+                    if (program != null) result.Add(program);
+                }
+                else if (favorite.TargetType == FavoriteType.Course)
+                {
+                    var course = await _context.Courses
+                        .Where(c => c.Id == favorite.TargetId && !c.IsDeleted)
+                        .Select(c => new FavoriteItemResponseModel
+                        {
+                            TargetId = c.Id,
+                            Name = c.Name,
+                            Type = "Course",
+                            ImgUrl = c.ImageUrlsJson,
+                            Description = c.Content
+                        })
+                        .FirstOrDefaultAsync();
+
+                    if (course != null) result.Add(course);
+                }
+            }
+
+            return result;
         }
 
         public async Task<bool> RemoveFromFavoriteAsync(Guid userId, Guid targetId, FavoriteType targetType)
@@ -62,5 +104,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             await _context.SaveChangesAsync();
             return true;
         }
+
+
     }
 }
