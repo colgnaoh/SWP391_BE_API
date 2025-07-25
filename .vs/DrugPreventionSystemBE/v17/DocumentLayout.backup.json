@@ -70,9 +70,9 @@
               "Title": "DrugPreventionDbContext.cs",
               "DocumentMoniker": "D:\\SWP\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Data\\DrugPreventionDbContext.cs",
               "RelativeDocumentMoniker": "DrugPreventionSystemBE\\DrugPreventionSystem.Data\\DrugPreventionDbContext.cs",
-              "ToolTip": "D:\\SWP\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Data\\DrugPreventionDbContext.cs*",
-              "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.Data\\DrugPreventionDbContext.cs*",
-              "ViewState": "AgIAAD8AAAAAAAAAAAAYwFsAAAAAAAAAAAAAAA==",
+              "ToolTip": "D:\\SWP\\SWP391_BE_API\\DrugPreventionSystemBE\\DrugPreventionSystem.Data\\DrugPreventionDbContext.cs",
+              "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.Data\\DrugPreventionDbContext.cs",
+              "ViewState": "AgIAAD8AAAAAAAAAAAAYwFsAAABgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-25T09:41:40.754Z",
               "EditorCaption": ""
@@ -87,8 +87,7 @@
               "RelativeToolTip": "DrugPreventionSystemBE\\Program.cs",
               "ViewState": "AgIAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-25T09:41:14.544Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-25T09:41:14.544Z"
             },
             {
               "$type": "Document",
@@ -112,8 +111,7 @@
               "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.Service\\FavoriteService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAFoAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-22T08:12:18.29Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-22T08:12:18.29Z"
             },
             {
               "$type": "Document",
@@ -161,8 +159,7 @@
               "RelativeToolTip": "DrugPreventionSystemBE\\DrugPreventionSystem.Entity\\Favorite.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-21T09:17:43.182Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-21T09:17:43.182Z"
             },
             {
               "$type": "Document",

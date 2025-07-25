@@ -89,6 +89,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Data
             modelBuilder.Entity<Question>().Property(q => q.QuestionType).HasConversion<string>();
             modelBuilder.Entity<Survey>().Property(s => s.Type).HasConversion<string>();
             modelBuilder.Entity<SurveyResult>().Property(sr => sr.RiskLevel).HasConversion<string>();
+            modelBuilder.Entity<Favorite>().Property(f => f.TargetType).HasConversion<string>();
 
 
 
