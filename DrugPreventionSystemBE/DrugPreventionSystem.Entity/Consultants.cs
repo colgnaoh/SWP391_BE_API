@@ -11,13 +11,12 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Entity
         public Guid? Id { get; set; }
 
         public Guid? UserId { get; set; }
-        public User? User { get; set; } // Assuming a User model exists
+        public User? User { get; set; } 
         
         public string? FullName { get; set; }
 
         public string? Email { get; set; }
 
-        // Array is typically modeled as a List or string (e.g., JSON-encoded) in EF
         public string? Qualifications { get; set; }
         public string? JobTitle { get; set; }
 

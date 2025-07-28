@@ -105,7 +105,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 
         public async Task<IActionResult> GetUserCartAsync(Guid userId)
         {
-            // Only display cart items that are in Pending status
+            // Chỉ dispaly cart đang pending
             var cartItems = await _context.Carts
                 .Where(c => c.UserId == userId && !c.IsDeleted && c.Status == CartStatus.Pending)
                 .Include(c => c.Course)

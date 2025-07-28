@@ -10,6 +10,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface
         Task<IActionResult> CreateConsultantAsync(ConsultantCreateRequest request);
         Task<IActionResult> UpdateConsultantAsync(Guid id, ConsultantUpdateRequest request);
         Task<IActionResult> DeleteConsultantAsync(Guid id);
-        Task<bool> ConsultantExists(Guid id); // Helper method
+        Task<bool> ConsultantExists(Guid id); 
     }
 }

@@ -101,7 +101,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 Dob = request.Dob, // 
                 AgeGroup = ageGroup,
                 VerificationToken = token,
-                ProfilePicUrl = request.ProfilePicUrl, // Lưu URL ảnh đại diện nếu có
+                ProfilePicUrl = request.ProfilePicUrl, 
                 VerificationTokenExpires = DateTime.UtcNow.AddHours(24), //
                 IsVerified = false,
                 CreatedAt = createDate,

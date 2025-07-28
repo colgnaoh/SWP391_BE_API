@@ -37,9 +37,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             }
             else
             {
-                // Tùy chọn: Ghi log cảnh báo hoặc ném ngoại lệ nếu to là null hoặc rỗng
-                // Ví dụ:
-                // throw new ArgumentException("Địa chỉ email người nhận không được để trống.", nameof(to));
                 Console.WriteLine("Cảnh báo: Địa chỉ email người nhận không hợp lệ, không thể gửi email.");
                 return; // Dừng việc gửi email nếu không có địa chỉ nhận hợp lệ
             }
