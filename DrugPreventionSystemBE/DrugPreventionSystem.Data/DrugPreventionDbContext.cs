@@ -83,7 +83,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Data
             modelBuilder.Entity<Course>().Property(co => co.Price).HasPrecision(10, 2);
             modelBuilder.Entity<Order>().Property(o => o.TotalAmount).HasPrecision(10, 2);
             modelBuilder.Entity<OrderDetail>().Property(od => od.Amount).HasPrecision(10, 2);
-            modelBuilder.Entity<Appointment>().Property(ad => ad.Status).HasConversion<string>();
+            modelBuilder.Entity<Appointment>().Property(ad => ad.Status).HasPrecision(10, 2);
             modelBuilder.Entity<Course>().Property(c => c.RiskLevel).HasPrecision(10, 2);
             modelBuilder.Entity<CommunityProgram>().Property(p => p.RiskLevel).HasPrecision(10, 2);
             modelBuilder.Entity<Question>().Property(q => q.QuestionType).HasConversion<string>();
