@@ -97,7 +97,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
             return Ok(result);
         }
         // POST: api/user/change-password
-        [HttpPost("changePassword")]
+        [HttpPut("changePassword")]
         [Authorize] 
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
         {
