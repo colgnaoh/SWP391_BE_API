@@ -379,8 +379,9 @@ namespace DrugPreventionSystemBE.Migrations
                     b.Property<Guid>("TargetId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("TargetType")
-                        .HasColumnType("int");
+                    b.Property<string>("TargetType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -756,9 +757,9 @@ namespace DrugPreventionSystemBE.Migrations
                     b.Property<Guid?>("ProgramId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("RiskLevel")
+                    b.Property<int?>("RiskLevel")
                         .HasPrecision(10, 2)
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("int");
 
                     b.Property<Guid>("SurveyId")
                         .HasColumnType("uniqueidentifier");
@@ -953,7 +954,6 @@ namespace DrugPreventionSystemBE.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("QuestionType")
-                        .HasPrecision(10, 2)
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("SurveyId")
@@ -991,7 +991,6 @@ namespace DrugPreventionSystemBE.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Type")
-                        .HasPrecision(10, 2)
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedAt")

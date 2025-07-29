@@ -277,6 +277,7 @@ public class SurveyService : ISurveyService
             Id = surveyResultId,
             UserId = model.UserId,
             SurveyId = model.SurveyId,
+            ProgramId = model.ProgamId,
             TotalScore = totalScore,
             RiskLevel = riskLevel,
             CompletedAt = DateTime.UtcNow
