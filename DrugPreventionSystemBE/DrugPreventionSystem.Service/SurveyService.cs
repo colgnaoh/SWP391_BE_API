@@ -121,6 +121,7 @@ public class SurveyService : ISurveyService
 
     public async Task<IActionResult> GetSurveysByPageWithStatusAsync(
     Guid? userId,
+    Guid? progamId,
     int pageNumber,
     int pageSize,
     string? filterByName)
@@ -192,7 +193,9 @@ public class SurveyService : ISurveyService
             var surveyIds = surveys.Select(s => s.Id).ToList();
 
             var completedSurveyIds = await _context.SurveyResults
-                .Where(r => r.UserId == userId && surveyIds.Contains(r.SurveyId))
+                .Where(r => r.UserId == userId 
+                        && r.ProgramId == progamId
+                        && surveyIds.Contains(r.SurveyId))
                 .Select(r => r.SurveyId)
                 .Distinct()
                 .ToListAsync();

@@ -22,11 +22,12 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
         [HttpGet("paged")]
         public async Task<IActionResult> GetSurveysByPageWithStatusAsync(
     [FromQuery] Guid? userId,
+    [FromQuery] Guid? programId,
     [FromQuery] int pageNumber = 1,
     [FromQuery] int pageSize = 10,
     [FromQuery] string? filterByName = null)
         {
-            return await _surveyService.GetSurveysByPageWithStatusAsync(userId, pageNumber, pageSize, filterByName);
+            return await _surveyService.GetSurveysByPageWithStatusAsync(userId, programId, pageNumber, pageSize, filterByName);
         }
 
 
