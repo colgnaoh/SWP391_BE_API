@@ -121,7 +121,7 @@ public class SurveyService : ISurveyService
 
     public async Task<IActionResult> GetSurveysByPageWithStatusAsync(
     Guid? userId,
-    Guid? progamId,
+    Guid? programId,
     int pageNumber,
     int pageSize,
     string? filterByName)
@@ -193,9 +193,9 @@ public class SurveyService : ISurveyService
             var surveyIds = surveys.Select(s => s.Id).ToList();
 
             var completedSurveyIds = await _context.SurveyResults
-                .Where(r => r.UserId == userId 
-                        && r.ProgramId == progamId
-                        && surveyIds.Contains(r.SurveyId))
+                .Where(r => r.UserId == userId
+                    && surveyIds.Contains(r.SurveyId)
+                    && ((programId == null && r.ProgramId == null) || (r.ProgramId == programId)))
                 .Select(r => r.SurveyId)
                 .Distinct()
                 .ToListAsync();
@@ -221,6 +221,7 @@ public class SurveyService : ISurveyService
 
             return new OkObjectResult(result);
         }
+
 
         // If not customer
         var generalResult = new SurveyPagedResultModelWithStatus
@@ -280,7 +281,7 @@ public class SurveyService : ISurveyService
             Id = surveyResultId,
             UserId = model.UserId,
             SurveyId = model.SurveyId,
-            ProgramId = model.ProgamId,
+            ProgramId = model.ProgramId,
             TotalScore = totalScore,
             RiskLevel = riskLevel,
             CompletedAt = DateTime.UtcNow

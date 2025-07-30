@@ -33,6 +33,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
 
         // GET: api/survey/{id}
         [HttpGet("{id}")]
+        
         public async Task<IActionResult> GetSurveyDetail(Guid id)
         {
             var detail = await _surveyService.GetSurveyDetailAsync(id);
