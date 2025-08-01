@@ -1,7 +1,7 @@
 # SWP391_BE_API
 ## 🌐 Demo
 
-[Truy cập server tại đây](https://swp391-be-api.onrender.com/swagger/index.html)
+[Truy cập server tại đây](http://103.90.225.74:5000/swagger/index.html)
 
 
 🛠️ Tech Stack
@@ -16,12 +16,12 @@ Swagger for API Testing
 
 JWT Authentication
 
-Deployed on Render
+Deployed on VPS (Vietnix)
 
 ☁️ Database Information
 
 
-SQL Server database is hosted on AWS RDS
+SQL Server database is hosted directly on the VPS
 
 📦 Features
 
