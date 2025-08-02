@@ -120,11 +120,12 @@ public class SurveyService : ISurveyService
     }
 
     public async Task<IActionResult> GetSurveysByPageWithStatusAsync(
-    Guid? userId,
-    Guid? programId,
-    int pageNumber,
-    int pageSize,
-    string? filterByName)
+     Guid? userId,
+     Guid? programId,
+     int pageNumber,
+     int pageSize,
+     string? filterByName,
+     SurveyType? surveyType)
     {
         var safePageNumber = pageNumber < 1 ? 1 : pageNumber;
         var safePageSize = pageSize < 1 ? 10 : pageSize;
@@ -136,6 +137,11 @@ public class SurveyService : ISurveyService
         if (!string.IsNullOrEmpty(filterByName))
         {
             query = query.Where(s => s.Name.Contains(filterByName));
+        }
+
+        if (surveyType.HasValue)
+        {
+            query = query.Where(s => s.Type == surveyType.Value);
         }
 
         var totalCount = await query.CountAsync();
@@ -166,14 +172,13 @@ public class SurveyService : ISurveyService
                     SurveyType = s.Type,
                     EstimateTime = s.EstimateTime,
                     CreatedAt = s.CreatedAt,
-                    IsCompleted = false // or you can use `null` if IsCompleted is nullable
+                    IsCompleted = false
                 }).ToList()
             };
 
             return new OkObjectResult(result);
         }
 
-        // If userId exists, fetch user role
         var user = await _context.Users
             .FirstOrDefaultAsync(u => u.Id == userId && !u.IsDeleted);
 
@@ -222,8 +227,6 @@ public class SurveyService : ISurveyService
             return new OkObjectResult(result);
         }
 
-
-        // If not customer
         var generalResult = new SurveyPagedResultModelWithStatus
         {
             Success = true,
@@ -239,12 +242,13 @@ public class SurveyService : ISurveyService
                 SurveyType = s.Type,
                 EstimateTime = s.EstimateTime,
                 CreatedAt = s.CreatedAt,
-                IsCompleted = null 
+                IsCompleted = null
             }).ToList()
         };
 
         return new OkObjectResult(generalResult);
     }
+
 
 
 

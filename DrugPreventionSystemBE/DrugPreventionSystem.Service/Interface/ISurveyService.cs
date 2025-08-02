@@ -1,4 +1,5 @@
-﻿using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.SurveyReqModel;
+﻿using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.SurveyReqModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.SurveyResModel;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,6 +18,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface
              Guid? progamId,
              int pageNumber,
              int pageSize,
-             string? filterByName);
+             string? filterByName,
+            SurveyType? surveyType);
     }
 }

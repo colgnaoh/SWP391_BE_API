@@ -18,9 +18,9 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel
         public Guid? UserId { get; set; }
         public string? FullName { get; set; }
         public string? UserAvatar { get; set; }
-        public Guid SessionId { get; set; }
+        public Guid? SessionId { get; set; }
         public Session? Session { get; set; }
-        public Guid CourseId { get; set; }
+        public Guid? CourseId { get; set; } 
         public Course Course { get; set; }
     }
 

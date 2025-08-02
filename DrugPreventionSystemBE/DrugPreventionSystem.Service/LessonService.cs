@@ -1,5 +1,6 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.Data;
 using DrugPreventionSystemBE.DrugPreventionSystem.Entity;
+using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.LessonReqModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
@@ -58,13 +59,21 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             return new OkObjectResult("Tạo bài học thành công.");
         }
 
-        public async Task<IActionResult> GetLessonsByPageAsync(int pageNumber, int pageSize, string? filterByName)
+        public async Task<IActionResult> GetLessonsByPageAsync(
+            int pageNumber,
+            int pageSize,
+            string? filterByName,
+            Guid? courseId,
+            Guid? sessionId,
+            LessonType? lessonType)
         {
             var safePageNumber = pageNumber < 1 ? 1 : pageNumber;
             var safePageSize = pageSize < 1 ? 12 : pageSize;
 
             var query = _context.Lessons
                 .Include(l => l.User)
+                .Include(l => l.Course)
+                .Include(l => l.Session)
                 .Where(l => !l.IsDeleted)
                 .AsQueryable();
 
@@ -73,10 +82,24 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 query = query.Where(l => l.Name != null && EF.Functions.Like(l.Name, $"%{filterByName}%"));
             }
 
+            if (courseId.HasValue)
+            {
+                query = query.Where(l => l.CourseId == courseId.Value);
+            }
+
+            if (sessionId.HasValue)
+            {
+                query = query.Where(l => l.SessionId == sessionId.Value);
+            }
+
+            if (lessonType.HasValue)
+            {
+                query = query.Where(l => l.LessonType == lessonType.Value);
+            }
+
             var totalCount = await query.CountAsync();
+
             var lessons = await query
-                .Include(l => l.Course)
-                .Include(l => l.Session)
                 .OrderBy(l => l.PositionOrder)
                 .Skip((safePageNumber - 1) * safePageSize)
                 .Take(safePageSize)
@@ -109,6 +132,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 TotalPages = (int)Math.Ceiling((double)totalCount / safePageSize)
             });
         }
+
 
         public async Task<IActionResult> GetLessonByIdAsync(Guid lessonId)
         {

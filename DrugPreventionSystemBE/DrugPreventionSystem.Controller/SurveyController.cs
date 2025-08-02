@@ -1,4 +1,5 @@
-﻿using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.SurveyReqModel;
+﻿using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.SurveyReqModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,10 +26,13 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
     [FromQuery] Guid? programId,
     [FromQuery] int pageNumber = 1,
     [FromQuery] int pageSize = 10,
-    [FromQuery] string? filterByName = null)
+    [FromQuery] string? filterByName = null,
+    [FromQuery] SurveyType? surveyType = null)
         {
-            return await _surveyService.GetSurveysByPageWithStatusAsync(userId, programId, pageNumber, pageSize, filterByName);
+            return await _surveyService.GetSurveysByPageWithStatusAsync(
+                userId, programId, pageNumber, pageSize, filterByName, surveyType);
         }
+
 
 
         // GET: api/survey/{id}

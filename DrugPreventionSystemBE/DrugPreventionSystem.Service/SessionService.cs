@@ -66,7 +66,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
             });
         }
 
-        public async Task<IActionResult> GetAllAsync(string? name = null, int pageNumber = 1, int pageSize = 12)
+        public async Task<IActionResult> GetAllAsync(string? name = null, Guid? courseId = null, int pageNumber = 1, int pageSize = 12)
         {
             var safePageNumber = pageNumber < 1 ? 1 : pageNumber;
             var safePageSize = pageSize < 1 ? 12 : pageSize;
@@ -79,7 +79,12 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 
             if (!string.IsNullOrWhiteSpace(name))
             {
-                query = query.Where(s => s.Name.Contains(name)); // or use EF.Functions.Like for SQL-like search
+                query = query.Where(s => s.Name.Contains(name));
+            }
+
+            if (courseId.HasValue)
+            {
+                query = query.Where(s => s.CourseId == courseId.Value);
             }
 
             var totalCount = await query.CountAsync();
@@ -119,6 +124,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 TotalPages = totalPages
             });
         }
+
 
 
         public async Task<IActionResult> GetByIdAsync(Guid id)

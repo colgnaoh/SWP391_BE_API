@@ -1,4 +1,5 @@
-﻿using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.LessonReqModel;
+﻿using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.LessonReqModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,10 +25,17 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
         }
 
         [HttpGet("paged")]
-        public async Task<IActionResult> GetLessonsByPage([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 12, [FromQuery] string? filterByName = null)
+        public async Task<IActionResult> GetLessonsByPageAsync(
+    [FromQuery] int pageNumber = 1,
+    [FromQuery] int pageSize = 12,
+    [FromQuery] string? filterByName = null,
+    [FromQuery] Guid? courseId = null,
+    [FromQuery] Guid? sessionId = null,
+    [FromQuery] LessonType? lessonType = null)
         {
-            return await _lessonService.GetLessonsByPageAsync(pageNumber, pageSize, filterByName);
+            return await _lessonService.GetLessonsByPageAsync(pageNumber, pageSize, filterByName, courseId, sessionId, lessonType);
         }
+
 
         [HttpGet("{lessonId}")]
         public async Task<IActionResult> GetLessonById(Guid lessonId)
