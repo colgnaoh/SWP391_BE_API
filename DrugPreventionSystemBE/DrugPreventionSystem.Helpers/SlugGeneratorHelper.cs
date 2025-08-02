@@ -25,6 +25,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Helpers
 
         private static string RemoveDiacritics(string text)
         {
+            text = text.Replace("đ", "d").Replace("Đ", "D");
             var normalized = text.Normalize(NormalizationForm.FormD);
             var sb = new StringBuilder();
             foreach (var c in normalized)
