@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DrugPreventionSystemBE.Migrations
 {
     [DbContext(typeof(DrugPreventionDbContext))]
-    [Migration("20250721085908_AddProgramFavorites")]
-    partial class AddProgramFavorites
+    [Migration("20250731085106_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -365,6 +365,38 @@ namespace DrugPreventionSystemBE.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Courses");
+                });
+
+            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Favorite", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("TargetId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TargetType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Favorites");
                 });
 
             modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Lesson", b =>
@@ -728,9 +760,9 @@ namespace DrugPreventionSystemBE.Migrations
                     b.Property<Guid?>("ProgramId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("RiskLevel")
+                    b.Property<int?>("RiskLevel")
                         .HasPrecision(10, 2)
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("int");
 
                     b.Property<Guid>("SurveyId")
                         .HasColumnType("uniqueidentifier");
@@ -925,7 +957,6 @@ namespace DrugPreventionSystemBE.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("QuestionType")
-                        .HasPrecision(10, 2)
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("SurveyId")
@@ -963,7 +994,6 @@ namespace DrugPreventionSystemBE.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Type")
-                        .HasPrecision(10, 2)
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -1098,6 +1128,17 @@ namespace DrugPreventionSystemBE.Migrations
                         .HasForeignKey("UserId");
 
                     b.Navigation("Category");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DrugPreventionSystemBE.DrugPreventionSystem.Entity.Favorite", b =>
+                {
+                    b.HasOne("DrugPreventionSystemBE.DrugPreventionSystem.Entity.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
