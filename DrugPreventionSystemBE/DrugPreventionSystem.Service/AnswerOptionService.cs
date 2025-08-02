@@ -125,6 +125,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
 
             var query = _context.AnswerOptions
                 .Where(a => !a.IsDeleted)
+                .Include(a => a.Question)
                 .AsQueryable();
 
             if (questionId.HasValue)
@@ -157,6 +158,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 {
                     Id = a.Id,
                     QuestionId = a.QuestionId,
+                    QuestionContent = a.Question != null ? a.Question.QuestionContent : "",
                     OptionContent = a.OptionContent,
                     Score = a.Score,
                     PositionOrder = a.PositionOrder
