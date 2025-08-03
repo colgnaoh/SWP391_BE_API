@@ -10,5 +10,6 @@
         public DateTime Dob { get; set; }
         public string? ProfilePicUrl { get; set; }
         public string? Role { get; set; }
+        public bool? IsVerified { get; set; }    
     }
 }

@@ -9,6 +9,7 @@ using DrugPreventionSystemBE.DrugPreventionSystem.Service;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -143,7 +144,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
             }
         }
 
-        public async Task<GetUserByPageResponseModel> GetUsersByPageAsync(int pageNumber, int pageSize)
+        public async Task<GetUserByPageResponseModel> GetUsersByPageAsync(int pageNumber, int pageSize, Role? role = null, string? searchCondition = null, bool? isVerified = null)
         {
             var safePageNumber = pageNumber < 1 ? 1 : pageNumber;
             var safePageSize = pageSize < 1 ? 10 : pageSize;
@@ -151,6 +152,20 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
             var query = _context.Users
                 .AsNoTracking()
                 .Where(u => !u.IsDeleted);
+            if (role != null)
+                query = query.Where(u => u.Role.Equals(role));
+
+            if (isVerified.HasValue)
+                query = query.Where(u => u.IsVerified == isVerified);
+
+            if (!string.IsNullOrEmpty(searchCondition))
+            {
+                query = query.Where(u =>
+                    u.PhoneNumber.Contains(searchCondition) ||
+                    u.Email.Contains(searchCondition) ||
+                    u.FirstName.Contains(searchCondition) ||
+                    u.LastName.Contains(searchCondition));
+            }
 
             var totalCount = await query.CountAsync();
             var totalPages = (int)Math.Ceiling((double)totalCount / safePageSize);
@@ -169,7 +184,8 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
                     Gender = u.Gender,
                     Dob = u.Dob,
                     ProfilePicUrl = u.ProfilePicUrl,
-                    Role = u.Role.ToString()
+                    Role = u.Role.ToString(),
+                    IsVerified = u.IsVerified
                 })
                 .ToListAsync();
 

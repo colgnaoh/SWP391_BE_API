@@ -1,4 +1,5 @@
-﻿using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.AuthModel;
+﻿using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.AuthModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.ResponseModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.UserSearchModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
@@ -35,14 +36,16 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
 
         // GET: api/User        
         [HttpGet]
-        public async Task<IActionResult> GetUsersPaged(int pageNumber = 1, int pageSize = 10)
+        [Authorize]
+        public async Task<IActionResult> GetUsersPaged(int pageNumber = 1, int pageSize = 10, Role? role = null, string? searchCondition = null, bool? isVerified = null)
         {
-            var result = await _userService.GetUsersByPageAsync(pageNumber, pageSize);
+            var result = await _userService.GetUsersByPageAsync(pageNumber, pageSize, role, searchCondition, isVerified);
             return Ok(result);
         }
 
         // GET: api/User/{id}
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetUserById(Guid id)
         {
             var user = await _userService.GetUserByIdAsync(id);
