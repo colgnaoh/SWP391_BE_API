@@ -1,4 +1,5 @@
-﻿using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CommunityProgramReqModel;
+﻿using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
+using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CommunityProgramReqModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CommunityProgramsResModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.Service.Interface;
 using Microsoft.AspNetCore.Authorization;
@@ -25,12 +26,16 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controllers
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> GetProgramsByPage(
-            [FromQuery] int pageNumber = 1,
-            [FromQuery] int pageSize = 12,
-            [FromQuery] string? filterByName = null)
+     [FromQuery] int pageNumber = 1,
+     [FromQuery] int pageSize = 12,
+     [FromQuery] string? filterByName = null,
+     [FromQuery] RiskLevel? riskLevel = null,
+     [FromQuery] Programtype? programType = null)
         {
-            return await _programService.GetCommunityProgramsByPageAsync(pageNumber, pageSize, filterByName);
+            return await _programService.GetCommunityProgramsByPageAsync(
+                pageNumber, pageSize, filterByName, riskLevel, programType);
         }
+
 
         // GET: api/program/{id}
         [HttpGet("{id}")]

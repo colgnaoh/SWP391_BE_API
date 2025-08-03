@@ -1,5 +1,6 @@
 ﻿using DrugPreventionSystemBE.DrugPreventionSystem.Data;
 using DrugPreventionSystemBE.DrugPreventionSystem.Entity;
+using DrugPreventionSystemBE.DrugPreventionSystem.Enum;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CommunityProgramReqModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CommunityProgramResModel;
 using DrugPreventionSystemBE.DrugPreventionSystem.ModelView.CommunityProgramsResModel;
@@ -19,7 +20,12 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
             _context = context;
         }
 
-        public async Task<IActionResult> GetCommunityProgramsByPageAsync(int pageNumber, int pageSize, string? filterByName)
+        public async Task<IActionResult> GetCommunityProgramsByPageAsync(
+    int pageNumber,
+    int pageSize,
+    string? filterByName,
+    RiskLevel? riskLevel,
+    Programtype? programType)
         {
             try
             {
@@ -27,11 +33,22 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
                 int currentPageSize = pageSize < 1 ? 12 : pageSize;
 
                 var query = _context.Programs
-                    .Where(p => !p.IsDeleted);
+                    .Where(p => !p.IsDeleted)
+                    .AsQueryable();
 
                 if (!string.IsNullOrEmpty(filterByName))
                 {
                     query = query.Where(p => EF.Functions.Like(p.Name!, $"%{filterByName}%"));
+                }
+
+                if (riskLevel.HasValue)
+                {
+                    query = query.Where(p => p.RiskLevel == riskLevel.Value);
+                }
+
+                if (programType.HasValue)
+                {
+                    query = query.Where(p => p.Type == programType.Value);
                 }
 
                 int totalCount = await query.CountAsync();
@@ -68,7 +85,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
                     PageNumber = currentPage,
                     PageSize = currentPageSize,
                     TotalPages = (int)Math.Ceiling((double)totalCount / currentPageSize)
-                }); ;
+                });
             }
             catch (Exception)
             {
@@ -80,6 +97,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
                 { StatusCode = 500 };
             }
         }
+
 
         public async Task<IActionResult> GetCommunityProgramByIdAsync(Guid programId)
         {
