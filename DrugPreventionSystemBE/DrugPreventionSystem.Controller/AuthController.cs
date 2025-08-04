@@ -46,7 +46,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Controller
             return await _authenticationService.RequestPasswordResetAsync(request.Email);
         }
 
-        [HttpPost("resetPassword")]
+        [HttpPost("doi-mat-khau")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
         {
             return await _authenticationService.ResetPasswordAsync(request);
