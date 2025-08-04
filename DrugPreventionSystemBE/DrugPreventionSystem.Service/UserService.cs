@@ -133,7 +133,24 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
             {
                 await _context.SaveChangesAsync();
                 var confirmationUrl = $"{_configuration["Frontend:BaseUrl"]}/confirm-email?token={token}";
-                var emailBody = $"<p>Vui lòng xác nhận email của bạn bằng cách nhấn vào liên kết sau: <a href='{confirmationUrl}'>Xác nhận email</a></p>";
+                var emailBody = $@"
+                    <div style='font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9;'>
+                        <div style='max-width: 600px; margin: auto; background: white; border-radius: 8px; overflow: hidden;'>
+                            <div style='background: #4CAF50; color: white; padding: 20px; text-align: center;'>
+                                <h2>Xác Thực Tài Khoản</h2>
+                            </div>
+                            <div style='padding: 30px; color: #333;'>
+                                <p>Chào {request.FirstName},</p>
+                                <p>Cảm ơn bạn đã đăng ký tài khoản tại <strong>Drug Prevention System</strong>.</p>
+                                <p>Vui lòng nhấn vào nút bên dưới để xác nhận email của bạn:</p>
+                                <div style='text-align: center; margin: 20px 0;'>
+                                    <a href='{confirmationUrl}' style='background: #4CAF50; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px;'>Xác Nhận Email</a>
+                                </div>
+                                <p>Nếu bạn không đăng ký tài khoản, vui lòng bỏ qua email này.</p>
+                                <p>Trân trọng,<br/><strong>Drug Prevention System Team</strong></p>
+                            </div>
+                        </div>
+                    </div>";
                 await _emailService.SendEmailAsync(request.Email, "Xác thực email", emailBody);
 
                 return new OkObjectResult("Đăng ký thành công. Vui lòng kiểm tra email để xác thực.");
@@ -335,7 +352,24 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Services
                 if (emailUpdated)
                 {
                     var confirmationUrl = $"{_configuration["Frontend:BaseUrl"]}/confirm-email?token={updateUser.VerificationToken}";
-                    var emailBody = $"<p>Email của bạn đã được cập nhật. Vui lòng xác nhận email mới của bạn bằng cách nhấn vào liên kết sau: <a href='{confirmationUrl}'>Xác nhận email</a></p>";
+                    var emailBody = $@"
+                    <div style='font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9;'>
+                        <div style='max-width: 600px; margin: auto; background: white; border-radius: 8px; overflow: hidden;'>
+                            <div style='background: #4CAF50; color: white; padding: 20px; text-align: center;'>
+                                <h2>Đặt lại mật khẩu</h2>
+                            </div>
+                            <div style='padding: 30px; color: #333;'>
+                                <p>Chào {request.FirstName},</p>
+                                <p>Hệ thống <strong>Drug Prevention System</strong>.</p>
+                                <p>Vui lòng nhấn vào nút bên dưới để xác nhận đặt lại mật khẩu của bạn:</p>
+                                <div style='text-align: center; margin: 20px 0;'>
+                                    <a href='{confirmationUrl}' style='background: #4CAF50; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px;'>Xác Nhận Email</a>
+                                </div>
+                                <p>Nếu bạn không đặt lại mật khẩu, vui lòng bỏ qua email này.</p>
+                                <p>Trân trọng,<br/><strong>Drug Prevention System Team</strong></p>
+                            </div>
+                        </div>
+                    </div>";
                     await _emailService.SendEmailAsync(updateUser.Email!, "Xác thực email", emailBody);
                     return new OkObjectResult("Cập nhật thông tin người dùng thành công, vui lòng kiểm tra email để xác nhận!");
                 }
