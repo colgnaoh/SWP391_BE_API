@@ -138,7 +138,7 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                     Status = (ConsultantStatus)c.Status,// Xử lý null cho Enum? (chọn một giá trị mặc định phù hợp)
                     CreatedAt = (DateTime)c.CreatedAt,
                     ProfilePicUrl = c.User?.ProfilePicUrl,
-                    PhoneNumber = c.User.PhoneNumber
+                    PhoneNumber = c.User?.PhoneNumber ?? string.Empty
                 }).ToList();
 
                 return new ListConsultantResponse
@@ -176,7 +176,6 @@ namespace DrugPreventionSystemBE.DrugPreventionSystem.Service
                 _context.Users.Update(user);
             }
 
-            _context.consultants.Remove(consultant);
 
             _context.consultants.Remove(consultant);
             try
